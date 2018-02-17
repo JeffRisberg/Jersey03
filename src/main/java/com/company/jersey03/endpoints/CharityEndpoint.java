@@ -4,12 +4,15 @@ import com.company.jersey03.common.model.jooq.query.FilterDesc;
 import com.company.jersey03.common.model.jooq.query.SortDesc;
 import com.company.jersey03.models.Charity;
 import com.company.jersey03.services.CharityService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
 
+@Api
 @Path("charities")
 public class CharityEndpoint extends AbstractEndpoint {
 
@@ -22,6 +25,10 @@ public class CharityEndpoint extends AbstractEndpoint {
 
     @GET
     @Path("{id}")
+    @ApiOperation(value = "Finds a charity",
+            notes = "Finds a charity by id",
+            response = Charity.class,
+            responseContainer = "Map")
     @Produces(MediaType.APPLICATION_JSON)
     public Response fetch(@PathParam("id") Integer id) {
 
@@ -32,6 +39,10 @@ public class CharityEndpoint extends AbstractEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Finds a list of charities",
+            notes = "Finds a list of charities",
+            response = Charity.class,
+            responseContainer = "List")
     public Response fetchList(
             @DefaultValue("50") @QueryParam("limit") int limit,
             @DefaultValue("0") @QueryParam("offset") int offset,

@@ -13,18 +13,27 @@ public class Main {
         Server server = new Server(8080);
 
         ServletContextHandler sch = new ServletContextHandler(server, "/");
+
+        // this makes a servletholder and then adds it to the contexHaandler
         ServletHolder jerseyServletHolder = new ServletHolder(new ServletContainer());
         jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplication.class.getCanonicalName());
         sch.addServlet(jerseyServletHolder, "/*");
 
-        ServletContextHandler context = new ServletContextHandler(server, "/model-server", ServletContextHandler.SESSIONS);
-        // Setup Swagger servlet
-        ServletHolder swaggerServlet = context.addServlet(DefaultJaxrsConfig.class, "/swagger-core");
+        //ServletContextHandler context = new ServletContextHandler(server, "/j3-server", ServletContextHandler.SESSIONS);
+
+        // this makes a servlet within the contextHandler, then configures it.
+        //ServletHolder swaggerServlet = sch.addServlet(/*Swagger*/DefaultJaxrsConfig.class, "/swagger-core");
+        //swaggerServlet.setInitParameter("api.version", "1.0.0");
+        //swaggerServlet.setInitParameter("swagger.api.basepath", "/j3-server");
+        //swaggerServlet.setInitOrder(2);
+
+        ServletHolder swaggerServlet = sch.addServlet(DefaultJaxrsConfig.class, "/swagger-core");
         swaggerServlet.setInitParameter("api.version", "1.0.0");
         swaggerServlet.setInitParameter("swagger.api.basepath", "/model-server");
         swaggerServlet.setInitOrder(2);
 
-        sch.addServlet(swaggerServlet, "/*");
+        //context.addServlet(holder, "/*");
+        sch.addServlet(swaggerServlet, "/swagger");
 
         server.start();
         server.join();
