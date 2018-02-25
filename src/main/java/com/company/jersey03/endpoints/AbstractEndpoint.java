@@ -1,10 +1,10 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.model.jooq.query.FieldDesc;
-import com.company.jersey03.common.model.jooq.query.FilterDesc;
-import com.company.jersey03.common.model.jooq.query.FilterOperator;
-import com.company.jersey03.common.model.jooq.query.SortDesc;
-import com.company.jersey03.common.model.jooq.query.SortDirection;
+import com.company.jersey03.common.FieldDesc;
+import com.company.jersey03.common.FilterDesc;
+import com.company.jersey03.common.FilterOperator;
+import com.company.jersey03.common.SortDesc;
+import com.company.jersey03.common.SortDirection;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;

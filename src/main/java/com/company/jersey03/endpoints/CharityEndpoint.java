@@ -1,7 +1,7 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.model.jooq.query.FilterDesc;
-import com.company.jersey03.common.model.jooq.query.SortDesc;
+import com.company.jersey03.common.FilterDesc;
+import com.company.jersey03.common.SortDesc;
 import com.company.jersey03.models.Charity;
 import com.company.jersey03.services.CharityService;
 import io.swagger.annotations.Api;
@@ -53,7 +53,7 @@ public class CharityEndpoint extends AbstractEndpoint {
         List<FilterDesc> filterDescs = this.parseFiltering(queryParams);
         List<SortDesc> sortDescs = this.parseSortStr(sortStr);
 
-        List<Charity> data = charityService.getCharities(limit, offset, filterDescs, sortDescs);
+        List<Charity> data = charityService.getCharities(limit, offset, filterDescs);
         long totalCount = charityService.getCharitiesCount(filterDescs);
 
         return createEntityListResponse(data, totalCount, limit, offset, null);

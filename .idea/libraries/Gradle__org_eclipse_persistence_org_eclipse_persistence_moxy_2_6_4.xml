@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.eclipse.persistence:org.eclipse.persistence.moxy:2.6.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.persistence/org.eclipse.persistence.moxy/2.6.4/112ac7df217464622ebb017420353a794fc52019/org.eclipse.persistence.moxy-2.6.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.persistence/org.eclipse.persistence.moxy/2.6.4/681787d5f92d9694fb279992dcd9e97ab3ad145e/org.eclipse.persistence.moxy-2.6.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

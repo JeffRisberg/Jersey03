@@ -32,7 +32,7 @@ public class DonorServiceTest {
 
     @Test
     public void testGetList() {
-        List<Donor> donorList = donorService.getDonors(50, 0, null, null);
+        List<Donor> donorList = donorService.getDonors(50, 0, null);
 
         assertNotNull(donorList);
         assertEquals(8, donorList.size());

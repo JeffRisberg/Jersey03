@@ -31,7 +31,7 @@ public class CharityServiceTest {
 
     @Test
     public void testGetList() {
-        List<Charity> charityList = charityService.getCharities(50, 0, null, null);
+        List<Charity> charityList = charityService.getCharities(50, 0, null);
 
         assertNotNull(charityList);
         assertEquals(6, charityList.size());

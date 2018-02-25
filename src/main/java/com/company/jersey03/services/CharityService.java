@@ -1,8 +1,6 @@
 package com.company.jersey03.services;
 
-import com.company.jersey03.common.model.jooq.query.FilterDesc;
-import com.company.jersey03.common.model.jooq.query.SortDesc;
-import com.company.jersey03.common.model.jooq.query.SortDirection;
+import com.company.jersey03.common.FilterDesc;
 import com.company.jersey03.models.Charity;
 import com.google.inject.Singleton;
 
@@ -19,12 +17,12 @@ public class CharityService {
     protected List<Charity> charities = new ArrayList<Charity>();
 
     public CharityService() {
-        charities.add(new Charity(1, "Red Cross", "66-555555", "www.redcross.org"));
-        charities.add(new Charity(2, "ASPCA", "99-555555", "www.aspca.org"));
-        charities.add(new Charity(3, "United Way", "33-555555", "www.unitedway.org"));
-        charities.add(new Charity(4, "American Heart Assoc", "55-555555", "www.aha.org"));
-        charities.add(new Charity(5, "Polar Bear Assoc", "45-555555", "www.polarbears.org"));
-        charities.add(new Charity(6, "Stanford University", "37-555555", "www.stanford.edu"));
+        charities.add(new Charity(1L, "Red Cross", "66-555555", "www.redcross.org"));
+        charities.add(new Charity(2L, "ASPCA", "99-555555", "www.aspca.org"));
+        charities.add(new Charity(3L, "United Way", "33-555555", "www.unitedway.org"));
+        charities.add(new Charity(4L, "American Heart Assoc", "55-555555", "www.aha.org"));
+        charities.add(new Charity(5L, "Polar Bear Assoc", "45-555555", "www.polarbears.org"));
+        charities.add(new Charity(6L, "Stanford University", "37-555555", "www.stanford.edu"));
     }
 
     public Charity getCharity(int id) {
@@ -35,28 +33,8 @@ public class CharityService {
         return null;
     }
 
-    public List<Charity> getCharities(int limit, int offset, List<FilterDesc> filterDescs, List<SortDesc> sortDescs) {
+    public List<Charity> getCharities(int limit, int offset, List<FilterDesc> filterDescs) {
         List<Charity> result = applyFilter(filterDescs);
-
-        if (sortDescs != null && sortDescs.size() > 0) {
-            SortDesc sortDesc = sortDescs.get(0);
-
-            if (sortDesc.getDirection() == SortDirection.Ascending) {
-                if (sortDesc.getField().getName().equals("name"))
-                    result.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
-                if (sortDesc.getField().getName().equals("ein"))
-                    result.sort((p1, p2) -> p1.getEin().compareTo(p2.getEin()));
-                if (sortDesc.getField().getName().equals("website"))
-                    result.sort((p1, p2) -> p1.getWebsite().compareTo(p2.getWebsite()));
-            } else {
-                if (sortDesc.getField().getName().equals("name"))
-                    result.sort((p1, p2) -> p2.getName().compareTo(p1.getName()));
-                if (sortDesc.getField().getName().equals("ein"))
-                    result.sort((p1, p2) -> p2.getEin().compareTo(p1.getEin()));
-                if (sortDesc.getField().getName().equals("website"))
-                    result.sort((p1, p2) -> p2.getWebsite().compareTo(p1.getWebsite()));
-            }
-        }
 
         if (offset > 0 && offset >= result.size())
             result = new ArrayList<Charity>();

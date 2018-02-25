@@ -3,15 +3,10 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="Jersey03" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Jersey03" target="1.8" />
+      <module name="Jersey03_main" target="1.8" />
+      <module name="Jersey03_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

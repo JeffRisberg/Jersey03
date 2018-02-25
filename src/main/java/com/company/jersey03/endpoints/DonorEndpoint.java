@@ -1,7 +1,7 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.model.jooq.query.FilterDesc;
-import com.company.jersey03.common.model.jooq.query.SortDesc;
+import com.company.jersey03.common.FilterDesc;
+import com.company.jersey03.common.SortDesc;
 import com.company.jersey03.models.Donor;
 import com.company.jersey03.services.DonorService;
 import io.swagger.annotations.Api;
@@ -30,7 +30,7 @@ public class DonorEndpoint extends AbstractEndpoint {
             notes = "Finds a donor by id",
             response = Donor.class,
             responseContainer = "Map")
-    public Response fetch(@PathParam("id") Integer id) {
+    public Response fetch(@PathParam("id") int id) {
 
         Donor data = donorService.getDonor(id);
 
@@ -53,7 +53,7 @@ public class DonorEndpoint extends AbstractEndpoint {
         List<FilterDesc> filterDescs = this.parseFiltering(queryParams);
         List<SortDesc> sortDescs = this.parseSortStr(sortStr);
 
-        List<Donor> data = donorService.getDonors(limit, offset, sortDescs, filterDescs);
+        List<Donor> data = donorService.getDonors(limit, offset, filterDescs);
         long totalCount = donorService.getDonorsCount(filterDescs);
 
         return createEntityListResponse(data, totalCount, limit, offset, null);

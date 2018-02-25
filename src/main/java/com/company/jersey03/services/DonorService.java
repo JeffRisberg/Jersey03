@@ -1,10 +1,8 @@
 package com.company.jersey03.services;
 
-import com.company.jersey03.common.model.jooq.query.FilterDesc;
-import com.company.jersey03.common.model.jooq.query.SortDesc;
-import com.company.jersey03.common.model.jooq.query.SortDirection;
-import com.google.inject.Singleton;
+import com.company.jersey03.common.FilterDesc;
 import com.company.jersey03.models.Donor;
+import com.google.inject.Singleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +17,14 @@ public class DonorService {
     protected List<Donor> donors = new ArrayList<Donor>();
 
     public DonorService() {
-        donors.add(new Donor(1, "John", "Smith"));
-        donors.add(new Donor(2, "Bill", "Jones"));
-        donors.add(new Donor(3, "Tom", "Kennedy"));
-        donors.add(new Donor(4, "Jack", "Underhill"));
-        donors.add(new Donor(5, "Sally", "Starr"));
-        donors.add(new Donor(6, "Henry", "Adams"));
-        donors.add(new Donor(7, "Paul", "Jones"));
-        donors.add(new Donor(8, "Steven", "Hawking"));
+        donors.add(new Donor(1L, "John", "Smith"));
+        donors.add(new Donor(2L, "Bill", "Jones"));
+        donors.add(new Donor(3L, "Tom", "Kennedy"));
+        donors.add(new Donor(4L, "Jack", "Underhill"));
+        donors.add(new Donor(5L, "Sally", "Starr"));
+        donors.add(new Donor(6L, "Henry", "Adams"));
+        donors.add(new Donor(7L, "Paul", "Jones"));
+        donors.add(new Donor(8L, "Steven", "Hawking"));
     }
 
     public Donor getDonor(int id) {
@@ -37,24 +35,8 @@ public class DonorService {
         return null;
     }
 
-    public List<Donor> getDonors(int limit, int offset, List<SortDesc> sortDescs, List<FilterDesc> filterDescs) {
+    public List<Donor> getDonors(int limit, int offset, List<FilterDesc> filterDescs) {
         List<Donor> result = applyFilter(filterDescs);
-
-        if (sortDescs != null && sortDescs.size() > 0) {
-            SortDesc sortDesc = sortDescs.get(0);
-
-            if (sortDesc.getDirection() == SortDirection.Ascending) {
-                if (sortDesc.getField().getName().equals("firstName"))
-                    result.sort((p1, p2) -> p1.getFirstName().compareTo(p2.getFirstName()));
-                if (sortDesc.getField().getName().equals("lastName"))
-                    result.sort((p1, p2) -> p1.getLastName().compareTo(p2.getLastName()));
-            } else {
-                if (sortDesc.getField().getName().equals("firstName"))
-                    result.sort((p1, p2) -> p2.getFirstName().compareTo(p1.getFirstName()));
-                if (sortDesc.getField().getName().equals("lastName"))
-                    result.sort((p1, p2) -> p2.getLastName().compareTo(p1.getLastName()));
-            }
-        }
 
         if (offset > 0 && offset >= result.size())
             result = new ArrayList<Donor>();
