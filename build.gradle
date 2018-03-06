@@ -22,9 +22,11 @@ version = '0.1.0'
 ext {
     slf4jVersion = '1.7.24'
     projectLombokVersion = '1.16.20'
+    jodaTimeVersion = '2.9.9'
     guiceVersion = '4.1.0'
     jettyVersion = '9.4.6.v20170531'
     jerseyVersion = '2.26'
+    hk2Version = '2.5.0-b44'
     junitVersion = '4.12'
     hibernateVersion = '4.3.11.Final'
 }
@@ -33,27 +35,28 @@ dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     runtime "org.slf4j:slf4j-simple:$slf4jVersion"
     compile "org.projectlombok:lombok:$projectLombokVersion"
-    compile "joda-time:joda-time:2.9.3"
+    compile "joda-time:joda-time:$jodaTimeVersion"
 
-    compile "com.google.inject:guice:4.2.0"
+    compile "com.google.inject:guice:$guiceVersion"
     compile "com.google.inject.extensions:guice-servlet:$guiceVersion"
 
     compile "org.eclipse.jetty:jetty-server:$jettyVersion"
     compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-servlets:$jettyVersion"
 
+    compile "org.glassfish.jersey.core:jersey-common:$jerseyVersion"
     compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
-    compile "org.glassfish.jersey.containers:jersey-container-servlet-core:$jerseyVersion"
-    compile "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion"
-    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
-    compile "org.glassfish.jersey.media:jersey-media-moxy:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
     compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.3.2"
-    compile 'org.glassfish.hk2:guice-bridge:2.2.0'
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.2"
+
+    compile "org.glassfish.hk2:hk2:$hk2Version"
+    compile "org.glassfish.hk2:guice-bridge:$hk2Version"
 
     compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
-    compile "com.zaxxer:HikariCP:2.7.4"
+    compile "com.zaxxer:HikariCP:2.7.7"
     compile "mysql:mysql-connector-java:5.1.45"
 
     compile "io.swagger:swagger-annotations:1.5.17"

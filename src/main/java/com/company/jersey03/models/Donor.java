@@ -1,5 +1,7 @@
 package com.company.jersey03.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,6 +10,7 @@ import javax.persistence.Table;
  * @author Jeff Risberg
  * @since 10/26/17
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "Donors")
 public class Donor extends AbstractEntity {
@@ -21,7 +24,7 @@ public class Donor extends AbstractEntity {
     /**
      * Constructor
      */
-    public Donor(Long id, String firstName, String lastName) {
+    public Donor(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
