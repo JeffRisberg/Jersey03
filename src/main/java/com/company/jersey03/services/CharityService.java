@@ -23,6 +23,7 @@ public class CharityService {
         charities.add(new Charity(4, "American Heart Assoc", "55-555555", "www.aha.org"));
         charities.add(new Charity(5, "Polar Bear Assoc", "45-555555", "www.polarbears.org"));
         charities.add(new Charity(6, "Stanford University", "37-555555", "www.stanford.edu"));
+        charities.add(new Charity(7, "University of Southern California", "88-555555", "www.usc.edu"));
     }
 
     public Charity getCharity(int id) {
