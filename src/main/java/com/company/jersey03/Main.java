@@ -10,30 +10,26 @@ import org.glassfish.jersey.servlet.ServletProperties;
 public class Main {
     public static void main(String[] args) throws Exception {
 
+        ServletContextHandler sch = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+        sch.setContextPath("/");
         Server server = new Server(8080);
+        server.setHandler(sch);
 
-        ServletContextHandler sch = new ServletContextHandler(server, "/");
-
-        // this makes a servletholder and then adds it to the contexHaandler
+        // This makes a servletHolder, configures it, and then adds it to the contextHandler
         ServletHolder jerseyServletHolder = new ServletHolder(new ServletContainer());
         jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplication.class.getCanonicalName());
+        jerseyServletHolder.setInitOrder(1);
         sch.addServlet(jerseyServletHolder, "/*");
 
-        //ServletContextHandler context = new ServletContextHandler(server, "/j3-server", ServletContextHandler.SESSIONS);
+        // This makes a servletHolder, configures it, and then adds it to the contextHandler
+        ServletHolder swaggerServletHolder = new ServletHolder(new DefaultJaxrsConfig());
+        swaggerServletHolder.setName("Jersey2Config");
+        swaggerServletHolder.setInitParameter("api.version", "1.0.0");
+        swaggerServletHolder.setInitParameter("swagger.api.basepath", "http://localhost:8080");
+        swaggerServletHolder.setInitOrder(2);
 
-        // this makes a servlet within the contextHandler, then configures it.
-        //ServletHolder swaggerServlet = sch.addServlet(/*Swagger*/DefaultJaxrsConfig.class, "/swagger-core");
-        //swaggerServlet.setInitParameter("api.version", "1.0.0");
-        //swaggerServlet.setInitParameter("swagger.api.basepath", "/j3-server");
-        //swaggerServlet.setInitOrder(2);
-
-        ServletHolder swaggerServlet = sch.addServlet(DefaultJaxrsConfig.class, "/swagger-core");
-        swaggerServlet.setInitParameter("api.version", "1.0.0");
-        swaggerServlet.setInitParameter("swagger.api.basepath", "/model-server");
-        swaggerServlet.setInitOrder(2);
-
-        //context.addServlet(holder, "/*");
-        sch.addServlet(swaggerServlet, "/swagger");
+        sch.addServlet(swaggerServletHolder, "/api-docs");
 
         server.start();
         server.join();

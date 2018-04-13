@@ -1,7 +1,10 @@
 package com.company.jersey03;
 
 import com.google.inject.Guice;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.EncodingFilter;
@@ -14,7 +17,10 @@ public class MainApplication extends ResourceConfig {
     @Inject
     public MainApplication(ServiceLocator serviceLocator) {
 
-        packages(MainApplication.class.getPackage().getName());
+        packages(MainApplication.class.getPackage().getName())
+                .register(JacksonFeature.class) // enable Jackson
+                .register(ApiListingResource.class)
+                .register(SwaggerSerializers.class);
 
         GuiceBridge.getGuiceBridge().initializeGuiceBridge(serviceLocator);
         GuiceIntoHK2Bridge guiceBridge = serviceLocator.getService(GuiceIntoHK2Bridge.class);
