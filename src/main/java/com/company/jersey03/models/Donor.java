@@ -22,6 +22,12 @@ public class Donor extends AbstractEntity {
     protected String lastName;
 
     /**
+     * Default constructor
+     */
+    public Donor() {
+    }
+
+    /**
      * Constructor
      */
     public Donor(Integer id, String firstName, String lastName) {

@@ -5,6 +5,7 @@ import com.company.jersey03.common.FilterDesc;
 import com.company.jersey03.common.FilterOperator;
 import com.company.jersey03.common.SortDesc;
 import com.company.jersey03.common.SortDirection;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -18,6 +19,8 @@ import java.util.Map;
  * @since 11/02/17
  */
 public class AbstractEndpoint {
+
+    protected static ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Generate a sorting specification from the given sort string, such as "-field1,field2".

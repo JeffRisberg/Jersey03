@@ -24,6 +24,12 @@ public class Charity extends AbstractDatedEntity {
     protected String website;
 
     /**
+     * Default constructor
+     */
+    public Charity() {
+    }
+
+    /**
      * Constructor
      */
     public Charity(Integer id, String name, String ein, String website) {
@@ -55,5 +61,9 @@ public class Charity extends AbstractDatedEntity {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String toString() {
+        return "Charity[" + name + "/" + ein + "/" + website + "]";
     }
 }
