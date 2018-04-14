@@ -51,4 +51,8 @@ public class Donor extends AbstractEntity {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String toString() {
+        return "Donor[" + firstName + "/" + lastName + "]";
+    }
 }
