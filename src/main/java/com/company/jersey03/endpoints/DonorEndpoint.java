@@ -2,17 +2,20 @@ package com.company.jersey03.endpoints;
 
 import com.company.jersey03.common.FilterDesc;
 import com.company.jersey03.common.SortDesc;
+import com.company.jersey03.models.Charity;
 import com.company.jersey03.models.Donor;
 import com.company.jersey03.services.DonorService;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.io.IOException;
 import java.util.List;
 
-@Api
+@Api(value = "Donors", description = "Simple example endpoint")
 @Path("donors")
 public class DonorEndpoint extends AbstractEndpoint {
 
@@ -57,6 +60,15 @@ public class DonorEndpoint extends AbstractEndpoint {
         long totalCount = donorService.getDonorsCount(filterDescs);
 
         return createEntityListResponse(data, totalCount, limit, offset, null);
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(String requestBody) {
+        String results = "Hello There";
+        return Response.status(Response.Status.OK).entity(results).build();
     }
 
     @DELETE

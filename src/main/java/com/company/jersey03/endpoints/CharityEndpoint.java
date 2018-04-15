@@ -15,7 +15,7 @@ import javax.ws.rs.core.*;
 import java.io.IOException;
 import java.util.List;
 
-@Api
+@Api(value = "Charities", description = "charity management")
 @Path("charities")
 public class CharityEndpoint extends AbstractEndpoint {
 
