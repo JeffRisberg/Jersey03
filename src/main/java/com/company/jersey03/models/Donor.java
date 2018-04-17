@@ -1,6 +1,7 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "Donors")
+@Data
 public class Donor extends AbstractEntity {
 
     @Column(name = "first_name")
@@ -33,22 +35,6 @@ public class Donor extends AbstractEntity {
     public Donor(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
