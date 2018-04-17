@@ -1,7 +1,9 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +13,12 @@ import javax.persistence.Table;
  * @author Jeff Risberg
  * @since 10/26/17
  */
+@Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "charities")
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Charity extends AbstractDatedEntity {
     @Column(name = "name")
     protected String name;
@@ -24,12 +28,6 @@ public class Charity extends AbstractDatedEntity {
 
     @Column(name = "website")
     protected String website;
-
-    /**
-     * Default constructor
-     */
-    public Charity() {
-    }
 
     /**
      * Constructor
