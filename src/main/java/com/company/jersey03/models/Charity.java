@@ -1,6 +1,7 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @Table(name = "charities")
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "Charity", description = "Charities have name, ein, and website")
 public class Charity extends AbstractDatedEntity {
     @Column(name = "name")
     protected String name;

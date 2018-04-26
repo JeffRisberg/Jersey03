@@ -5,9 +5,7 @@ import com.company.jersey03.common.SortDesc;
 import com.company.jersey03.models.Charity;
 import com.company.jersey03.services.CharityService;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -27,23 +25,9 @@ public class CharityEndpoint extends AbstractEndpoint {
     }
 
     @GET
-    @Path("{id}")
-    @ApiOperation(value = "Finds a charity",
-            notes = "Finds a charity by id",
-            response = Charity.class,
-            responseContainer = "Map")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response fetch(@PathParam("id") Integer id) {
-
-        Charity data = charityService.getCharity(id);
-
-        return createEntityResponse(data, null);
-    }
-
-    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Finds a list of charities",
-            notes = "Finds a list of charities",
+            notes = "Returns all known charities",
             response = Charity.class,
             responseContainer = "List")
     public Response fetchList(
@@ -62,11 +46,29 @@ public class CharityEndpoint extends AbstractEndpoint {
         return createEntityListResponse(data, totalCount, limit, offset, null);
     }
 
-    @PUT
+    @GET
+    @Path("{id}")
+    @ApiOperation(value = "Finds a charity",
+            notes = "Finds a charity by id",
+            response = Charity.class,
+            responseContainer = "Map")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response fetch(@PathParam("id") Integer id) {
+
+        Charity data = charityService.getCharity(id);
+
+        return createEntityResponse(data, null);
+    }
+
     @Path("/{id}")
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(String requestBody) {
+    @ApiOperation(value = "Updates a Charity identified by id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "charity", value = "Charity to update", required = true, dataType = "com.company.jersey03.models.Charity", paramType = "body"),
+    })
+    public Response update(@PathParam("id") long charityId, @ApiParam(hidden = true) String requestBody) {
         try {
             Charity charity = objectMapper.readValue(requestBody, Charity.class);
             JsonNode jsonNode = objectMapper.readValue(requestBody, JsonNode.class);
@@ -93,11 +95,11 @@ public class CharityEndpoint extends AbstractEndpoint {
         }
     }
 
-    @DELETE
     @Path("/{id}")
+    @DELETE
     @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value = "Updates a Charity identified by id")
     public Response delete(@PathParam("id") Integer id) {
-
         Charity data = charityService.getCharity(id);
 
         return createDeleteResponse(data, null);
