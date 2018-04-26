@@ -20,10 +20,10 @@ apply plugin: 'com.github.johnrengelman.shadow'
 version = '0.1.0'
 
 ext {
-    slf4jVersion = '1.7.24'
+    slf4jVersion = '1.7.25'
     projectLombokVersion = '1.16.20'
     jodaTimeVersion = '2.9.9'
-    guiceVersion = '4.1.0'
+    guiceVersion = '4.2.0'
     jettyVersion = '9.4.6.v20170531'
     jerseyVersion = '2.26'
     hk2Version = '2.5.0-b44'
