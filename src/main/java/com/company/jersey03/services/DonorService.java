@@ -17,14 +17,14 @@ public class DonorService {
     protected List<Donor> donors = new ArrayList<Donor>();
 
     public DonorService() {
-        donors.add(new Donor(1, "John", "Smith"));
-        donors.add(new Donor(2, "Bill", "Jones"));
-        donors.add(new Donor(3, "Tom", "Kennedy"));
-        donors.add(new Donor(4, "Jack", "Underhill"));
-        donors.add(new Donor(5, "Sally", "Starr"));
-        donors.add(new Donor(6, "Henry", "Adams"));
-        donors.add(new Donor(7, "Paul", "Jones"));
-        donors.add(new Donor(8, "Steven", "Hawking"));
+        donors.add(new Donor(1L, "John", "Smith"));
+        donors.add(new Donor(2L, "Bill", "Jones"));
+        donors.add(new Donor(3L, "Tom", "Kennedy"));
+        donors.add(new Donor(4L, "Jack", "Underhill"));
+        donors.add(new Donor(5L, "Sally", "Starr"));
+        donors.add(new Donor(6L, "Henry", "Adams"));
+        donors.add(new Donor(7L, "Paul", "Jones"));
+        donors.add(new Donor(8L, "Steven", "Hawking"));
     }
 
     public Donor getDonor(int id) {

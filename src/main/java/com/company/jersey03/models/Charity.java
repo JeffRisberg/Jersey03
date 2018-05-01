@@ -1,9 +1,10 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -19,9 +20,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "charities")
 @NoArgsConstructor
-@AllArgsConstructor
-@ApiModel(value = "Charity", description = "Charities have name, ein, and website")
+@EqualsAndHashCode(callSuper = true)
 public class Charity extends AbstractDatedEntity {
+
     @Column(name = "name")
     protected String name;
 
@@ -31,17 +32,11 @@ public class Charity extends AbstractDatedEntity {
     @Column(name = "website")
     protected String website;
 
-    /**
-     * Constructor
-     */
-    public Charity(Integer id, String name, String ein, String website) {
+    // The Lombok @AllArgsConstructor doesn't include superclass fields, so we need this
+    public Charity(Long id, String name, String ein, String website) {
         this.id = id;
         this.name = name;
         this.ein = ein;
         this.website = website;
-    }
-
-    public String toString() {
-        return "Charity[" + name + "/" + ein + "/" + website + "]";
     }
 }
