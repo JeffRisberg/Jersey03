@@ -13,11 +13,11 @@ import org.jvnet.hk2.guice.bridge.api.GuiceIntoHK2Bridge;
 
 import javax.inject.Inject;
 
-public class MainApplication extends ResourceConfig {
+public class MainApplicationConfig extends ResourceConfig {
     @Inject
-    public MainApplication(ServiceLocator serviceLocator) {
+    public MainApplicationConfig(ServiceLocator serviceLocator) {
 
-        packages(MainApplication.class.getPackage().getName())
+        packages(MainApplicationConfig.class.getPackage().getName())
                 .register(JacksonFeature.class) // enable Jackson
                 .register(ApiListingResource.class)
                 .register(SwaggerSerializers.class);

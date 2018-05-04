@@ -21,7 +21,7 @@ public class Main {
 
         // This makes a servletHolder, configures it, and then adds it to the contextHandler
         ServletHolder jerseyServletHolder = new ServletHolder(new ServletContainer());
-        jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplication.class.getCanonicalName());
+        jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplicationConfig.class.getCanonicalName());
         jerseyServletHolder.setInitOrder(1);
         sch.addServlet(jerseyServletHolder, "/*");
 
@@ -29,7 +29,7 @@ public class Main {
         ServletHolder swaggerServletHolder = new ServletHolder(new DefaultJaxrsConfig());
         swaggerServletHolder.setName("Jersey2Config");
         swaggerServletHolder.setInitParameter("api.version", "1.0.0");
-        swaggerServletHolder.setInitParameter("swagger.api.basepath", "http://localhost:8080");
+        swaggerServletHolder.setInitParameter("swagger.api.basepath", "/");
         swaggerServletHolder.setInitOrder(2);
 
         sch.addServlet(swaggerServletHolder, "/api-docs");

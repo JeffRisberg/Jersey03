@@ -1,6 +1,6 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.MainApplication;
+import com.company.jersey03.MainApplicationConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -39,7 +39,7 @@ public class CharityEndpointTest {
 
         ServletContextHandler sch = new ServletContextHandler(server, "/");
         ServletHolder jerseyServletHolder = new ServletHolder(new ServletContainer());
-        jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplication.class.getCanonicalName());
+        jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplicationConfig.class.getCanonicalName());
         sch.addServlet(jerseyServletHolder, "/*");
 
         server.start();
