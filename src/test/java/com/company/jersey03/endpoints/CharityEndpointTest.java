@@ -104,7 +104,7 @@ public class CharityEndpointTest {
             assertEquals("ASPCA", name1);
 
             int totalCount = root.at("/totalCount").asInt();
-            assertEquals(6, totalCount);
+            assertEquals(8, totalCount);
         } catch (Exception e) {
             fail();
         }

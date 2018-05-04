@@ -34,6 +34,6 @@ public class CharityServiceTest {
         List<Charity> charityList = charityService.getCharities(50, 0, null);
 
         assertNotNull(charityList);
-        assertEquals(6, charityList.size());
+        assertEquals(8, charityList.size());
     }
 }
