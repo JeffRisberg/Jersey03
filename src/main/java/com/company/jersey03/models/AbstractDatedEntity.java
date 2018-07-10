@@ -18,19 +18,19 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public abstract class AbstractDatedEntity extends AbstractEntity {
 
-    @Column(name = "date_created")
-    protected Date dateCreated;
+  @Column(name = "date_created")
+  protected Date dateCreated;
 
-    @Column(name = "last_updated")
-    protected Date lastUpdated;
+  @Column(name = "last_updated")
+  protected Date lastUpdated;
 
-    @PrePersist
-    protected void onCreate() {
-        dateCreated = new Date();
-    }
+  @PrePersist
+  protected void onCreate() {
+    dateCreated = new Date();
+  }
 
-    @PreUpdate
-    protected void onUpdate() {
-        lastUpdated = new Date();
-    }
+  @PreUpdate
+  protected void onUpdate() {
+    lastUpdated = new Date();
+  }
 }
