@@ -32,6 +32,12 @@ ext {
     jacksonVersion = '2.9.5'
 }
 
+test {
+  testLogging {
+    showStandardStreams = true
+  }
+}
+
 dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     runtime "org.slf4j:slf4j-simple:$slf4jVersion"
