@@ -60,7 +60,7 @@ public class CharityService {
 
             if (filterDescs != null) {
                 for (FilterDesc filterDesc : filterDescs) {
-                    switch (filterDesc.getField().getName()) {
+                    switch (filterDesc.getField()) {
                         case "name":
                             if (!charity.getName().equalsIgnoreCase((String) filterDesc.getValue()))
                                 accepted = false;

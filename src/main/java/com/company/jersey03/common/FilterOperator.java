@@ -4,13 +4,14 @@ package com.company.jersey03.common;
  * @author Jeff Risberg
  * @since 12/11/15
  */
+
 public enum FilterOperator {
-    Equal,
-    NotEqual,
-    Like,
-    LikeIgnoreCase,
-    GreaterThan,
-    GreaterThanOrEqualTo,
-    LessThan,
-    LessThanOrEqualTo
+  eq,
+  like,
+  gt,
+  lt,
+  gte,
+  lte,
+  timestamp_gte,
+  timestamp_lte
 }

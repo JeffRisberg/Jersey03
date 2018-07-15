@@ -60,7 +60,7 @@ public class DonorService {
 
             if (filterDescs != null) {
                 for (FilterDesc filterDesc : filterDescs) {
-                    switch (filterDesc.getField().getName()) {
+                    switch (filterDesc.getField()) {
                         case "firstName":
                             if (!donor.getFirstName().equalsIgnoreCase((String) filterDesc.getValue()))
                                 accepted = false;
