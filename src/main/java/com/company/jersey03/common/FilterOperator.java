@@ -6,6 +6,7 @@ package com.company.jersey03.common;
  */
 
 public enum FilterOperator {
+  none,
   eq,
   like,
   gt,
