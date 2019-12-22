@@ -62,7 +62,7 @@ public class AbstractEndpoint {
             List<String> fieldValues = entrySet.getValue();
 
             if (fieldValues.size() > 0) {
-                filterDescs.add(new FilterDesc(new FieldDesc(fieldName), FilterOperator.Equal, fieldValues.get(0)));
+                filterDescs.add(new FilterDesc(fieldName, FilterOperator.eq, fieldValues.get(0)));
             }
         }
 
