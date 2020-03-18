@@ -1,7 +1,12 @@
 package com.company.jersey03.endpoints;
 
+import com.company.jersey03.models.Charity;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.Data;
+import lombok.extern.java.Log;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -13,10 +18,13 @@ import javax.ws.rs.core.Response;
  * @author Jeff Risberg
  * @since 11/30/17
  */
+@Log
 @Api(value = "OAuth2", description = "Form-based endpoint")
 @Singleton
 @Path("/tenants/{tenantId}")
 public class OAuth2Endpoint {
+
+  protected static ObjectMapper objectMapper = new ObjectMapper();
 
   @Inject
   public OAuth2Endpoint() {
@@ -44,16 +52,18 @@ public class OAuth2Endpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Test2", response = OAuth2Request.class)
   public Response test2(@PathParam("tenantId") String tenantId,
-                        @FormParam("alpha") String alpha,
-                        @FormParam("beta") String beta) {
-    OAuth2Request result = new OAuth2Request();
-    result.tenantId = tenantId;
-    result.alpha = alpha;
-    result.beta = beta;
+                        @ApiParam(hidden = true) String requestBody) {
+    try {
+      OAuth2Request result = objectMapper.readValue(requestBody, OAuth2Request.class);
 
-    return Response.status(Response.Status.OK).entity(result).build();
+      return Response.status(Response.Status.OK).entity(result).build();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
   }
 
+  @Data
   public class OAuth2Request {
     protected String tenantId;
     protected String alpha;
