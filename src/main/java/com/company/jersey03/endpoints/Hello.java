@@ -15,13 +15,13 @@ import javax.ws.rs.core.Response;
 @Singleton
 @Path("hello")
 @Log
-public class HelloEndpoint {
+public class Hello {
 
   private static final String AUTHZ_HEADER = "Authorization";
   private static final String APP_TOKEN_HEADER = "x-app-token";
 
   @Inject
-  public HelloEndpoint() {
+  public Hello() {
   }
 
   @GET

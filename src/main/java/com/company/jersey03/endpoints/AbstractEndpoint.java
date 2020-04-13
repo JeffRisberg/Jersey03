@@ -1,7 +1,9 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.company.jersey03.common.FilterDescription;
+import com.company.jersey03.common.FilterOperator;
+import com.company.jersey03.common.SortDescription;
+import com.company.jersey03.common.SortDirection;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -16,29 +18,27 @@ import java.util.Map;
  */
 public class AbstractEndpoint {
 
-  protected static ObjectMapper objectMapper = new ObjectMapper();
-
   /**
    * Generate a sorting specification from the given sort string, such as "-field1,field2".
    *
    * @param sortStr
    * @return list of Sort Descriptors
    */
-  protected List<SortDesc> parseSortStr(String sortStr) {
-    List<SortDesc> sortDescs = new ArrayList<SortDesc>();
+  protected List<SortDescription> parseSortStr(String sortStr) {
+    List<SortDescription> sortDescs = new ArrayList<SortDescription>();
 
     String[] fragments = sortStr.split(",");
 
     for (int i = 0; i < fragments.length; i++) {
       String fieldName = fragments[i];
-      SortDirection sortDir = SortDirection.Ascending;
+      SortDirection sortDir = SortDirection.asc;
 
       if (fieldName.startsWith("-")) {
         fieldName = fieldName.substring(1);
-        sortDir = SortDirection.Descending;
+        sortDir = SortDirection.desc;
       }
 
-      sortDescs.add(new SortDesc(new FieldDesc(fieldName), sortDir));
+      //sortDescs.add(new SortDescription(new FieldDesc(fieldName), sortDir));
     }
     return sortDescs;
   }
@@ -50,15 +50,15 @@ public class AbstractEndpoint {
    * @param queryParams
    * @return list of Filter Descriptors
    */
-  protected List<FilterDesc> parseFiltering(MultivaluedMap<String, String> queryParams) {
-    List<FilterDesc> filterDescs = new ArrayList<FilterDesc>();
+  protected List<FilterDescription> parseFiltering(MultivaluedMap<String, String> queryParams) {
+    List<FilterDescription> filterDescs = new ArrayList<FilterDescription>();
 
     for (Map.Entry<String, List<String>> entrySet : queryParams.entrySet()) {
       String fieldName = entrySet.getKey();
       List<String> fieldValues = entrySet.getValue();
 
       if (fieldValues.size() > 0) {
-        filterDescs.add(new FilterDesc(fieldName, FilterOperator.eq, fieldValues.get(0)));
+        filterDescs.add(new FilterDescription(fieldName, FilterOperator.eq, fieldValues.get(0)));
       }
     }
 
@@ -131,7 +131,7 @@ public class AbstractEndpoint {
   protected Response createDeleteResponse(Object data, List<com.company.jersey03.endpoints.Error> errors)
     throws WebApplicationException {
     List<com.company.jersey03.endpoints.Error> resultErrors = new ArrayList<com.company.jersey03.endpoints.Error>();
-    Envelope envelope = new Envelope(data, errors);
+    Envelope envelope = new Envelope(null, errors);
 
     if (errors != null) {
       for (com.company.jersey03.endpoints.Error error : errors) {

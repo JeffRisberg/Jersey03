@@ -2,9 +2,7 @@ package com.company.jersey03.endpoints;
 
 import com.company.jersey03.models.Charity;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.Data;
 import lombok.extern.java.Log;
 
@@ -51,6 +49,9 @@ public class OAuth2Endpoint {
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Test2", response = OAuth2Request.class)
+  @ApiImplicitParams({
+    @ApiImplicitParam(name = "request", value = "", required = true, dataType = "com.company.jersey03.endpoints.OAuth2Endpoint.OAuth2Request", paramType = "body"),
+  })
   public Response test2(@PathParam("tenantId") String tenantId,
                         @ApiParam(hidden = true) String requestBody) {
     try {

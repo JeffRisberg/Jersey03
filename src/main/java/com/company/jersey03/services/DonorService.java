@@ -1,6 +1,5 @@
 package com.company.jersey03.services;
 
-import com.company.jersey03.common.FilterDesc;
 import com.company.jersey03.models.Donor;
 import com.google.inject.Singleton;
 

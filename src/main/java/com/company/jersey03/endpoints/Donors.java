@@ -1,7 +1,5 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.FilterDesc;
-import com.company.jersey03.common.SortDesc;
 import com.company.jersey03.models.Donor;
 import com.company.jersey03.services.DonorService;
 import io.swagger.annotations.*;
@@ -13,12 +11,12 @@ import java.util.List;
 
 @Api(value = "Donors", description = "Simple example endpoint")
 @Path("donors")
-public class DonorEndpoint extends AbstractEndpoint {
+public class Donors extends AbstractEndpoint {
 
     protected DonorService donorService;
 
     @Inject
-    public DonorEndpoint(DonorService donorService) {
+    public Donors(DonorService donorService) {
         this.donorService = donorService;
     }
 

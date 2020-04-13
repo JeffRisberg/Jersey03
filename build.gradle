@@ -23,13 +23,13 @@ ext {
   slf4jVersion = '1.7.26'
   projectLombokVersion = '1.16.20'
   jodaTimeVersion = '2.10'
-  guiceVersion = '4.2.2'
+  guiceVersion = '4.2.3'
   jettyVersion = '9.4.8.v20171121'
   jerseyVersion = '2.27'
   hk2Version = '2.5.0-b44'
-  jacksonVersion = '2.9.10'
-  hibernateVersion = '5.3.11.Final'
-  junitVersion = '4.12'
+  jacksonVersion = '2.10.2'
+  hibernateVersion = '5.4.20.Final'
+  junitVersion = '4.13'
 }
 
 test {
@@ -41,6 +41,10 @@ test {
 dependencies {
   compile "org.slf4j:slf4j-api:$slf4jVersion"
   runtime "org.slf4j:slf4j-simple:$slf4jVersion"
+
+  compile 'org.apache.commons:commons-lang3:3.10'
+  compile 'org.apache.commons:commons-collections4:4.4'
+
   compile "org.projectlombok:lombok:$projectLombokVersion"
   compile "joda-time:joda-time:$jodaTimeVersion"
 
@@ -63,8 +67,9 @@ dependencies {
 
   compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
   compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
+
   compile "com.zaxxer:HikariCP:2.7.9"
-  compile "mysql:mysql-connector-java:5.1.47"
+  compile "mysql:mysql-connector-java:8.0.19"
 
   compile "io.swagger:swagger-annotations:1.5.21"
   compile "io.swagger:swagger-jersey2-jaxrs:1.5.21"
