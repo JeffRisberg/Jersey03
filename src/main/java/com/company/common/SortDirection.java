@@ -1,4 +1,4 @@
-package com.company.jersey03.common;
+package com.company.common;
 
 public enum SortDirection {
   asc,

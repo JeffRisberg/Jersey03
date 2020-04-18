@@ -1,6 +1,5 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.models.Charity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import lombok.Data;

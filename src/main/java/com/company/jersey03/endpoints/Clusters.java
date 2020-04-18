@@ -1,7 +1,8 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.FilterDescription;
-import com.company.jersey03.common.SortDescription;
+import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
+import com.company.jersey03.models.ClusterDTO;
 import com.company.jersey03.models.ClusterEntity;
 import com.company.jersey03.services.ClusterService;
 import lombok.extern.slf4j.Slf4j;

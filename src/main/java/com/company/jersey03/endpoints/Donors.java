@@ -1,82 +1,93 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.models.Donor;
+import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
+import com.company.jersey03.models.DonorDTO;
+import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DonorService;
-import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@Api(value = "Donors", description = "Simple example endpoint")
 @Path("donors")
+@Slf4j
 public class Donors extends AbstractEndpoint {
 
-    protected DonorService donorService;
+  protected DonorService donorService;
 
-    @Inject
-    public Donors(DonorService donorService) {
-        this.donorService = donorService;
+  @Inject
+  public Donors(DonorService donorService) {
+    this.donorService = donorService;
+  }
+
+  @GET
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response fetch(@PathParam("id") Long id) {
+    try {
+      List<DonorDTO> donors = new ArrayList<>();
+      DonorEntity data = donorService.getById(id);
+      if (data != null) {
+        donors.add(data.toDTO());
+      }
+      return Response.ok(donors).build();
+    } catch (Throwable e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
     }
+  }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Finds a list of donors",
-            notes = "Returns all known donors",
-            response = Donor.class,
-            responseContainer = "List")
-    public Response fetchList(
-            @DefaultValue("50") @QueryParam("limit") int limit,
-            @DefaultValue("0") @QueryParam("offset") int offset,
-            @DefaultValue("") @QueryParam("sort") String sortStr,
-            @Context UriInfo uriInfo) {
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response fetchList(
+    @DefaultValue("50") @QueryParam("limit") int limit,
+    @DefaultValue("0") @QueryParam("offset") int offset,
+    @DefaultValue("") @QueryParam("sort") String sortStr,
+    @Context UriInfo uriInfo) {
 
-        MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-        List<FilterDesc> filterDescs = this.parseFiltering(queryParams);
-        List<SortDesc> sortDescs = this.parseSortStr(sortStr);
+    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
 
-        List<Donor> data = donorService.getDonors(limit, offset, filterDescs);
-        long totalCount = donorService.getDonorsCount(filterDescs);
+    try {
+      JSONArray result = new JSONArray();
+      List<DonorEntity> donors = donorService.getAll(limit, offset);
 
-        return createEntityListResponse(data, totalCount, limit, offset, null);
+      for (DonorEntity donor : donors) {
+        result.add(donor.toJSON());
+      }
+
+      return Response.ok(result).build();
+    } catch (Exception e) {
+      return null;
     }
+  }
 
-    @GET
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Finds a donor",
-            notes = "Finds a donor by id",
-            response = Donor.class,
-            responseContainer = "Map")
-    public Response fetch(@PathParam("id") int id) {
+  @PUT
+  @Path("/{id}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response update(@PathParam("id") Long id) {
+    return Response.ok(null).build();
+  }
 
-        Donor data = donorService.getDonor(id);
+  @DELETE
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response delete(@PathParam("id") Long id) {
 
-        return createEntityResponse(data, null);
+    try {
+      DonorEntity data = donorService.getById(id);
+
+      return createDeleteResponse(data, null);
+    } catch (Exception e) {
+      return null;
     }
-
-    @Path("/{id}")
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Updates a Donor identified by id")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "donor", value = "Donor to update", required = true, dataType = "com.company.jersey03.models.Donor", paramType = "body"),
-    })
-    public Response update(@PathParam("id") long donorId, @ApiParam(hidden = true) String requestBody) {
-        String results = "Hello There - PUT on Donor " + donorId;
-        return Response.status(Response.Status.OK).entity(results).build();
-    }
-
-    @Path("/{id}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Deletes a Donor identified by id")
-    public Response delete(@PathParam("id") Integer id) {
-
-        Donor data = donorService.getDonor(id);
-
-        return createDeleteResponse(data, null);
-    }
+  }
 }

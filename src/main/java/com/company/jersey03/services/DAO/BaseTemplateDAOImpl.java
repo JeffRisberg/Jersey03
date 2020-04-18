@@ -1,7 +1,7 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.jersey03.common.FilterDescription;
-import com.company.jersey03.common.FilterOperator;
+import com.company.common.FilterDescription;
+import com.company.common.FilterOperator;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;

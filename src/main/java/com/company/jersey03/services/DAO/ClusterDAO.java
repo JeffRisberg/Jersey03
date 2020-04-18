@@ -1,6 +1,6 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.jersey02.models.ClusterEntity;
+import com.company.jersey03.models.ClusterEntity;
 import lombok.NonNull;
 
 import javax.persistence.EntityManager;

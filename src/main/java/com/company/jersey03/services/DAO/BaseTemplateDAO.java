@@ -1,6 +1,6 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.jersey03.common.FilterDescription;
+import com.company.common.FilterDescription;
 import lombok.NonNull;
 
 import javax.persistence.EntityManager;

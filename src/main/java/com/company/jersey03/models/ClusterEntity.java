@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -81,5 +81,22 @@ public class ClusterEntity extends AbstractEntity {
       this.getClusterEntityMappings().addAll(entity.getClusterEntityMappings());
     }
     return this;
+  }
+
+  public ClusterDTO toDTO() {
+    ClusterDTO result = new ClusterDTO();
+
+    result.setId(getId());
+    result.setClusterName(getClusterName());
+    result.setClusterDescription(getClusterDescription());
+    result.setAttributes(getAttributes());
+    result.setCreatedDate(getCreatedDate());
+    result.setType(getType());
+    result.setUsageType(getUsageType());
+    result.setVersion(getVersion());
+    result.setCriteria(getCriteria());
+    result.setParentClusterId(getParentClusterId());
+
+    return result;
   }
 }

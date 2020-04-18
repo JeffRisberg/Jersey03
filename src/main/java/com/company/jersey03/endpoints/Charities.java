@@ -1,18 +1,20 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.models.Charity;
+import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
+import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.CharityService;
-import com.fasterxml.jackson.databind.JsonNode;
-import io.swagger.annotations.*;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-@Api(value = "Charities", description = "charity management")
 @Path("charities")
+@Slf4j
 public class Charities extends AbstractEndpoint {
 
   protected CharityService charityService;
@@ -23,11 +25,24 @@ public class Charities extends AbstractEndpoint {
   }
 
   @GET
+  @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Finds a list of charities",
-    notes = "Returns all known charities",
-    response = Charity.class,
-    responseContainer = "List")
+  public Response fetch(@PathParam("id") Long id) {
+    try {
+      JSONArray result = new JSONArray();
+      CharityEntity data = charityService.getById(id);
+      if (data != null) {
+        result.add(data.toJSON());
+      }
+      return Response.ok(result).build();
+    } catch (Throwable e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+    }
+  }
+
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
@@ -35,71 +50,41 @@ public class Charities extends AbstractEndpoint {
     @Context UriInfo uriInfo) {
 
     MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    List<FilterDesc> filterDescs = this.parseFiltering(queryParams);
-    List<SortDesc> sortDescs = this.parseSortStr(sortStr);
+    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
 
-    List<Charity> data = charityService.getCharities(limit, offset, filterDescs);
-    long totalCount = charityService.getCharitiesCount(filterDescs);
-
-    return createEntityListResponse(data, totalCount, limit, offset, null);
-  }
-
-  @GET
-  @Path("{id}")
-  @ApiOperation(value = "Finds a charity",
-    notes = "Finds a charity by id",
-    response = Charity.class,
-    responseContainer = "Map")
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response fetch(@PathParam("id") Integer id) {
-
-    Charity data = charityService.getCharity(id);
-
-    return createEntityResponse(data, null);
-  }
-
-  @Path("/{id}")
-  @PUT
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Updates a Charity identified by id")
-  @ApiImplicitParams({
-    @ApiImplicitParam(name = "charity", value = "Charity to update", required = true, dataType = "com.company.jersey03.models.Charity", paramType = "body"),
-  })
-  public Response update(@PathParam("id") long charityId, @ApiParam(hidden = true) String requestBody) {
     try {
-      Charity charity = objectMapper.readValue(requestBody, Charity.class);
-      JsonNode jsonNode = objectMapper.readValue(requestBody, JsonNode.class);
+      JSONArray result = new JSONArray();
+      List<CharityEntity> charities = charityService.getAll(limit, offset);
 
-      System.out.println(requestBody);
-      System.out.println(charity);
-      System.out.println(jsonNode);
+      for (CharityEntity charity : charities) {
+        result.add(charity.toJSON());
+      }
 
-      System.out.println(jsonNode.get("id") != null);
-      System.out.println(jsonNode.get("name") != null);
-      System.out.println(jsonNode.get("ein") != null);
-      System.out.println(jsonNode.get("website") != null);
-
-      Charity tempCharity = new Charity(123L, "Dog Foundation", "99-12345", "http://www.dogs.com");
-
-      Charity updatedCharity = objectMapper.readerForUpdating(tempCharity).readValue(requestBody);
-
-      System.out.println(updatedCharity);
-
-      return Response.status(Response.Status.OK).entity(tempCharity).build();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return Response.status(Response.Status.BAD_REQUEST).build();
+      return Response.ok(result).build();
+    } catch (Exception e) {
+      return null;
     }
   }
 
+  @PUT
   @Path("/{id}")
-  @DELETE
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  @ApiOperation(value = "Updates a Charity identified by id")
-  public Response delete(@PathParam("id") Integer id) {
-    Charity data = charityService.getCharity(id);
+  public Response update(@PathParam("id") Long id) {
+    return Response.ok(null).build();
+  }
 
-    return createDeleteResponse(data, null);
+  @DELETE
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response delete(@PathParam("id") Long id) {
+    try {
+      CharityEntity data = charityService.getById(id);
+
+      return createDeleteResponse(data, null);
+    } catch (Exception e) {
+      return null;
+    }
   }
 }

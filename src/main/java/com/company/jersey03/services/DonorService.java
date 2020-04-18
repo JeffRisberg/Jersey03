@@ -1,81 +1,63 @@
 package com.company.jersey03.services;
 
-import com.company.jersey03.models.Donor;
-import com.google.inject.Singleton;
+import com.company.common.FilterDescription;
+import com.company.jersey03.models.DonorEntity;
+import com.company.jersey03.services.DAO.DonorDAO;
+import com.google.inject.Inject;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * @author Jeff Risberg
- * @since 10/26/17
- */
-@Singleton
-public class DonorService {
+public class DonorService extends AbstractService<DonorEntity> {
+  private final DonorDAO dao;
 
-    protected List<Donor> donors = new ArrayList<Donor>();
+  @Inject
+  public DonorService(final MyEntityManagerFactory myEntityManagerFactory,
+                      final DonorDAO donorDAO) {
+    this.myEntityManagerFactory = myEntityManagerFactory;
+    this.dao = donorDAO;
+  }
 
-    public DonorService() {
-        donors.add(new Donor(1L, "John", "Smith"));
-        donors.add(new Donor(2L, "Bill", "Jones"));
-        donors.add(new Donor(3L, "Tom", "Kennedy"));
-        donors.add(new Donor(4L, "Jack", "Underhill"));
-        donors.add(new Donor(5L, "Sally", "Starr"));
-        donors.add(new Donor(6L, "Henry", "Adams"));
-        donors.add(new Donor(7L, "Paul", "Jones"));
-        donors.add(new Donor(8L, "Steven", "Hawking"));
-    }
+  public DonorEntity getById(Long id) {
+    final AtomicReference<DonorEntity> td = new AtomicReference<>();
+    doWork(em -> td.set(dao.getById(id, em)));
+    return td.get();
+  }
 
-    public Donor getDonor(int id) {
-        for (Donor donor : donors) {
-            if (donor.getId() == id)
-                return donor;
-        }
-        return null;
-    }
+  public List<DonorEntity> getAll(int limit, int offset) {
+    final AtomicReference<List<DonorEntity>> td = new AtomicReference<>();
+    doWork(em -> td.set(dao.listAll(DonorEntity.class, limit, offset, em)));
+    return td.get();
+  }
 
-    public List<Donor> getDonors(int limit, int offset, List<FilterDesc> filterDescs) {
-        List<Donor> result = applyFilter(filterDescs);
+  public List<DonorEntity> getByCriteria(List<FilterDescription> filterDescriptions, int limit, int offset) {
+    final AtomicReference<List<DonorEntity>> td = new AtomicReference<>();
+    doWork(em -> td.set(dao.getByCriteria(filterDescriptions, limit, offset, em)));
+    return td.get();
+  }
 
-        if (offset > 0 && offset >= result.size())
-            result = new ArrayList<Donor>();
-        else if (offset > 0)
-            result = result.subList(offset, result.size());
+  public DonorEntity create(DonorEntity donor) {
+    final AtomicReference<DonorEntity> created = new AtomicReference<>();
+    doWork(em -> created.set(dao.create(donor, em)));
+    return created.get();
+  }
 
-        return result;
-    }
+  public boolean update(DonorEntity updatedEntity) {
+    final AtomicReference<Boolean> updated = new AtomicReference<>();
+    boolean success = doWork(em -> updated.set(dao.update(updatedEntity, em)));
+    return success && updated.get();
+  }
 
-    public long getDonorsCount(List<FilterDesc> filterDescs) {
-        List<Donor> result = applyFilter(filterDescs);
+  public boolean delete(Long id) {
+    final AtomicReference<Boolean> deleted = new AtomicReference<>();
+    boolean success = doWork(em -> deleted.set(dao.delete(id, em)));
+    return success && deleted.get();
+  }
 
-        return (long) result.size();
-    }
-
-    private List<Donor> applyFilter(List<FilterDesc> filterDescs) {
-        List<Donor> result = new ArrayList<Donor>();
-
-        for (Donor donor : donors) {
-            boolean accepted = true;
-
-            if (filterDescs != null) {
-                for (FilterDesc filterDesc : filterDescs) {
-                    switch (filterDesc.getField()) {
-                        case "firstName":
-                            if (!donor.getFirstName().equalsIgnoreCase((String) filterDesc.getValue()))
-                                accepted = false;
-                            break;
-                        case "lastName":
-                            if (!donor.getLastName().equalsIgnoreCase((String) filterDesc.getValue()))
-                                accepted = false;
-                            break;
-                    }
-                }
-            }
-
-            if (accepted)
-                result.add(donor);
-        }
-
-        return result;
-    }
+  public DonorEntity getByName(String name) {
+    final AtomicReference<DonorEntity> td = new AtomicReference<>();
+    doWork(em -> td.set(dao.getByName(name, em)));
+    return td.get();
+  }
 }
+

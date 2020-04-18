@@ -1,9 +1,9 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.common.FilterDescription;
-import com.company.jersey03.common.FilterOperator;
-import com.company.jersey03.common.SortDescription;
-import com.company.jersey03.common.SortDirection;
+import com.company.common.FilterDescription;
+import com.company.common.FilterOperator;
+import com.company.common.SortDescription;
+import com.company.common.SortDirection;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;

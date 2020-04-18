@@ -1,8 +1,6 @@
 package com.company.jersey03.services;
 
 import com.company.common.FilterDescription;
-import com.company.jersey02.models.ClusterEntity;
-import com.company.jersey02.services.DAO.ClusterDAO;
 import com.company.jersey03.models.ClusterEntity;
 import com.company.jersey03.services.DAO.ClusterDAO;
 import com.google.inject.Inject;
