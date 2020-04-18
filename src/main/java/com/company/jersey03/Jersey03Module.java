@@ -28,7 +28,7 @@ public class Jersey03Module extends MicroserviceModule {
 
   @Override
   protected String programName() {
-    return "jersey2-service";
+    return "jersey3-service";
   }
 
   @Override
