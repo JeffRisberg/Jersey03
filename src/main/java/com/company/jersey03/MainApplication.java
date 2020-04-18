@@ -22,6 +22,9 @@ public class MainApplication extends ResourceConfig {
     packages(MainApplication.class.getPackage().getName());
     register(JacksonFeature.class);
 
+    register(io.swagger.jaxrs.listing.ApiListingResource.class);
+    register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
+
     if (injector == null) {
       injector = Guice.createInjector(new MainModule());
     }

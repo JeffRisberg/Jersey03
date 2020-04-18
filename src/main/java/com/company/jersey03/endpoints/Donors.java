@@ -5,6 +5,7 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.DonorDTO;
 import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DonorService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Api(value = "Donors", description = "donors management")
 @Path("donors")
 @Slf4j
 public class Donors extends AbstractEndpoint {

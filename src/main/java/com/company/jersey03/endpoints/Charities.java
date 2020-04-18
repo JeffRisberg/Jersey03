@@ -4,6 +4,7 @@ import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.CharityService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.Optional;
 
+@Api(value = "Charities", description = "charity management")
 @Path("charities")
 @Slf4j
 public class Charities extends AbstractEndpoint {

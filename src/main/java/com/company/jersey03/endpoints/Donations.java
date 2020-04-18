@@ -3,6 +3,7 @@ package com.company.jersey03.endpoints;
 import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonationEntity;
 import com.company.jersey03.services.DonationService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Api(value = "Donations", description = "donations management")
 @Path("donations")
 @Slf4j
 public class Donations extends AbstractEndpoint {
