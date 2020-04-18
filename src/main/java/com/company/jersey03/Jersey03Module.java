@@ -2,6 +2,7 @@ package com.company.jersey03;
 
 import com.company.common.services.MicroserviceModule;
 import com.company.jersey03.endpoints.Charities;
+import com.company.jersey03.endpoints.Donations;
 import com.company.jersey03.endpoints.Donors;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,8 @@ public class Jersey03Module extends MicroserviceModule {
     return Arrays.asList(
       // SystemEndpoint.class  -- this should exist
       Charities.class,
-      Donors.class
+      Donors.class,
+      Donations.class
     );
   }
 

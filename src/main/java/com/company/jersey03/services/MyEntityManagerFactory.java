@@ -33,7 +33,7 @@ public class MyEntityManagerFactory {
 
     Properties jpaProperties = new Properties();
     jpaProperties.put("hibernate.connection.datasource", dataSource);
-    this.emf = Persistence.createEntityManagerFactory("jersey02", jpaProperties);
+    this.emf = Persistence.createEntityManagerFactory("jersey03", jpaProperties);
   }
 
   public EntityManager createEntityManager() {

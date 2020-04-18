@@ -28,10 +28,11 @@ public class Main {
     // This makes a servletHolder, configures it, and then adds it to the contextHandler
     ServletHolder swaggerServletHolder = new ServletHolder(new DefaultJaxrsConfig());
     swaggerServletHolder.setInitParameter("api.version", "1.0.0");
-    swaggerServletHolder.setInitParameter("swagger.api.basepath", "/");
+    swaggerServletHolder.setInitParameter("swagger.api.basepath", "http://localhost:8080/");
     swaggerServletHolder.setInitOrder(2);
     sch.addServlet(swaggerServletHolder, "/api-docs");
 
+    // add a resource handler to serve the Swagger UI code
     ResourceHandler resource_handler = new ResourceHandler();
     resource_handler.setDirectoriesListed(true);
     resource_handler.setWelcomeFiles(new String[]{"index.html"});
