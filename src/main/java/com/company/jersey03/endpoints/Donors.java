@@ -2,10 +2,12 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
+import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonorDTO;
 import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DonorService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
@@ -28,7 +30,15 @@ public class Donors extends AbstractEndpoint {
     this.donorService = donorService;
   }
 
+  @POST
+  @ApiOperation(value = "Register a new Donor. Set id=0", response = DonorDTO.class)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response x() {
+    return null;
+  }
+
   @GET
+  @ApiOperation(value = "Gets all Donors", response = DonorDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
@@ -46,6 +56,7 @@ public class Donors extends AbstractEndpoint {
   }
 
   @GET
+  @ApiOperation(value = "Gets all Donors", response = DonorDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,

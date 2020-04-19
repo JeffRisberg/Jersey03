@@ -2,9 +2,11 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
+import com.company.jersey03.models.CharityDTO;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.CharityService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
@@ -26,7 +28,15 @@ public class Charities extends AbstractEndpoint {
     this.charityService = charityService;
   }
 
+  @POST
+  @ApiOperation(value = "Register a new DataSource. Set id=0", response = CharityDTO.class)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response x() {
+    return null;
+  }
+
   @GET
+  @ApiOperation(value = "Gets all Charities", response = CharityDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
@@ -44,6 +54,7 @@ public class Charities extends AbstractEndpoint {
   }
 
   @GET
+  @ApiOperation(value = "Gets all Charities", response = CharityDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,

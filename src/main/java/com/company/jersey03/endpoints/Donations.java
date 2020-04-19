@@ -1,9 +1,11 @@
 package com.company.jersey03.endpoints;
 
+import com.company.jersey03.models.CharityDTO;
 import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonationEntity;
 import com.company.jersey03.services.DonationService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -25,7 +27,15 @@ public class Donations extends AbstractEndpoint {
     this.donationService = donationService;
   }
 
+  @POST
+  @ApiOperation(value = "Register a new Donation. Set id=0", response = DonationDTO.class)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response x() {
+    return null;
+  }
+
   @GET
+  @ApiOperation(value = "Gets all Donations", response = DonationDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
@@ -43,6 +53,7 @@ public class Donations extends AbstractEndpoint {
   }
 
   @GET
+  @ApiOperation(value = "Gets all Donations", response = DonationDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
