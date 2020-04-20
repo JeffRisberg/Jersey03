@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Response;
 @Api(value = "Hello", description = "Simple example endpoint")
 @Singleton
 @Path("hello")
-@Log
+@Slf4j
 public class Hello {
 
   private static final String AUTHZ_HEADER = "Authorization";
