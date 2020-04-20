@@ -36,13 +36,6 @@ public class LoggingConfig {
   static final String SQL_LOG_DEFAULT_MAX_SIZE = "20MB";
   static final String SQL_LOG_CONFIG_MAX_SIZE_KEY = "log.sqlLog.maxSize";
 
-  // adwords log configuration
-  static final String ADWORDS_LOGGER_NAME = "com.google.api.ads.adwords.lib.client.AdWordsServiceClient.soapXmlLogger";
-  static final String ADWORDS_LOG_APPENDER_NAME = "adwordsLog-appender";
-  static final String ADWORDS_LOG_APPENDER_FILE = "adwords.log";
-  static final String ADWORDS_LOG_DEFAULT_MAX_SIZE = "20MB";
-  static final String ADWORDS_LOG_CONFIG_MAX_SIZE_KEY = "log.adwordsLog.maxSize";
-
   // global logger references
   //static final Logger ROOT_LOGGER = getLogger(Logger.ROOT_LOGGER_NAME);
   //static final Logger SQL_LOGGER = getLogger(SQL_LOGGER_NAME);
@@ -96,10 +89,6 @@ public class LoggingConfig {
       //setMaxSize(SQL_LOGGER, SQL_LOG_APPENDER_NAME, configuration.getString(SQL_LOG_CONFIG_MAX_SIZE_KEY));
     }
 
-    if (configuration.containsKey(ADWORDS_LOG_CONFIG_MAX_SIZE_KEY)) {
-      //setMaxSize(ADWORDS_LOGGER, ADWORDS_LOG_APPENDER_NAME, configuration.getString(ADWORDS_LOG_CONFIG_MAX_SIZE_KEY));
-    }
-
     if (configuration.containsKey(DISABLE_CONSOLE_LOGGING_KEY)) {
       boolean isConsoleLoggingDisabled = configuration.getBoolean(DISABLE_CONSOLE_LOGGING_KEY, false);
 
@@ -107,7 +96,6 @@ public class LoggingConfig {
         //ROOT_LOGGER.detachAppender(CONSOLE_APPENDER_NAME);
       }
     }
-
   }
 
   /**

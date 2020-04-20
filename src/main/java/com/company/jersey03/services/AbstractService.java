@@ -14,35 +14,35 @@ import java.util.function.Consumer;
 @Slf4j
 public abstract class AbstractService<T> {
 
-    protected MyEntityManagerFactory myEntityManagerFactory;
+  protected MyEntityManagerFactory myEntityManagerFactory;
 
-    // true indicates success
-    public boolean doWork(Consumer<EntityManager> consumer) {
-        EntityManager em = myEntityManagerFactory.createEntityManager();
+  // true indicates success
+  public boolean doWork(Consumer<EntityManager> consumer) {
+    EntityManager em = myEntityManagerFactory.createEntityManager();
 
-        try {
-            EntityTransaction transaction = em.getTransaction();
-            transaction.begin();
-            try {
-                // call consumer
-                consumer.accept(em);
-                transaction.commit();
-                return true;
-            } catch (Exception e) {
-                log.error("Failed to execute transaction", e);
-                transaction.rollback();
-                return false;
-            }
-        } finally {
-            em.close();
-        }
+    try {
+      EntityTransaction transaction = em.getTransaction();
+      transaction.begin();
+      try {
+        // call consumer
+        consumer.accept(em);
+        transaction.commit();
+        return true;
+      } catch (Exception e) {
+        log.error("Failed to execute transaction", e);
+        transaction.rollback();
+        return false;
+      }
+    } finally {
+      em.close();
     }
+  }
 
-    public void close() {
-        myEntityManagerFactory.close();
-    }
+  public void close() {
+    myEntityManagerFactory.close();
+  }
 
-    public abstract T getById(Long id);
+  public abstract T getById(Long id);
 
-    public abstract List<T> getAll(int limit, int offset);
+  public abstract List<T> getAll(int limit, int offset);
 }
