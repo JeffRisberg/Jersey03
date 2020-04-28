@@ -28,7 +28,7 @@ ext {
   jettyVersion = '9.4.8.v20171121'
   jerseyVersion = '2.27'
   hk2Version = '2.5.0-b44'
-  jacksonVersion = '2.10.2'
+  jacksonVersion = '2.10.3'
   hibernateVersion = '5.4.14.Final'
   junitVersion = '4.13'
 }

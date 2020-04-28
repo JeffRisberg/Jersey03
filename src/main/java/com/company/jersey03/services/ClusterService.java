@@ -15,7 +15,7 @@ public class ClusterService extends AbstractService<ClusterEntity> {
   public ClusterService(final MyEntityManagerFactory myEntityManagerFactory,
                         final ClusterDAO clusterDAO) {
     this.myEntityManagerFactory = myEntityManagerFactory;
-    this.dao = new ClusterDAO();
+    this.dao = clusterDAO;
   }
 
   public ClusterEntity create(ClusterEntity cluster) {

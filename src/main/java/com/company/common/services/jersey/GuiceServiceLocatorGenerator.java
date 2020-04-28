@@ -7,7 +7,7 @@ import org.glassfish.hk2.extension.ServiceLocatorGenerator;
 
 /**
  * This wires up Guice with Jersey.  Jersey uses HK2 internally, which is both not what
- * we use for dependency injection, but is also worthless trash.
+ * we use for dependency injection.
  */
 public class GuiceServiceLocatorGenerator implements ServiceLocatorGenerator {
   private final Injector injector;

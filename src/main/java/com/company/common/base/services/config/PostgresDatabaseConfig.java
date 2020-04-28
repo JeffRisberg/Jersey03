@@ -6,19 +6,19 @@ import com.google.inject.Inject;
 /**
  *
  */
-public class MySQLDatabaseConfig extends AbstractDatabaseConfig {
+public class PostgresDatabaseConfig extends AbstractDatabaseConfig {
 
   @Inject
-  public MySQLDatabaseConfig(AppConfig appConfig) {
-    super(appConfig, "mysql");
+  public PostgresDatabaseConfig(AppConfig appConfig) {
+    super(appConfig, "postgres");
   }
 
   @Override
   public String getUrl() {
-    return buildMySQLUrl(getServer(), getDb());
+    return buildPostgresUrl(getServer(), getDb());
   }
 
-  static String buildMySQLUrl(String server, String db) {
+  static String buildPostgresUrl(String server, String db) {
     return String.format("jdbc:mysql://%s/%s?zeroDateTimeBehavior=ConvertToNull", server, db);
   }
 }
