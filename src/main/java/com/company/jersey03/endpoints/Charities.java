@@ -68,7 +68,7 @@ public class Charities extends AbstractEndpoint {
 
     try {
       JSONArray result = new JSONArray();
-      List<CharityEntity> charities = charityService.getAll(limit, offset);
+      List<CharityEntity> charities = charityService.getByCriteria(filterDescs, limit, offset);
 
       for (CharityEntity charity : charities) {
         result.add(charity.toJSON());
