@@ -133,7 +133,7 @@ INSERT INTO donors(first_name, last_name, age, date_created, last_updated)
 VALUES ('Han', 'Solo', 32, '2017-10-22T12:00:00', '2017-10-22T12:00:00');
 
 INSERT INTO charities(name, ein, description, website, date_created, last_updated)
-VALUES ('American Cancer Society', '93-1234567', 'medical research', 'http://www.cancer.org', '2017-10-07T12:00:00',
+VALUES ('American Cancer Society', '13-1788491', 'medical research', 'http://www.cancer.org', '2017-10-07T12:00:00',
         '2017-10-07T12:00:00');
 
 INSERT INTO charities(name, ein, description, website, date_created, last_updated)
@@ -141,7 +141,7 @@ VALUES ('Red Cross', '53-0196605', 'disaster relief', 'http://www.redcross.org',
         '2017-10-08T12:00:00');
 
 INSERT INTO charities(name, ein, description, website, date_created, last_updated)
-VALUES ('Stanford University', '22-545345', 'research university', 'http://www.stanford.edu', '2017-10-08T12:00:00',
+VALUES ('Stanford University', '94-1156365', 'research university', 'http://www.stanford.edu', '2017-10-08T12:00:00',
         '2017-10-08T12:00:00');
 
 INSERT INTO donations(amount, charity_id, donor_id, date_created, last_updated)
