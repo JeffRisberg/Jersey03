@@ -60,8 +60,8 @@ public class DonationEntity extends AbstractDatedEntity {
 
   public DonationDTO toDTO() {
     DonationDTO result = new DonationDTO();
+    update(result);
 
-    result.setId(getId());
     result.setAmount(amount);
     result.setCharityId(getCharityId());
     result.setCharityName(charity.getName());

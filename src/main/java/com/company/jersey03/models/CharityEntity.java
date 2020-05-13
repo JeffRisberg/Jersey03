@@ -40,9 +40,6 @@ public class CharityEntity extends AbstractDatedEntity {
     CharityDTO result = new CharityDTO();
     update(result);
 
-    result.setId(getId());
-    result.setDateCreated(getDateCreated());
-    result.setLastUpdated(getLastUpdated());
     result.setName(getName());
     result.setEin(getEin());
     result.setDescription(getDescription());
