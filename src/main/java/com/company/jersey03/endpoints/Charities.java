@@ -31,7 +31,7 @@ public class Charities extends AbstractEndpoint {
   @POST
   @ApiOperation(value = "Register a new Charity. Set id=0", response = CharityDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response x() {
+  public Response create() {
     return null;
   }
 
@@ -44,7 +44,7 @@ public class Charities extends AbstractEndpoint {
       JSONArray result = new JSONArray();
       CharityEntity data = charityService.getById(id);
       if (data != null) {
-        result.add(data.toJSON());
+        result.add(data.toDTO());
       }
       return Response.ok(result).build();
     } catch (Throwable e) {
@@ -71,7 +71,7 @@ public class Charities extends AbstractEndpoint {
         charityService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (CharityEntity charity : charities) {
-        result.add(charity.toJSON());
+        result.add(charity.toDTO());
       }
 
       return Response.ok(result).build();

@@ -32,7 +32,7 @@ public class Donors extends AbstractEndpoint {
   @POST
   @ApiOperation(value = "Register a new Donor. Set id=0", response = DonorDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response x() {
+  public Response create() {
     return null;
   }
 
@@ -72,7 +72,7 @@ public class Donors extends AbstractEndpoint {
         donorService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (DonorEntity donor : donors) {
-        result.add(donor.toJSON());
+        result.add(donor.toDTO());
       }
 
       return Response.ok(result).build();

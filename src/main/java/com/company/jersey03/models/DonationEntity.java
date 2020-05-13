@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.json.simple.JSONObject;
 
 import javax.persistence.*;
 
@@ -69,19 +68,6 @@ public class DonationEntity extends AbstractDatedEntity {
     result.setDonorFirstName(donor.getFirstName());
     result.setDonorLastName(donor.getLastName());
 
-    return result;
-  }
-
-  public JSONObject toJSON() {
-    JSONObject result = new JSONObject();
-
-    result.put("id", getId());
-    result.put("dateCreated", getDateCreated());
-    result.put("lastUpdated", getLastUpdated());
-
-    //for (CustomFieldEntity cfe : getCustomFields()) {
-    //  result.put(cfe.getKey(), cfe.getValue());
-    //}
     return result;
   }
 }

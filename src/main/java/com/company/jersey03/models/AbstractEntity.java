@@ -1,6 +1,5 @@
 package com.company.jersey03.models;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.GeneratedValue;
@@ -18,7 +17,6 @@ import java.io.Serializable;
 public abstract class AbstractEntity implements Serializable {
 
   @Id
-  @ApiModelProperty(value = "Provided by the framework. Set to 0 for create")
   @GeneratedValue(strategy = GenerationType.AUTO)
   protected Long id;
 

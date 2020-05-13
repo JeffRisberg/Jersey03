@@ -41,11 +41,22 @@ public class DonorEntity extends AbstractDatedEntity {
   @Where(clause = "entity_type = 'Donor'")
   List<CustomFieldValueEntity> customFields = new ArrayList();
 
-  public DonorEntity(String firstName, String lastName, int age) {
-    this.setId(null);
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.age = age;
+  public DonorDTO toDTO() {
+    DonorDTO result = new DonorDTO();
+    update(result);
+
+    result.setId(getId());
+    result.setFirstName(getFirstName());
+    result.setLastName(getLastName());
+    result.setAge(age);
+
+    JSONObject customFieldValues = new JSONObject();
+    for (CustomFieldValueEntity cfve : this.customFields) {
+      customFieldValues.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+    }
+    result.setCustomFieldValues(customFieldValues);
+
+    return result;
   }
 
   public String toString() {
@@ -57,32 +68,5 @@ public class DonorEntity extends AbstractDatedEntity {
     sb.append("]");
 
     return sb.toString();
-  }
-
-  public DonorDTO toDTO() {
-    DonorDTO result = new DonorDTO();
-    update(result);
-
-    result.setId(getId());
-    result.setFirstName(getFirstName());
-    result.setLastName(getLastName());
-    result.setAge(age);
-
-    return result;
-  }
-
-  public JSONObject toJSON() {
-    JSONObject result = new JSONObject();
-
-    result.put("id", getId());
-    result.put("dateCreated", getDateCreated());
-    result.put("lastUpdated", getLastUpdated());
-    result.put("firstName", getFirstName());
-    result.put("lastName", getLastName());
-    if (getAge() != null) {
-      result.put("age", getAge());
-    }
-
-    return result;
   }
 }

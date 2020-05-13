@@ -31,7 +31,7 @@ public class Donations extends AbstractEndpoint {
   @POST
   @ApiOperation(value = "Register a new Donation. Set id=0", response = DonationDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response x() {
+  public Response create() {
     return null;
   }
 

@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 public class CharityDTO extends AbstractDatedDTO {
 
-  protected String name;
-  protected String ein;
-  protected String description;
-  protected String website;
+  private String name;
+  private String ein;
+  private String description;
+  private String website;
 }
