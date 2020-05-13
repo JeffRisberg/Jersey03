@@ -1,6 +1,7 @@
 package com.company.jersey03.models;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * @since 10/22/17
  */
 @Data
+@EqualsAndHashCode(callSuper=true)
 public abstract class AbstractDatedDTO extends AbstractDTO {
 
   protected Date dateCreated;

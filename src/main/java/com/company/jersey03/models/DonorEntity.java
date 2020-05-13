@@ -36,10 +36,10 @@ public class DonorEntity extends AbstractDatedEntity {
   @JsonIgnore
   private List<DonationEntity> donations = new ArrayList<DonationEntity>();
 
-  //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  //@JoinColumn(name = "entity_id")
-  //@Where(clause = "entity_type = 'DONOR'")
-  //List<CustomFieldEntity> customFields = new ArrayList();
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @JoinColumn(name = "entity_id")
+  @Where(clause = "entity_type = 'Donor'")
+  List<CustomFieldValueEntity> customFields = new ArrayList();
 
   public DonorEntity(String firstName, String lastName, int age) {
     this.setId(null);

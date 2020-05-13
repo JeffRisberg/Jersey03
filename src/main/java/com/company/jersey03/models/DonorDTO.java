@@ -1,6 +1,8 @@
 package com.company.jersey03.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -8,8 +10,10 @@ import lombok.NoArgsConstructor;
  * @since 11/3/17
  */
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper=true)
 public class DonorDTO extends AbstractDatedDTO {
 
   private String firstName;

@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 import org.json.simple.JSONObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "charities")
@@ -30,11 +31,10 @@ public class CharityEntity extends AbstractDatedEntity {
   @Column(name = "website", nullable = true)
   protected String website;
 
-  //public Optional<CharityEntity> create(CharityEntity charity, Session session) {
-  //  CharityEntity charityEntity = new CharityEntity();
-
-  //  return Optional.of(charityEntity);
-  //}
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @JoinColumn(name = "entity_id")
+  @Where(clause = "entity_type = 'Charity'")
+  List<CustomFieldValueEntity> customFields = new ArrayList();
 
   public CharityDTO toDTO() {
     CharityDTO result = new CharityDTO();

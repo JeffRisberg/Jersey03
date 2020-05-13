@@ -80,7 +80,6 @@ public class ClusterEntity extends AbstractDatedEntity {
     return this;
   }
 
-  @Override
   public ClusterDTO toDTO() {
     ClusterDTO result = new ClusterDTO();
     update(result);

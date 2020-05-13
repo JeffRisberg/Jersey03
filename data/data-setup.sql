@@ -100,6 +100,9 @@ INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_cus
 VALUES ('Donor', 'LastName', 'String', '', 0, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
 
 INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
+VALUES ('Donor', 'Age', 'Integer', '', 0, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
+
+INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
 VALUES ('Donor', 'Rating', 'String', '', 1, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
 
 INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
@@ -110,6 +113,9 @@ VALUES ('Charity', 'EIN', 'String', '', 0, '2017-10-07T12:00:00', '2017-10-07T12
 
 INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
 VALUES ('Charity', 'Description', 'String', '', 0, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
+
+INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
+VALUES ('Charity', 'Website', 'String', '', 0, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
 
 INSERT INTO fields(content_type_name, field_name, field_type, field_path, is_custom, date_created, last_updated)
 VALUES ('Charity', 'Rating', 'String', '', 1, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
@@ -151,28 +157,28 @@ INSERT INTO donations(amount, charity_id, donor_id, date_created, last_updated)
 VALUES (1300.0, 3, 3, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (3, 'Donor', 1, 'Active');
+VALUES (4, 'Donor', 1, 'Active');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (3, 'Donor', 2, 'Active');
+VALUES (4, 'Donor', 2, 'Active');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (3, 'Donor', 3, 'Pending');
+VALUES (4, 'Donor', 3, 'Pending');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (4, 'Charity', 1, 'High');
+VALUES (5, 'Charity', 1, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 1, 'Tom');
+VALUES (6, 'Charity', 1, 'Tom');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (4, 'Charity', 2, 'High');
+VALUES (5, 'Charity', 2, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 2, 'Sally');
+VALUES (6, 'Charity', 2, 'Sally');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (4, 'Charity', 3, 'High');
+VALUES (5, 'Charity', 3, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 2, 'Marc Tessier-Lavigne');
+VALUES (6, 'Charity', 2, 'Marc Tessier-Lavigne');
