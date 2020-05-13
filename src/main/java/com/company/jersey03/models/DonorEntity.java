@@ -36,10 +36,10 @@ public class DonorEntity extends AbstractDatedEntity {
   @JsonIgnore
   private List<DonationEntity> donations = new ArrayList<DonationEntity>();
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @JoinColumn(name = "entity_id")
-  @Where(clause = "entity_type = 'DONOR'")
-  List<CustomFieldEntity> customFields = new ArrayList();
+  //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  //@JoinColumn(name = "entity_id")
+  //@Where(clause = "entity_type = 'DONOR'")
+  //List<CustomFieldEntity> customFields = new ArrayList();
 
   public DonorEntity(String firstName, String lastName, int age) {
     this.setId(null);
@@ -61,17 +61,12 @@ public class DonorEntity extends AbstractDatedEntity {
 
   public DonorDTO toDTO() {
     DonorDTO result = new DonorDTO();
+    update(result);
 
     result.setId(getId());
     result.setFirstName(getFirstName());
     result.setLastName(getLastName());
     result.setAge(age);
-
-    List<CustomFieldDTO> customFields = new ArrayList();
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      customFields.add(cfe.toDTO());
-    }
-    result.setCustomFields(customFields);
 
     return result;
   }
@@ -88,9 +83,6 @@ public class DonorEntity extends AbstractDatedEntity {
       result.put("age", getAge());
     }
 
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      result.put(cfe.getKey(), cfe.getValue());
-    }
     return result;
   }
 }

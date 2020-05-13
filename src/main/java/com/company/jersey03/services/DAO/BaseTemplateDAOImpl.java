@@ -2,16 +2,15 @@ package com.company.jersey03.services.DAO;
 
 import com.company.common.FilterDescription;
 import com.company.common.FilterOperator;
+import com.company.common.SortDescription;
+import com.company.common.SortDirection;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -52,9 +51,9 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
   @Override
   public T getByName(String name, @NonNull EntityManager em) {
     final AtomicReference<T> ref = new AtomicReference<>();
-    List<FilterDescription> descriptions = new ArrayList<>();
-    descriptions.add(new FilterDescription("name", FilterOperator.eq, name));
-    List<T> list = getByCriteria(descriptions, 0, 0, em);
+    List<FilterDescription> filterDescs = new ArrayList<>();
+    filterDescs.add(new FilterDescription("name", FilterOperator.eq, name));
+    List<T> list = getByCriteria(filterDescs, null, 0, 0, em);
     if (list.isEmpty()) {
       ref.set(null);
     } else {
@@ -123,47 +122,69 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
    * @return List of results
    */
   @Override
-  public List<T> getByCriteria(List<FilterDescription> filterDescriptions, int limit, int offset, @NonNull EntityManager em) {
+  public List<T> getByCriteria
+  (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset, @NonNull EntityManager em) {
     CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
     CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(type);
     Root<T> root = criteriaQuery.from(type);
     criteriaQuery.select(root);
     Predicate p = criteriaBuilder.conjunction();
 
-    for (FilterDescription fd : filterDescriptions) {
-      String key = fd.getField();
-      Object value = fd.getValue();
+    if (filterDescs != null) {
+      for (FilterDescription fd : filterDescs) {
+        String key = fd.getField();
+        Object value = fd.getValue();
 
-      if (value == null)
-        continue;
-      switch (fd.getOperator()) {
-        case eq:
-          p = criteriaBuilder.and(p, criteriaBuilder.equal(root.get(key), value));
-          break;
-        case like:
-          p = criteriaBuilder.and(p, criteriaBuilder.like(root.get(key), "%" + (String) value + "%"));
-          break;
-        case gt:
-          p = criteriaBuilder.and(p, criteriaBuilder.greaterThan(root.get(key), (Comparable) value));
-          break;
-        case lt:
-          p = criteriaBuilder.and(p, criteriaBuilder.lessThan(root.get(key), (Comparable) value));
-          break;
-        case gte:
-          p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Comparable) value));
-          break;
-        case lte:
-          p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Comparable) value));
-          break;
-        case timestamp_gte:
-          p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Timestamp) value));
-          break;
-        case timestamp_lte:
-          p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Timestamp) value));
-          break;
+        if (value == null)
+          continue;
+        switch (fd.getOperator()) {
+          case eq:
+            p = criteriaBuilder.and(p, criteriaBuilder.equal(root.get(key), value));
+            break;
+          case like:
+            p = criteriaBuilder.and(p, criteriaBuilder.like(root.get(key), "%" + (String) value + "%"));
+            break;
+          case gt:
+            p = criteriaBuilder.and(p, criteriaBuilder.greaterThan(root.get(key), (Comparable) value));
+            break;
+          case lt:
+            p = criteriaBuilder.and(p, criteriaBuilder.lessThan(root.get(key), (Comparable) value));
+            break;
+          case gte:
+            p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Comparable) value));
+            break;
+          case lte:
+            p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Comparable) value));
+            break;
+          case timestamp_gte:
+            p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Timestamp) value));
+            break;
+          case timestamp_lte:
+            p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Timestamp) value));
+            break;
+        }
       }
+      criteriaQuery.where(p);
     }
-    criteriaQuery.where(p);
+
+    if (sortDescs != null) {
+      List<Order> orderList = new ArrayList<Order>();
+
+      for (SortDescription sd : sortDescs) {
+        String fieldName = sd.getField();
+        SortDirection sortDir = sd.getDirection();
+
+        switch (sd.getDirection()) {
+          case asc:
+            orderList.add(criteriaBuilder.asc(root.get(fieldName)));
+            break;
+          case desc:
+            orderList.add(criteriaBuilder.desc(root.get(fieldName)));
+            break;
+        }
+      }
+      criteriaQuery.orderBy(orderList);
+    }
 
     Query query = em.createQuery(criteriaQuery);
     if (offset > 0) query.setFirstResult(offset);

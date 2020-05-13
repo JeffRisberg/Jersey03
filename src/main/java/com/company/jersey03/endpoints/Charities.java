@@ -29,7 +29,7 @@ public class Charities extends AbstractEndpoint {
   }
 
   @POST
-  @ApiOperation(value = "Register a new DataSource. Set id=0", response = CharityDTO.class)
+  @ApiOperation(value = "Register a new Charity. Set id=0", response = CharityDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
   public Response x() {
     return null;
@@ -59,16 +59,16 @@ public class Charities extends AbstractEndpoint {
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
-    @DefaultValue("") @QueryParam("sort") String sortStr,
     @Context UriInfo uriInfo) {
 
-    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
-    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
-
     try {
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+      List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+      List<SortDescription> sortDescs = this.parseSorting(queryParams);
+
       JSONArray result = new JSONArray();
-      List<CharityEntity> charities = charityService.getByCriteria(filterDescs, limit, offset);
+      List<CharityEntity> charities =
+        charityService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (CharityEntity charity : charities) {
         result.add(charity.toJSON());

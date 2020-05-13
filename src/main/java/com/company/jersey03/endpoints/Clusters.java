@@ -47,17 +47,16 @@ public class Clusters extends AbstractEndpoint {
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
-    @DefaultValue("") @QueryParam("sort") String sortStr,
     @Context UriInfo uriInfo) {
 
-    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
-    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
-
     try {
-      List<ClusterDTO> result = new ArrayList<>();
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+      List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+      List<SortDescription> sortDescs = this.parseSorting(queryParams);
 
-      List<ClusterEntity> clusters = clusterService.getAll(limit, offset);
+      List<ClusterDTO> result = new ArrayList<>();
+      List<ClusterEntity> clusters =
+        clusterService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (ClusterEntity cluster : clusters) {
         result.add(cluster.toDTO());

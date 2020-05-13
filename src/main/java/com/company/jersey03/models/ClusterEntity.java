@@ -8,7 +8,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,14 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ClusterEntity extends AbstractEntity {
+public class ClusterEntity extends AbstractDatedEntity {
 
   @Column(length = 2048)
   private String clusterName;
   @Column(length = 4096)
   private String attributes;
-  @Column(name = "created_date")
-  private Date createdDate;
   @Column(name = "version")
   private Long version;
   @Column(name = "usage_type")
@@ -83,14 +80,14 @@ public class ClusterEntity extends AbstractEntity {
     return this;
   }
 
+  @Override
   public ClusterDTO toDTO() {
     ClusterDTO result = new ClusterDTO();
+    update(result);
 
-    result.setId(getId());
     result.setClusterName(getClusterName());
     result.setClusterDescription(getClusterDescription());
     result.setAttributes(getAttributes());
-    result.setCreatedDate(getCreatedDate());
     result.setType(getType());
     result.setUsageType(getUsageType());
     result.setVersion(getVersion());

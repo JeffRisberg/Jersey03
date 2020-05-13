@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
 import org.json.simple.JSONObject;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "charities")
@@ -31,11 +30,6 @@ public class CharityEntity extends AbstractDatedEntity {
   @Column(name = "website", nullable = true)
   protected String website;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @JoinColumn(name = "entity_id")
-  @Where(clause = "entity_type = 'CHARITY'")
-  List<CustomFieldEntity> customFields = new ArrayList();
-
   //public Optional<CharityEntity> create(CharityEntity charity, Session session) {
   //  CharityEntity charityEntity = new CharityEntity();
 
@@ -44,6 +38,7 @@ public class CharityEntity extends AbstractDatedEntity {
 
   public CharityDTO toDTO() {
     CharityDTO result = new CharityDTO();
+    update(result);
 
     result.setId(getId());
     result.setDateCreated(getDateCreated());
@@ -53,11 +48,6 @@ public class CharityEntity extends AbstractDatedEntity {
     result.setDescription(getDescription());
     result.setWebsite(getWebsite());
 
-    List<CustomFieldDTO> customFields = new ArrayList();
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      customFields.add(cfe.toDTO());
-    }
-    result.setCustomFields(customFields);
     return result;
   }
 
@@ -76,9 +66,6 @@ public class CharityEntity extends AbstractDatedEntity {
       result.put("website", getWebsite());
     }
 
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      result.put(cfe.getKey(), cfe.getValue());
-    }
     return result;
   }
 }

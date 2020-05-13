@@ -1,6 +1,7 @@
 package com.company.jersey03.endpoints;
 
-import com.company.jersey03.models.CharityDTO;
+import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
 import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonationEntity;
 import com.company.jersey03.services.DonationService;
@@ -58,16 +59,16 @@ public class Donations extends AbstractEndpoint {
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
-    @DefaultValue("") @QueryParam("sort") String sortStr,
     @Context UriInfo uriInfo) {
 
-    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    // List<FilterDesc> filterDescs = this.parseFiltering(queryParams);
-    // List<SortDesc> sortDescs = this.parseSortStr(sortStr);
-
     try {
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+      List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+      List<SortDescription> sortDescs = this.parseSorting(queryParams);
+
       List<DonationDTO> result = new ArrayList<>();
-      List<DonationEntity> donations = donationService.getAll(limit, offset);
+      List<DonationEntity> donations =
+        donationService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (DonationEntity donation : donations) {
         result.add(donation.toDTO());

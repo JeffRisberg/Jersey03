@@ -1,6 +1,7 @@
 package com.company.jersey03.services;
 
 import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
 import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DAO.DonorDAO;
 import com.google.inject.Inject;
@@ -30,9 +31,10 @@ public class DonorService extends AbstractService<DonorEntity> {
     return td.get();
   }
 
-  public List<DonorEntity> getByCriteria(List<FilterDescription> filterDescriptions, int limit, int offset) {
+  public List<DonorEntity> getByCriteria
+    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
     final AtomicReference<List<DonorEntity>> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.getByCriteria(filterDescriptions, limit, offset, em)));
+    doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
     return td.get();
   }
 

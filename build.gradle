@@ -25,7 +25,7 @@ ext {
   archaiusVersion = '0.7.7'
   jodaTimeVersion = '2.10'
   guiceVersion = '4.2.3'
-  jettyVersion = '9.4.8.v20171121'
+  jettyVersion = '9.4.25.v20191220'
   jerseyVersion = '2.27'
   hk2Version = '2.5.0-b44'
   jacksonVersion = '2.10.3'
