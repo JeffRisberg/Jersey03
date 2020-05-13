@@ -166,19 +166,19 @@ INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
 VALUES (4, 'Donor', 3, 'Pending');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 1, 'High');
+VALUES (9, 'Charity', 1, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (6, 'Charity', 1, 'Tom');
+VALUES (10, 'Charity', 1, 'Tom');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 2, 'High');
+VALUES (9, 'Charity', 2, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (6, 'Charity', 2, 'Sally');
+VALUES (10, 'Charity', 2, 'Sally');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (5, 'Charity', 3, 'High');
+VALUES (9, 'Charity', 3, 'High');
 
 INSERT INTO custom_field_values(field_id, entity_type, entity_id, field_value)
-VALUES (6, 'Charity', 2, 'Marc Tessier-Lavigne');
+VALUES (10, 'Charity', 3, 'Marc Tessier-Lavigne');
