@@ -5,6 +5,9 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.ClusterDTO;
 import com.company.jersey03.models.ClusterEntity;
 import com.company.jersey03.services.ClusterService;
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.DonorService;
+import com.company.jersey03.services.FieldService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -21,7 +24,9 @@ public class Clusters extends AbstractEndpoint {
   protected ClusterService clusterService;
 
   @Inject
-  public Clusters(ClusterService clusterService) {
+  public Clusters(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                ClusterService clusterService) {
+    super(fieldService, customFieldValueService);
     this.clusterService = clusterService;
   }
 

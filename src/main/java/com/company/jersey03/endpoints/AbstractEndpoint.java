@@ -4,7 +4,12 @@ import com.company.common.FilterDescription;
 import com.company.common.FilterOperator;
 import com.company.common.SortDescription;
 import com.company.common.SortDirection;
+import com.company.common.services.util.ObjectUtils;
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.FieldService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -17,6 +22,18 @@ import java.util.Map;
  * @since 11/02/17
  */
 public class AbstractEndpoint {
+
+  protected FieldService fieldService;
+  protected CustomFieldValueService customFieldValueService;
+
+  protected static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
+
+  @Inject
+  public AbstractEndpoint(FieldService fieldService,
+                          CustomFieldValueService customFieldValueService) {
+    this.fieldService = fieldService;
+    this.customFieldValueService = customFieldValueService;
+  }
 
   /**
    * Generate a sorting specification from the query params of the request, of the

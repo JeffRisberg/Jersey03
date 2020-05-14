@@ -112,7 +112,7 @@ public class CharityEntity extends AbstractDatedEntity {
     return this;
   }
 
-  public List<Long> findDeletes(CharityDTO dto) {
+  public List<Long> findCustomFieldValueDeletes(CharityDTO dto) {
     List<Long> delList = new ArrayList<>();
 
     if (dto != null) {

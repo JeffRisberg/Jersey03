@@ -4,7 +4,10 @@ import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonationEntity;
+import com.company.jersey03.services.ClusterService;
+import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.DonationService;
+import com.company.jersey03.services.FieldService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,9 @@ public class Donations extends AbstractEndpoint {
   protected DonationService donationService;
 
   @Inject
-  public Donations(DonationService donationService) {
+  public Donations(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                  DonationService donationService) {
+    super(fieldService, customFieldValueService);
     this.donationService = donationService;
   }
 

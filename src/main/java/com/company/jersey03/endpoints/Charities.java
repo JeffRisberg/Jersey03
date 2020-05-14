@@ -2,14 +2,12 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
-import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.models.CharityDTO;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.CharityService;
 import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -27,17 +25,12 @@ import java.util.Optional;
 public class Charities extends AbstractEndpoint {
 
   protected CharityService charityService;
-  protected FieldService fieldService;
-  protected CustomFieldValueService customFieldValueService;
-
-  private static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
 
   @Inject
-  public Charities(CharityService charityService, FieldService fieldService,
-                   CustomFieldValueService customFieldValueService) {
+  public Charities(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                   CharityService charityService) {
+    super(fieldService, customFieldValueService);
     this.charityService = charityService;
-    this.fieldService = fieldService;
-    this.customFieldValueService = customFieldValueService;
   }
 
   @POST
@@ -135,12 +128,12 @@ public class Charities extends AbstractEndpoint {
         charityDTO = new CharityDTO();
       }
 
-      List<Long> deletes = charityEntity.findDeletes(charityDTO);
+      List<Long> cfveIdDeletes = charityEntity.findCustomFieldValueDeletes(charityDTO);
       charityEntity.applyDTO(charityDTO, fieldService);
       charityEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       if (charityService.update(charityEntity)) {
-        for (Long cfveId : deletes) {
+        for (Long cfveId : cfveIdDeletes) {
           customFieldValueService.delete(cfveId);
         }
         return Response.ok().build();

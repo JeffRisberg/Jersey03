@@ -5,14 +5,14 @@ import com.company.common.SortDescription;
 import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.models.DonorDTO;
 import com.company.jersey03.models.DonorEntity;
+import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.DonorService;
+import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -32,7 +32,9 @@ public class Donors extends AbstractEndpoint {
   private static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
 
   @Inject
-  public Donors(DonorService donorService) {
+  public Donors(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                DonorService donorService) {
+    super(fieldService, customFieldValueService);
     this.donorService = donorService;
   }
 
