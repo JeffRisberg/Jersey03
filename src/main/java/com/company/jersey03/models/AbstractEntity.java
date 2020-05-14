@@ -30,11 +30,10 @@ public abstract class AbstractEntity implements Serializable {
     return false;
   }
 
-  protected boolean initialize(AbstractDTO dto) {
+  protected AbstractEntity applyDTO(AbstractDTO dto) {
     if (dto != null) {
       this.setId(dto.getId());
-      return true;
     }
-    return false;
+    return this;
   }
 }

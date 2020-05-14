@@ -39,5 +39,7 @@ public class MainModule extends AbstractModule {
     bind(CharityService.class).in(Scopes.SINGLETON);
     bind(DonationService.class).in(Scopes.SINGLETON);
     bind(DonorService.class).in(Scopes.SINGLETON);
+    bind(FieldService.class).in(Scopes.SINGLETON);
+    bind(FieldService.class).in(Scopes.SINGLETON);
   }
 }

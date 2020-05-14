@@ -16,15 +16,16 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = false)
 public class Field extends AbstractDatedEntity {
 
-  @Column(name = "description")
-  private String description;
-
   @Column(name = "content_type_name")
   @NotNull
   private String contentTypeName;
 
   @Column(name = "field_name")
+  @NotNull
   private String fieldName;
+
+  @Column(name = "description")
+  private String description;
 
   @Column(name = "field_path")
   private String fieldPath;

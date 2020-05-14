@@ -47,15 +47,15 @@ public class DonationEntity extends AbstractDatedEntity {
     return result;
   }
 
-  public static DonationEntity toEntity(DonationDTO dto) {
-    DonationEntity entity = new DonationEntity();
-    entity.initialize(dto);
+  public DonationEntity applyDTO(DonationDTO dto) {
+    if (dto != null) {
+      super.applyDTO(dto);
 
-    entity.setAmount(dto.getAmount());
-    entity.setCharityId(dto.getCharityId());
-    entity.setDonorId(dto.getDonorId());
-
-    return entity;
+      if (dto.getAmount() != null) this.setAmount(dto.getAmount());
+      if (dto.getCharityId() != null) this.setCharityId(dto.getCharityId());
+      if (dto.getDonorId() != null) this.setDonorId(dto.getDonorId());
+    }
+    return this;
   }
 
   public String toString() {

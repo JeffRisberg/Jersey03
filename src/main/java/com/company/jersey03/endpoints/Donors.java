@@ -30,7 +30,6 @@ public class Donors extends AbstractEndpoint {
   protected DonorService donorService;
 
   private static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
-  private static final JSONParser jsonParser = ObjectUtils.getDefaultJSONParser();
 
   @Inject
   public Donors(DonorService donorService) {
@@ -45,7 +44,8 @@ public class Donors extends AbstractEndpoint {
       donor.setDateCreated(new Timestamp(System.currentTimeMillis()));
       donor.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
-      DonorEntity createdDonor = donorService.create(DonorEntity.toEntity(donor));
+      DonorEntity createdDonor =
+        donorService.create(new DonorEntity().applyDTO(donor));
 
       if (createdDonor == null) {
         log.error("Cannot create donor from {}", donor);
@@ -116,28 +116,24 @@ public class Donors extends AbstractEndpoint {
     log.info("updating donor with id {}", donorId);
 
     try {
-      JsonNode jsonNode;
-      try {
-        jsonNode = objectMapper.readValue(requestBody, JsonNode.class);
-      } catch (JsonMappingException jme) {
-        log.error("Invalid JSON, defaulting to \"{}\" ", jme);
-        jsonNode = objectMapper.readValue("{}", JsonNode.class);
-      }
-      DonorEntity priorDonor = donorService.getById(donorId);
+      DonorEntity donorEntity = donorService.getById(donorId);
 
-      if (priorDonor == null) {
+      if (donorEntity == null) {
         return Response.serverError().entity(RestTools.getErrorJson("donorId does not exist in DB", false, Optional.empty())).build();
       }
 
-      JsonNode priorNode = objectMapper.valueToTree(priorDonor.toDTO());
-      JsonNode updatedNode = ObjectUtils.merge(priorNode, jsonNode);
-      DonorDTO updatedDonor = objectMapper.treeToValue(updatedNode, DonorDTO.class);
+      DonorDTO donorDTO;
+      try {
+        donorDTO = objectMapper.readValue(requestBody, DonorDTO.class);
+      } catch (JsonMappingException jme) {
+        log.error("Invalid JSON, defaulting to \"{}\" ", jme);
+        donorDTO = new DonorDTO();
+      }
 
-      updatedDonor.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+      donorEntity.applyDTO(donorDTO);
+      donorEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
-      DonorEntity updatedDonorEntity = DonorEntity.toEntity(updatedDonor);
-
-      if (donorService.update(updatedDonorEntity)) {
+      if (donorService.update(donorEntity)) {
         return Response.ok().build();
       } else {
         return Response.serverError().build();

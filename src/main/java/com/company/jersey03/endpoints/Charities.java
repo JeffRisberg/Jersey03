@@ -2,17 +2,22 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
+import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.models.CharityDTO;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.CharityService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.FieldService;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,17 +27,40 @@ import java.util.Optional;
 public class Charities extends AbstractEndpoint {
 
   protected CharityService charityService;
+  protected FieldService fieldService;
+  protected CustomFieldValueService customFieldValueService;
+
+  private static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
 
   @Inject
-  public Charities(CharityService charityService) {
+  public Charities(CharityService charityService, FieldService fieldService,
+                   CustomFieldValueService customFieldValueService) {
     this.charityService = charityService;
+    this.fieldService = fieldService;
+    this.customFieldValueService = customFieldValueService;
   }
 
   @POST
   @ApiOperation(value = "Register a new Charity. Set id=0", response = CharityDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response create() {
-    return null;
+  public Response create(CharityDTO charity) {
+    try {
+      charity.setDateCreated(new Timestamp(System.currentTimeMillis()));
+      charity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+
+      CharityEntity createdCharity =
+        charityService.create(new CharityEntity().applyDTO(charity, fieldService, customFieldValueService));
+
+      if (createdCharity == null) {
+        log.error("Cannot create charity from {}", charity);
+        return Response.serverError().build();
+      }
+
+      return Response.ok(createdCharity.toDTO()).build();
+    } catch (Exception e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+    }
   }
 
   @GET
@@ -84,8 +112,41 @@ public class Charities extends AbstractEndpoint {
   @Path("/{id}")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response update(@PathParam("id") Long id) {
-    return Response.ok(null).build();
+  @ApiOperation(value = "Updates a Charity identified by id")
+  @ApiImplicitParams({
+    @ApiImplicitParam(name = "charity", value = "Charity to update", required = true, dataType = "com.company.jersey03.models.CharityDTO", paramType = "body"),
+  })
+  public Response update(@PathParam("id") Long charityId, @ApiParam(hidden = true) String requestBody) {
+    log.info("updating charity with id {}", charityId);
+
+    try {
+      CharityEntity charityEntity = charityService.getById(charityId);
+
+      if (charityEntity == null) {
+        return Response.serverError().entity(RestTools.getErrorJson("charityId does not exist in DB", false, Optional.empty())).build();
+      }
+
+      CharityDTO charityDTO;
+      try {
+        charityDTO = objectMapper.readValue(requestBody, CharityDTO.class);
+        charityDTO.setId(charityId);
+      } catch (JsonMappingException jme) {
+        log.error("Invalid JSON, defaulting to \"{}\" ", jme);
+        charityDTO = new CharityDTO();
+      }
+
+      charityEntity.applyDTO(charityDTO, fieldService, customFieldValueService);
+      charityEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+
+      if (charityService.update(charityEntity)) {
+        return Response.ok().build();
+      } else {
+        return Response.serverError().build();
+      }
+    } catch (Exception e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+    }
   }
 
   @DELETE

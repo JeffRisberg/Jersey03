@@ -39,7 +39,7 @@ public class DonorEntity extends AbstractDatedEntity {
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @JoinColumn(name = "entity_id")
   @Where(clause = "entity_type = 'Donor'")
-  List<CustomFieldValueEntity> customFields = new ArrayList();
+  List<CustomFieldValueEntity> customFieldValues = new ArrayList();
 
   public DonorDTO toDTO() {
     DonorDTO result = new DonorDTO();
@@ -50,26 +50,26 @@ public class DonorEntity extends AbstractDatedEntity {
     result.setLastName(getLastName());
     result.setAge(age);
 
-    if (customFields.size() > 0) {
-      JSONObject customFieldValues = new JSONObject();
-      for (CustomFieldValueEntity cfve : customFields) {
-        customFieldValues.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+    if (customFieldValues.size() > 0) {
+      JSONObject customFieldValuesJSON = new JSONObject();
+      for (CustomFieldValueEntity cfve : customFieldValues) {
+        customFieldValuesJSON.put(cfve.getField().getFieldName(), cfve.getFieldValue());
       }
-      result.setCustomFieldValues(customFieldValues);
+      result.setCustomFieldValues(customFieldValuesJSON);
     }
 
     return result;
   }
 
-  public static DonorEntity toEntity(DonorDTO dto) {
-    DonorEntity entity = new DonorEntity();
-    entity.initialize(dto);
+  public DonorEntity applyDTO(DonorDTO dto) {
+    if (dto != null) {
+      super.applyDTO(dto);
 
-    entity.setFirstName(dto.getFirstName());
-    entity.setLastName(dto.getLastName());
-    entity.setAge(dto.getAge());
-
-    return entity;
+      if (dto.getFirstName() != null) this.setFirstName(dto.getFirstName());
+      if (dto.getLastName() != null) this.setLastName(dto.getLastName());
+      if (dto.getAge() != null) this.setAge(dto.getAge());
+    }
+    return this;
   }
 
   public String toString() {

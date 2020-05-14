@@ -1,9 +1,12 @@
 package com.company.jersey03.models;
 
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.FieldService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.Where;
 import org.json.simple.JSONObject;
 
@@ -17,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Slf4j
 public class CharityEntity extends AbstractDatedEntity {
 
   @Column(name = "name", nullable = false)
@@ -31,10 +35,10 @@ public class CharityEntity extends AbstractDatedEntity {
   @Column(name = "website", nullable = true)
   protected String website;
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
   @JoinColumn(name = "entity_id")
   @Where(clause = "entity_type = 'Charity'")
-  List<CustomFieldValueEntity> customFields = new ArrayList();
+  List<CustomFieldValueEntity> customFieldValues = new ArrayList();
 
   public CharityDTO toDTO() {
     CharityDTO result = new CharityDTO();
@@ -45,26 +49,77 @@ public class CharityEntity extends AbstractDatedEntity {
     result.setDescription(getDescription());
     result.setWebsite(getWebsite());
 
-    if (customFields.size() > 0) {
-      JSONObject customFieldValues = new JSONObject();
-      for (CustomFieldValueEntity cfve : customFields) {
-        customFieldValues.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+    if (customFieldValues.size() > 0) {
+      JSONObject customFieldValuesJSON = new JSONObject();
+      for (CustomFieldValueEntity cfve : customFieldValues) {
+        customFieldValuesJSON.put(cfve.getField().getFieldName(), cfve.getFieldValue());
       }
-      result.setCustomFieldValues(customFieldValues);
+      result.setCustomFieldValues(customFieldValuesJSON);
     }
 
     return result;
   }
 
-  public static CharityEntity toEntity(CharityDTO dto) {
-    CharityEntity entity = new CharityEntity();
-    entity.initialize(dto);
+  public CharityEntity applyDTO
+    (CharityDTO dto, FieldService fieldService, CustomFieldValueService customFieldValueService) {
+    if (dto != null) {
+      super.applyDTO(dto);
 
-    entity.setName(dto.getName());
-    entity.setEin(dto.getEin());
-    entity.setDescription(dto.getDescription());
-    entity.setWebsite(dto.getWebsite());
+      if (dto.getName() != null) this.setName(dto.getName());
+      if (dto.getEin() != null) this.setEin(dto.getEin());
+      if (dto.getDescription() != null) this.setDescription(dto.getDescription());
+      if (dto.getWebsite() != null) this.setWebsite(dto.getWebsite());
 
-    return entity;
+      if (dto.getCustomFieldValues() != null) {
+        List<CustomFieldValueEntity> addList = new ArrayList<>();
+        List<CustomFieldValueEntity> delList = new ArrayList<>();
+
+        if (this.customFieldValues.size() > 0) {
+          for (CustomFieldValueEntity cfve : this.customFieldValues) {
+            String fieldName = cfve.getField().getFieldName();
+
+            if (dto.getCustomFieldValues().containsKey("-" + fieldName)) {
+              // delete a cfve
+              fieldName = fieldName.substring(1);
+
+              delList.add(cfve);
+              dto.getCustomFieldValues().remove("-" + fieldName);
+            } else if (dto.getCustomFieldValues().containsKey(fieldName)) {
+              // update a cfve
+              String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
+
+              cfve.setFieldValue(fieldValue);
+              dto.getCustomFieldValues().remove(fieldName);
+            }
+          }
+        }
+
+        // now find the new values
+        for (Object fieldName : dto.getCustomFieldValues().keySet()) {
+          if (((String) fieldName).startsWith("-"))
+            continue;
+
+          String entityType = "Charity";
+          Field field = fieldService.getByContentTypeFieldName(entityType, (String) fieldName);
+
+          if (field != null) {
+            String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
+
+            CustomFieldValueEntity newCfve =
+              new CustomFieldValueEntity(field, field.getId(), entityType, this.getId(), fieldValue);
+            addList.add(newCfve);
+          } else {
+            log.error("tried to add unknown field " + fieldName);
+          }
+        }
+
+        this.customFieldValues.addAll(addList);
+        for (CustomFieldValueEntity cfve : delList) {
+          this.customFieldValues.remove(cfve);
+          customFieldValueService.delete(cfve.getId());
+        }
+      }
+    }
+    return this;
   }
 }
