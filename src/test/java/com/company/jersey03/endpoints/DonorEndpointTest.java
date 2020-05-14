@@ -189,7 +189,7 @@ public class DonorEndpointTest {
   }
 
   protected static EntityManager getEntityManager() throws NamingException {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jersey02");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("jersey03");
     return emf.createEntityManager();
   }
 }

@@ -17,12 +17,8 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 public class CustomFieldValueEntity extends AbstractEntity {
 
-  @Id
-  @Column(name = "id")
-  private Long id;
-
   @ManyToOne(fetch = FetchType.EAGER)
-  @NotFound(action = NotFoundAction.IGNORE) // Ignore, in case fields and mappings are in different dbs
+  @NotFound(action = NotFoundAction.IGNORE)
   @JoinColumn(name = "field_id", insertable = false, updatable = false)
   private Field field;
 

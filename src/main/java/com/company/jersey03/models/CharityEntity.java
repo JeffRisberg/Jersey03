@@ -45,11 +45,13 @@ public class CharityEntity extends AbstractDatedEntity {
     result.setDescription(getDescription());
     result.setWebsite(getWebsite());
 
-    JSONObject customFieldValues = new JSONObject();
-    for (CustomFieldValueEntity cfve : this.customFields) {
-      customFieldValues.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+    if (customFields.size() > 0) {
+      JSONObject customFieldValues = new JSONObject();
+      for (CustomFieldValueEntity cfve : customFields) {
+        customFieldValues.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+      }
+      result.setCustomFieldValues(customFieldValues);
     }
-    result.setCustomFieldValues(customFieldValues);
 
     return result;
   }

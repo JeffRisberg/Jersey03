@@ -144,6 +144,10 @@ INSERT INTO charities(name, ein, description, website, date_created, last_update
 VALUES ('Stanford University', '94-1156365', 'research university', 'http://www.stanford.edu', '2017-10-08T12:00:00',
         '2017-10-08T12:00:00');
 
+INSERT INTO charities(name, ein, description, website, date_created, last_updated)
+VALUES ('Harvard University', '04-2103580', 'research university', 'http://www.harvard.edu', '2017-10-08T12:00:00',
+        '2017-10-08T12:00:00');
+
 INSERT INTO donations(amount, charity_id, donor_id, date_created, last_updated)
 VALUES (1000.0, 1, 1, '2017-10-07T12:00:00', '2017-10-07T12:00:00');
 
