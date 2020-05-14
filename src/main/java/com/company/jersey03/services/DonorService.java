@@ -5,6 +5,7 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DAO.DonorDAO;
 import com.google.inject.Inject;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,20 +22,35 @@ public class DonorService extends AbstractService<DonorEntity> {
 
   public DonorEntity getById(Long id) {
     final AtomicReference<DonorEntity> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.getById(id, em)));
+    doWork(em -> {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", "Donor");
+      td.set(dao.getById(id, em));
+    });
     return td.get();
   }
 
   public List<DonorEntity> getAll(int limit, int offset) {
     final AtomicReference<List<DonorEntity>> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.listAll(DonorEntity.class, limit, offset, em)));
+    doWork(em -> {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", "Donor");
+      td.set(dao.listAll(DonorEntity.class, limit, offset, em));
+    });
     return td.get();
   }
 
   public List<DonorEntity> getByCriteria
     (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
     final AtomicReference<List<DonorEntity>> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
+    doWork(em -> {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", "Donor");
+      td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em));
+    });
     return td.get();
   }
 

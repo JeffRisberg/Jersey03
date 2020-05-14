@@ -41,7 +41,7 @@ public class Donations extends AbstractEndpoint {
   }
 
   @GET
-  @ApiOperation(value = "Gets all Donations", response = DonationDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Get Donation by Id", response = DonationDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {

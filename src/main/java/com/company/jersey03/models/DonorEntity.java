@@ -1,13 +1,17 @@
 package com.company.jersey03.models;
 
+import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +25,10 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DonorEntity extends AbstractDatedEntity {
+@Slf4j
+public class DonorEntity extends AbstractDatedCFVEntity {
+
+  static final String entityType = "entity_type = 'Donor'";
 
   @Column(name = "first_name", nullable = false)
   private String firstName;
@@ -36,11 +43,6 @@ public class DonorEntity extends AbstractDatedEntity {
   @JsonIgnore
   private List<DonationEntity> donations = new ArrayList<DonationEntity>();
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @JoinColumn(name = "entity_id")
-  @Where(clause = "entity_type = 'Donor'")
-  List<CustomFieldValueEntity> customFieldValues = new ArrayList();
-
   public DonorDTO toDTO() {
     DonorDTO result = new DonorDTO();
     update(result);
@@ -52,8 +54,8 @@ public class DonorEntity extends AbstractDatedEntity {
 
     if (customFieldValues.size() > 0) {
       JSONObject customFieldValuesJSON = new JSONObject();
-      for (CustomFieldValueEntity cfve : customFieldValues) {
-        customFieldValuesJSON.put(cfve.getField().getFieldName(), cfve.getFieldValue());
+      for (CustomFieldValue cfv : customFieldValues) {
+        customFieldValuesJSON.put(cfv.getField().getFieldName(), cfv.getFieldValue());
       }
       result.setCustomFieldValues(customFieldValuesJSON);
     }
@@ -61,9 +63,9 @@ public class DonorEntity extends AbstractDatedEntity {
     return result;
   }
 
-  public DonorEntity applyDTO(DonorDTO dto) {
+  public DonorEntity applyDTO(DonorDTO dto, FieldService fieldService) {
     if (dto != null) {
-      super.applyDTO(dto);
+      super.applyDTO(dto, "Donor", fieldService);
 
       if (dto.getFirstName() != null) this.setFirstName(dto.getFirstName());
       if (dto.getLastName() != null) this.setLastName(dto.getLastName());

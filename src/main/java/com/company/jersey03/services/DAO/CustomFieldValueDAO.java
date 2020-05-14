@@ -1,21 +1,21 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.jersey03.models.CustomFieldValueEntity;
+import com.company.jersey03.models.CustomFieldValue;
 import lombok.NonNull;
 
 import javax.persistence.EntityManager;
 
-public class CustomFieldValueDAO extends BaseTemplateDAOImpl<CustomFieldValueEntity> {
+public class CustomFieldValueDAO extends BaseTemplateDAOImpl<CustomFieldValue> {
 
   public CustomFieldValueDAO() {
-    super(CustomFieldValueEntity.class);
+    super(CustomFieldValue.class);
   }
 
-  public CustomFieldValueEntity create(CustomFieldValueEntity obj, @NonNull EntityManager em) {
+  public CustomFieldValue create(CustomFieldValue obj, @NonNull EntityManager em) {
     return super.create(obj, em);
   }
 
-  public CustomFieldValueEntity getById(Long id, @NonNull EntityManager em) {
+  public CustomFieldValue getById(Long id, @NonNull EntityManager em) {
     return super.getById(id, em);
   }
 

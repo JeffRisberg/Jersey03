@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class CustomFieldValueEntity extends AbstractEntity {
+public class CustomFieldValue extends AbstractEntity {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @NotFound(action = NotFoundAction.IGNORE)

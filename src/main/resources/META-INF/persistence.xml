@@ -9,7 +9,7 @@
     <class>com.company.jersey03.models.CharityEntity</class>
     <class>com.company.jersey03.models.ClusterEntity</class>
     <class>com.company.jersey03.models.ClusterEntityMapping</class>
-    <class>com.company.jersey03.models.CustomFieldValueEntity</class>
+    <class>com.company.jersey03.models.CustomFieldValue</class>
     <class>com.company.jersey03.models.DonationEntity</class>
     <class>com.company.jersey03.models.DonorEntity</class>
     <class>com.company.jersey03.models.Field</class>

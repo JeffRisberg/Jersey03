@@ -34,7 +34,7 @@ public abstract class AbstractDatedEntity extends AbstractEntity {
     lastUpdated = new Date();
   }
 
-  public boolean update(AbstractDatedDTO dto) {
+  protected boolean update(AbstractDatedDTO dto) {
     if (dto != null) {
       super.update(dto);
 

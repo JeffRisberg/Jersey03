@@ -128,13 +128,13 @@ public class Charities extends AbstractEndpoint {
         charityDTO = new CharityDTO();
       }
 
-      List<Long> cfveIdDeletes = charityEntity.findCustomFieldValueDeletes(charityDTO);
+      List<Long> cfvIdDeletes = charityEntity.findCustomFieldValueDeletes(charityDTO);
       charityEntity.applyDTO(charityDTO, fieldService);
       charityEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       if (charityService.update(charityEntity)) {
-        for (Long cfveId : cfveIdDeletes) {
-          customFieldValueService.delete(cfveId);
+        for (Long cfvId : cfvIdDeletes) {
+          customFieldValueService.delete(cfvId);
         }
         return Response.ok().build();
       } else {

@@ -47,7 +47,7 @@ public class Donors extends AbstractEndpoint {
       donor.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       DonorEntity createdDonor =
-        donorService.create(new DonorEntity().applyDTO(donor));
+        donorService.create(new DonorEntity().applyDTO(donor, fieldService));
 
       if (createdDonor == null) {
         log.error("Cannot create donor from {}", donor);
@@ -62,7 +62,7 @@ public class Donors extends AbstractEndpoint {
   }
 
   @GET
-  @ApiOperation(value = "Gets all Donors", response = DonorDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Gets Donor by Id", response = DonorDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
@@ -127,15 +127,20 @@ public class Donors extends AbstractEndpoint {
       DonorDTO donorDTO;
       try {
         donorDTO = objectMapper.readValue(requestBody, DonorDTO.class);
+        donorDTO.setId(donorId);
       } catch (JsonMappingException jme) {
         log.error("Invalid JSON, defaulting to \"{}\" ", jme);
         donorDTO = new DonorDTO();
       }
 
-      donorEntity.applyDTO(donorDTO);
+      List<Long> cfvIdDeletes = donorEntity.findCustomFieldValueDeletes(donorDTO);
+      donorEntity.applyDTO(donorDTO, fieldService);
       donorEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       if (donorService.update(donorEntity)) {
+        for (Long cfvId : cfvIdDeletes) {
+          customFieldValueService.delete(cfvId);
+        }
         return Response.ok().build();
       } else {
         return Response.serverError().build();
