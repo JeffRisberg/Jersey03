@@ -16,7 +16,7 @@ import javax.ws.rs.core.*;
 import java.util.List;
 import java.util.Optional;
 
-@Api(value = "Charities", description = "charity management")
+@Api(value = "Charities", description = "Charity Management")
 @Path("charities")
 @Slf4j
 public class Charities extends AbstractEndpoint {

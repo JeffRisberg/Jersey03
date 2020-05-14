@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Api(value = "Donations", description = "donations management")
+@Api(value = "Donations", description = "Donation Management")
 @Path("donations")
 @Slf4j
 public class Donations extends AbstractEndpoint {

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Api(value = "Donors", description = "donors management")
+@Api(value = "Donors", description = "Donor Management")
 @Path("donors")
 @Slf4j
 public class Donors extends AbstractEndpoint {
@@ -33,6 +33,7 @@ public class Donors extends AbstractEndpoint {
   @ApiOperation(value = "Register a new Donor. Set id=0", response = DonorDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
   public Response create() {
+
     return null;
   }
 
