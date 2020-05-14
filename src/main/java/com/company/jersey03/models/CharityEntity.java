@@ -1,6 +1,5 @@
 package com.company.jersey03.models;
 
-import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.FieldService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -60,8 +59,9 @@ public class CharityEntity extends AbstractDatedEntity {
     return result;
   }
 
-  public CharityEntity applyDTO
-    (CharityDTO dto, FieldService fieldService, CustomFieldValueService customFieldValueService) {
+  public CharityEntity applyDTO(CharityDTO dto, FieldService fieldService) {
+    String entityType = "Charity";
+
     if (dto != null) {
       super.applyDTO(dto);
 
@@ -72,20 +72,13 @@ public class CharityEntity extends AbstractDatedEntity {
 
       if (dto.getCustomFieldValues() != null) {
         List<CustomFieldValueEntity> addList = new ArrayList<>();
-        List<CustomFieldValueEntity> delList = new ArrayList<>();
 
         if (this.customFieldValues.size() > 0) {
           for (CustomFieldValueEntity cfve : this.customFieldValues) {
             String fieldName = cfve.getField().getFieldName();
 
-            if (dto.getCustomFieldValues().containsKey("-" + fieldName)) {
-              // delete a cfve
-              fieldName = fieldName.substring(1);
-
-              delList.add(cfve);
-              dto.getCustomFieldValues().remove("-" + fieldName);
-            } else if (dto.getCustomFieldValues().containsKey(fieldName)) {
-              // update a cfve
+            if (dto.getCustomFieldValues().containsKey(fieldName)) {
+              // this cfve is being updated
               String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
 
               cfve.setFieldValue(fieldValue);
@@ -94,15 +87,15 @@ public class CharityEntity extends AbstractDatedEntity {
           }
         }
 
-        // now find the new values
+        // Now find the new fieldValues
         for (Object fieldName : dto.getCustomFieldValues().keySet()) {
           if (((String) fieldName).startsWith("-"))
             continue;
 
-          String entityType = "Charity";
           Field field = fieldService.getByContentTypeFieldName(entityType, (String) fieldName);
 
           if (field != null) {
+            // a cfve must be created
             String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
 
             CustomFieldValueEntity newCfve =
@@ -114,12 +107,31 @@ public class CharityEntity extends AbstractDatedEntity {
         }
 
         this.customFieldValues.addAll(addList);
-        for (CustomFieldValueEntity cfve : delList) {
-          this.customFieldValues.remove(cfve);
-          customFieldValueService.delete(cfve.getId());
-        }
       }
     }
     return this;
+  }
+
+  public List<Long> findDeletes(CharityDTO dto) {
+    List<Long> delList = new ArrayList<>();
+
+    if (dto != null) {
+      if (dto.getCustomFieldValues() != null) {
+        if (this.customFieldValues.size() > 0) {
+          for (CustomFieldValueEntity cfve : this.customFieldValues) {
+            String fieldName = cfve.getField().getFieldName();
+
+            if (dto.getCustomFieldValues().containsKey("-" + fieldName)) {
+              // this cfve is being deleted
+              fieldName = fieldName.substring(1);
+
+              delList.add(cfve.getId());
+              dto.getCustomFieldValues().remove("-" + fieldName);
+            }
+          }
+        }
+      }
+    }
+    return delList;
   }
 }

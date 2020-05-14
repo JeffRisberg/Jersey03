@@ -49,7 +49,7 @@ public class Charities extends AbstractEndpoint {
       charity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       CharityEntity createdCharity =
-        charityService.create(new CharityEntity().applyDTO(charity, fieldService, customFieldValueService));
+        charityService.create(new CharityEntity().applyDTO(charity, fieldService));
 
       if (createdCharity == null) {
         log.error("Cannot create charity from {}", charity);
@@ -135,10 +135,14 @@ public class Charities extends AbstractEndpoint {
         charityDTO = new CharityDTO();
       }
 
-      charityEntity.applyDTO(charityDTO, fieldService, customFieldValueService);
+      List<Long> deletes = charityEntity.findDeletes(charityDTO);
+      charityEntity.applyDTO(charityDTO, fieldService);
       charityEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       if (charityService.update(charityEntity)) {
+        for (Long cfveId : deletes) {
+          customFieldValueService.delete(cfveId);
+        }
         return Response.ok().build();
       } else {
         return Response.serverError().build();
