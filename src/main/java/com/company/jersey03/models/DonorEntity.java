@@ -61,6 +61,17 @@ public class DonorEntity extends AbstractDatedEntity {
     return result;
   }
 
+  public static DonorEntity toEntity(DonorDTO dto) {
+    DonorEntity entity = new DonorEntity();
+    entity.initialize(dto);
+
+    entity.setFirstName(dto.getFirstName());
+    entity.setLastName(dto.getLastName());
+    entity.setAge(dto.getAge());
+
+    return entity;
+  }
+
   public String toString() {
     StringBuilder sb = new StringBuilder();
 

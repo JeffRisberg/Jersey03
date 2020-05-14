@@ -35,11 +35,24 @@ public abstract class AbstractDatedEntity extends AbstractEntity {
   }
 
   public boolean update(AbstractDatedDTO dto) {
-    super.update(dto);
+    if (dto != null) {
+      super.update(dto);
 
-    dto.setDateCreated(this.dateCreated);
-    dto.setLastUpdated(this.lastUpdated);
+      dto.setDateCreated(this.dateCreated);
+      dto.setLastUpdated(this.lastUpdated);
+      return true;
+    }
+    return false;
+  }
 
-    return true;
+  protected boolean initialize(AbstractDatedDTO dto) {
+    if (dto != null) {
+      super.initialize(dto);
+
+      this.setLastUpdated(dto.getLastUpdated());
+      this.setDateCreated(dto.getDateCreated());
+      return true;
+    }
+    return false;
   }
 }

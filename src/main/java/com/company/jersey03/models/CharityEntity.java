@@ -55,4 +55,16 @@ public class CharityEntity extends AbstractDatedEntity {
 
     return result;
   }
+
+  public static CharityEntity toEntity(CharityDTO dto) {
+    CharityEntity entity = new CharityEntity();
+    entity.initialize(dto);
+
+    entity.setName(dto.getName());
+    entity.setEin(dto.getEin());
+    entity.setDescription(dto.getDescription());
+    entity.setWebsite(dto.getWebsite());
+
+    return entity;
+  }
 }
