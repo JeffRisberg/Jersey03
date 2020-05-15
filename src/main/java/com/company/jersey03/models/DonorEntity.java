@@ -52,14 +52,6 @@ public class DonorEntity extends AbstractDatedCFVEntity {
     result.setLastName(getLastName());
     result.setAge(age);
 
-    if (customFieldValues.size() > 0) {
-      JSONObject customFieldValuesJSON = new JSONObject();
-      for (CustomFieldValue cfv : customFieldValues) {
-        customFieldValuesJSON.put(cfv.getField().getFieldName(), cfv.getFieldValue());
-      }
-      result.setCustomFieldValues(customFieldValuesJSON);
-    }
-
     return result;
   }
 

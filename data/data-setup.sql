@@ -34,7 +34,7 @@ CREATE TABLE custom_field_values
     field_id    BIGINT       NOT NULL,
     entity_id   BIGINT       NOT NULL,
     entity_type VARCHAR(255) NOT NULL,
-    field_value VARCHAR(255) NOT NULL,
+    field_value VARCHAR(255) NULL,
     PRIMARY KEY (id),
     CONSTRAINT `fk_custom_field_value_field` FOREIGN KEY (field_id) REFERENCES `fields` (`id`)
 );
