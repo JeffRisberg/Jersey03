@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CharityService extends AbstractService<CharityEntity> {
+  private static final String entityType = "Charity";
+
   private final CharityDAO dao;
 
   @Inject
@@ -32,7 +34,7 @@ public class CharityService extends AbstractService<CharityEntity> {
     {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Charity");
+        .setParameter("entityType", entityType);
       td.set(dao.getById(id, em));
     });
     return td.get();
@@ -43,7 +45,7 @@ public class CharityService extends AbstractService<CharityEntity> {
     doWork(em -> {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Charity");
+        .setParameter("entityType", entityType);
       td.set(dao.listAll(CharityEntity.class, limit, offset, em));
     });
     return td.get();
@@ -55,7 +57,7 @@ public class CharityService extends AbstractService<CharityEntity> {
     doWork(em -> {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Charity");
+        .setParameter("entityType", entityType);
       td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em));
     });
     return td.get();

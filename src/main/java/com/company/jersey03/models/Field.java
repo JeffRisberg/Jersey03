@@ -36,6 +36,9 @@ public class Field extends AbstractDatedEntity {
   @Column(name = "field_values")
   private String fieldValues;
 
+  @Column(name = "is_custom")
+  private Boolean isCustom;
+
   @Column(name = "db_column_name")
   private String dbColumnName;
 
@@ -51,33 +54,34 @@ public class Field extends AbstractDatedEntity {
     FieldDTO dto = new FieldDTO();
     update(dto);
 
+    dto.setFieldName(this.fieldName);
     dto.setDescription(this.description);
     dto.setContentTypeName(this.contentTypeName);
-    dto.setFieldName(this.fieldName);
     dto.setFieldPath(this.fieldPath);
     dto.setFieldType(this.fieldType);
     dto.setFieldValues(this.fieldValues);
+    dto.setIsCustom(this.isCustom);
     dto.setDbColumnName(this.dbColumnName);
     dto.setIsRequired(this.isRequired);
     dto.setSeqNum(this.seqNum);
     return dto;
   }
 
-  public static Field toEntity(FieldDTO dto) {
-    if (dto == null) {
-      return null;
+  public Field applyDTO(FieldDTO dto) {
+    if (dto != null) {
+      super.applyDTO(dto);
+
+      if (dto.getFieldName() != null) this.setFieldName(dto.getFieldName());
+      if (dto.getDescription() != null) this.setDescription(dto.getDescription());
+      if (dto.getContentTypeName() != null) this.setContentTypeName(dto.getContentTypeName());
+      if (dto.getFieldPath() != null) this.setFieldPath(dto.getFieldPath());
+      if (dto.getFieldType() != null) this.setFieldType(dto.getFieldType());
+      if (dto.getFieldValues() != null) this.setFieldValues(dto.getFieldValues());
+      if (dto.getIsCustom() != null) this.setIsCustom(dto.getIsCustom());
+      if (dto.getDbColumnName() != null) this.setDbColumnName(dto.getDbColumnName());
+      if (dto.getIsRequired() != null) this.setIsRequired(dto.getIsRequired());
+      if (dto.getSeqNum() != null) this.setSeqNum(dto.getSeqNum());
     }
-    Field entity = new Field();
-    //entity.initialize(dto);
-    entity.setDescription(dto.getDescription());
-    entity.setContentTypeName(dto.getContentTypeName());
-    entity.setFieldName(dto.getFieldName());
-    entity.setFieldPath(dto.getFieldPath());
-    entity.setFieldType(dto.getFieldType());
-    entity.setFieldValues(dto.getFieldValues());
-    entity.setDbColumnName(dto.getDbColumnName());
-    entity.setIsRequired(dto.getIsRequired());
-    entity.setSeqNum(dto.getSeqNum());
-    return entity;
+    return this;
   }
 }

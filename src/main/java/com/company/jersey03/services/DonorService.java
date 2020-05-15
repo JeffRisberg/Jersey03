@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DonorService extends AbstractService<DonorEntity> {
+  private static final String entityType = "Donor";
+
   private final DonorDAO dao;
 
   @Inject
@@ -25,7 +27,7 @@ public class DonorService extends AbstractService<DonorEntity> {
     doWork(em -> {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Donor");
+        .setParameter("entityType", entityType);
       td.set(dao.getById(id, em));
     });
     return td.get();
@@ -36,7 +38,7 @@ public class DonorService extends AbstractService<DonorEntity> {
     doWork(em -> {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Donor");
+        .setParameter("entityType", entityType);
       td.set(dao.listAll(DonorEntity.class, limit, offset, em));
     });
     return td.get();
@@ -48,7 +50,7 @@ public class DonorService extends AbstractService<DonorEntity> {
     doWork(em -> {
       Session session = em.unwrap(Session.class);
       session.enableFilter("entityTypeFilter")
-        .setParameter("entityType", "Donor");
+        .setParameter("entityType", entityType);
       td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em));
     });
     return td.get();

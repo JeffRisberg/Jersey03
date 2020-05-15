@@ -21,7 +21,7 @@ CREATE TABLE fields
     field_values      VARCHAR(1025) NULL,
     is_custom         INT(1) DEFAULT 0,
     db_column_name    VARCHAR(255)  NULL,
-    is_required       VARCHAR(255)  NULL,
+    is_required       INT(1) DEFAULT 0,
     seq_num           VARCHAR(255)  NULL,
     date_created      DATETIME      not null,
     last_updated      DATETIME      not null,

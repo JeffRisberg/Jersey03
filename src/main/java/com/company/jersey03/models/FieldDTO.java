@@ -15,6 +15,7 @@ public class FieldDTO extends AbstractDatedDTO {
   private String fieldPath;
   private String fieldType;
   private String fieldValues;
+  private Boolean isCustom;
   private String dbColumnName;
   private Boolean isRequired;
   private Integer seqNum;
