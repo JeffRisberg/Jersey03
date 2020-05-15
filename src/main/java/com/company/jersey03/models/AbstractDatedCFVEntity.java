@@ -73,7 +73,7 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
     return delList;
   }
 
-  public AbstractDatedCFVEntity applyDTO(AbstractDTO dto, String entityType, FieldService fieldService) {
+  public AbstractDatedCFVEntity applyDTO(AbstractDatedDTO dto, String entityType, FieldService fieldService) {
     if (dto != null) {
       super.applyDTO(dto);
 
