@@ -57,7 +57,7 @@ public class Charities extends AbstractEndpoint {
   }
 
   @GET
-  @ApiOperation(value = "Gets all Charities", response = CharityDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Gets Charity by Id", response = CharityDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
