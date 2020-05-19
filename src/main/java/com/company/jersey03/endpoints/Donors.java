@@ -2,43 +2,67 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
-import com.company.jersey03.models.DonationDTO;
+import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.models.DonorDTO;
 import com.company.jersey03.models.DonorEntity;
+import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.DonorService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.company.jersey03.services.FieldService;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Api(value = "Donors", description = "donors management")
+@Api(value = "Donors", description = "Donor Management")
 @Path("donors")
 @Slf4j
 public class Donors extends AbstractEndpoint {
 
   protected DonorService donorService;
 
+  private static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
+
   @Inject
-  public Donors(DonorService donorService) {
+  public Donors(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                DonorService donorService) {
+    super(fieldService, customFieldValueService);
     this.donorService = donorService;
   }
 
   @POST
   @ApiOperation(value = "Register a new Donor. Set id=0", response = DonorDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response x() {
-    return null;
+  public Response create(DonorDTO donor) {
+    try {
+      donor.setDateCreated(new Timestamp(System.currentTimeMillis()));
+      donor.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+
+      DonorEntity createdDonor =
+        donorService.create(new DonorEntity().applyDTO(donor, fieldService));
+
+      if (createdDonor == null) {
+        log.error("Cannot create donor from {}", donor);
+        return Response.serverError().build();
+      }
+
+      return Response.ok(createdDonor.toDTO()).build();
+    } catch (Exception e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+    }
   }
 
   @GET
-  @ApiOperation(value = "Gets all Donors", response = DonorDTO.class, responseContainer = "List")
+  @ApiOperation(value = "Gets Donor by Id", response = DonorDTO.class, responseContainer = "List")
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetch(@PathParam("id") Long id) {
@@ -61,19 +85,19 @@ public class Donors extends AbstractEndpoint {
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
-    @DefaultValue("") @QueryParam("sort") String sortStr,
     @Context UriInfo uriInfo) {
 
-    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
-    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
-
     try {
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+      List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+      List<SortDescription> sortDescs = this.parseSorting(queryParams);
+
       JSONArray result = new JSONArray();
-      List<DonorEntity> donors = donorService.getAll(limit, offset);
+      List<DonorEntity> donors =
+        donorService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (DonorEntity donor : donors) {
-        result.add(donor.toJSON());
+        result.add(donor.toDTO());
       }
 
       return Response.ok(result).build();
@@ -86,8 +110,45 @@ public class Donors extends AbstractEndpoint {
   @Path("/{id}")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response update(@PathParam("id") Long id) {
-    return Response.ok(null).build();
+  @ApiOperation(value = "Updates a Donor identified by id")
+  @ApiImplicitParams({
+    @ApiImplicitParam(name = "donor", value = "Donor to update", required = true, dataType = "com.company.jersey03.models.DonorDTO", paramType = "body"),
+  })
+  public Response update(@PathParam("id") Long donorId, @ApiParam(hidden = true) String requestBody) {
+    log.info("updating donor with id {}", donorId);
+
+    try {
+      DonorEntity donorEntity = donorService.getById(donorId);
+
+      if (donorEntity == null) {
+        return Response.serverError().entity(RestTools.getErrorJson("donorId does not exist in DB", false, Optional.empty())).build();
+      }
+
+      DonorDTO donorDTO;
+      try {
+        donorDTO = objectMapper.readValue(requestBody, DonorDTO.class);
+        donorDTO.setId(donorId);
+      } catch (JsonMappingException jme) {
+        log.error("Invalid JSON, defaulting to \"{}\" ", jme);
+        donorDTO = new DonorDTO();
+      }
+
+      List<Long> cfvIdDeletes = donorEntity.findCustomFieldValueDeletes(donorDTO);
+      donorEntity.applyDTO(donorDTO, fieldService);
+      donorEntity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+
+      if (donorService.update(donorEntity)) {
+        for (Long cfvId : cfvIdDeletes) {
+          customFieldValueService.delete(cfvId);
+        }
+        return Response.ok().build();
+      } else {
+        return Response.serverError().build();
+      }
+    } catch (Exception e) {
+      log.error("Exception during request", e);
+      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+    }
   }
 
   @DELETE

@@ -1,12 +1,19 @@
 package com.company.jersey03.models;
 
+import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.Where;
-import org.json.simple.JSONObject;
 
 /**
  * @author Jeff Risberg
@@ -18,7 +25,10 @@ import org.json.simple.JSONObject;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DonorEntity extends AbstractDatedEntity {
+@Slf4j
+public class DonorEntity extends AbstractDatedCFVEntity {
+
+  static final String entityType = "entity_type = 'Donor'";
 
   @Column(name = "first_name", nullable = false)
   private String firstName;
@@ -33,16 +43,27 @@ public class DonorEntity extends AbstractDatedEntity {
   @JsonIgnore
   private List<DonationEntity> donations = new ArrayList<DonationEntity>();
 
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-  @JoinColumn(name = "entity_id")
-  @Where(clause = "entity_type = 'DONOR'")
-  List<CustomFieldEntity> customFields = new ArrayList();
+  public DonorDTO toDTO() {
+    DonorDTO result = new DonorDTO();
+    update(result);
 
-  public DonorEntity(String firstName, String lastName, int age) {
-    this.setId(null);
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.age = age;
+    result.setId(getId());
+    result.setFirstName(getFirstName());
+    result.setLastName(getLastName());
+    result.setAge(age);
+
+    return result;
+  }
+
+  public DonorEntity applyDTO(DonorDTO dto, FieldService fieldService) {
+    if (dto != null) {
+      super.applyDTO(dto, "Donor", fieldService);
+
+      if (dto.getFirstName() != null) this.setFirstName(dto.getFirstName());
+      if (dto.getLastName() != null) this.setLastName(dto.getLastName());
+      if (dto.getAge() != null) this.setAge(dto.getAge());
+    }
+    return this;
   }
 
   public String toString() {
@@ -54,40 +75,5 @@ public class DonorEntity extends AbstractDatedEntity {
     sb.append("]");
 
     return sb.toString();
-  }
-
-  public DonorDTO toDTO() {
-    DonorDTO result = new DonorDTO();
-
-    result.setId(getId());
-    result.setFirstName(getFirstName());
-    result.setLastName(getLastName());
-    result.setAge(age);
-
-    List<CustomFieldDTO> customFields = new ArrayList();
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      customFields.add(cfe.toDTO());
-    }
-    result.setCustomFields(customFields);
-
-    return result;
-  }
-
-  public JSONObject toJSON() {
-    JSONObject result = new JSONObject();
-
-    result.put("id", getId());
-    result.put("dateCreated", getDateCreated());
-    result.put("lastUpdated", getLastUpdated());
-    result.put("firstName", getFirstName());
-    result.put("lastName", getLastName());
-    if (getAge() != null) {
-      result.put("age", getAge());
-    }
-
-    for (CustomFieldEntity cfe : getCustomFields()) {
-      result.put(cfe.getKey(), cfe.getValue());
-    }
-    return result;
   }
 }

@@ -9,9 +9,10 @@
     <class>com.company.jersey03.models.CharityEntity</class>
     <class>com.company.jersey03.models.ClusterEntity</class>
     <class>com.company.jersey03.models.ClusterEntityMapping</class>
-    <class>com.company.jersey03.models.CustomFieldEntity</class>
+    <class>com.company.jersey03.models.CustomFieldValue</class>
     <class>com.company.jersey03.models.DonationEntity</class>
     <class>com.company.jersey03.models.DonorEntity</class>
+    <class>com.company.jersey03.models.Field</class>
 
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>

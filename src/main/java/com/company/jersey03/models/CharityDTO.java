@@ -2,30 +2,17 @@ package com.company.jersey03.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharityDTO {
+@EqualsAndHashCode(callSuper = true)
+public class CharityDTO extends AbstractDatedDTO {
 
-  private Long id;
-
-  protected Date dateCreated;
-
-  protected Date lastUpdated;
-
-  protected String name;
-
-  protected String ein;
-
-  protected String description;
-
-  protected String website;
-
-  protected List<CustomFieldDTO> customFields = new ArrayList();
+  private String name;
+  private String ein;
+  private String description;
+  private String website;
 }

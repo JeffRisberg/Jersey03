@@ -1,6 +1,7 @@
 package com.company.jersey03.services.DAO;
 
 import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
 import lombok.NonNull;
 
 import javax.persistence.EntityManager;
@@ -21,7 +22,8 @@ public interface BaseTemplateDAO<T> {
 
   List<T> getBySQL(@NonNull String sql, @NonNull Map<String, Object> params, @NonNull EntityManager em);
 
-  List<T> getByCriteria(List<FilterDescription> filterDescriptions, int limit, int offset, @NonNull EntityManager em);
+  List<T> getByCriteria
+    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset, @NonNull EntityManager em);
 
   List<T> getByCriteria(@NonNull Map<String, Object> params, EntityManager em);
 

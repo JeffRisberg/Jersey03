@@ -1,27 +1,22 @@
 package com.company.jersey03.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Jeff Risberg
  * @since 11/3/17
  */
 
-@NoArgsConstructor
 @Data
-public class DonorDTO {
-
-  private Long id;
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper=true)
+public class DonorDTO extends AbstractDatedDTO {
 
   private String firstName;
-
   private String lastName;
-
   private Integer age;
-
-  protected List<CustomFieldDTO> customFields = new ArrayList();
 }

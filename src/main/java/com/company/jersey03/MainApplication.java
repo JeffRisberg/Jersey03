@@ -36,8 +36,7 @@ public class MainApplication extends ResourceConfig {
     // This will cause all results to be gzipped.  This example is from
     // http://www.codingpedia.org/ama/how-to-compress-responses-in-java-rest-api-with-gzip-and-jersey/
     //
-    // That document also describes how to make gzipping be scoped to specific handlers
-    // if needed.
+    // That document also describes how to make gzipping be scoped to specific handlers if needed.
     EncodingFilter.enableFor(this, GZipEncoder.class);
   }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * This configures Jersey.  The MicroserviceModule, which is implemented by the microservice's
- * main Guice Module (e.g. Jersey02Module), produces the List of Resource (Controller) classes
+ * main Guice Module (e.g. Jersey03Module), produces the List of Resource (Controller) classes
  * which are injected here and registered with Jersey.
  */
 public class Jersey2App extends ResourceConfig {

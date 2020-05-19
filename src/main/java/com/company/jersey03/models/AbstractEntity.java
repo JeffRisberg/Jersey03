@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Jeff Risberg
@@ -14,9 +16,26 @@ import java.io.Serializable;
  */
 @Data
 @MappedSuperclass
-public class AbstractEntity implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected Long id;
+
+  public abstract Object toDTO();
+
+  protected boolean update(AbstractDTO dto) {
+    if (dto != null) {
+      dto.setId(this.id);
+      return true;
+    }
+    return false;
+  }
+
+  protected AbstractEntity applyDTO(AbstractDTO dto) {
+    if (dto != null) {
+      this.setId(dto.getId());
+    }
+    return this;
+  }
 }

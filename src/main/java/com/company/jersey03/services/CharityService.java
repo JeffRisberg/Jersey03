@@ -1,14 +1,18 @@
 package com.company.jersey03.services;
 
 import com.company.common.FilterDescription;
+import com.company.common.SortDescription;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.DAO.CharityDAO;
 import com.google.inject.Inject;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CharityService extends AbstractService<CharityEntity> {
+  private static final String entityType = "Charity";
+
   private final CharityDAO dao;
 
   @Inject
@@ -26,19 +30,36 @@ public class CharityService extends AbstractService<CharityEntity> {
 
   public CharityEntity getById(Long id) {
     final AtomicReference<CharityEntity> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.getById(id, em)));
+    doWork(em ->
+    {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", entityType);
+      td.set(dao.getById(id, em));
+    });
     return td.get();
   }
 
   public List<CharityEntity> getAll(int limit, int offset) {
     final AtomicReference<List<CharityEntity>> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.listAll(CharityEntity.class, limit, offset, em)));
+    doWork(em -> {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", entityType);
+      td.set(dao.listAll(CharityEntity.class, limit, offset, em));
+    });
     return td.get();
   }
 
-  public List<CharityEntity> getByCriteria(List<FilterDescription> filterDescriptions, int limit, int offset) {
+  public List<CharityEntity> getByCriteria
+    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
     final AtomicReference<List<CharityEntity>> td = new AtomicReference<>();
-    doWork(em -> td.set(dao.getByCriteria(filterDescriptions, limit, offset, em)));
+    doWork(em -> {
+      Session session = em.unwrap(Session.class);
+      session.enableFilter("entityTypeFilter")
+        .setParameter("entityType", entityType);
+      td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em));
+    });
     return td.get();
   }
 

@@ -2,20 +2,17 @@ package com.company.jersey03.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClusterDTO {
-
-  private Long id;
+@EqualsAndHashCode(callSuper=true)
+public class ClusterDTO extends AbstractDatedDTO {
 
   private String clusterName;
   private String attributes;
-  private Date createdDate;
   private Long version;
   private String usageType;
 

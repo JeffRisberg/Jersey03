@@ -5,6 +5,9 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.ClusterDTO;
 import com.company.jersey03.models.ClusterEntity;
 import com.company.jersey03.services.ClusterService;
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.DonorService;
+import com.company.jersey03.services.FieldService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
@@ -21,7 +24,9 @@ public class Clusters extends AbstractEndpoint {
   protected ClusterService clusterService;
 
   @Inject
-  public Clusters(ClusterService clusterService) {
+  public Clusters(FieldService fieldService, CustomFieldValueService customFieldValueService,
+                ClusterService clusterService) {
+    super(fieldService, customFieldValueService);
     this.clusterService = clusterService;
   }
 
@@ -47,17 +52,16 @@ public class Clusters extends AbstractEndpoint {
   public Response fetchList(
     @DefaultValue("50") @QueryParam("limit") int limit,
     @DefaultValue("0") @QueryParam("offset") int offset,
-    @DefaultValue("") @QueryParam("sort") String sortStr,
     @Context UriInfo uriInfo) {
 
-    MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-    List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
-    List<SortDescription> sortDescs = this.parseSortStr(sortStr);
-
     try {
-      List<ClusterDTO> result = new ArrayList<>();
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
+      List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
+      List<SortDescription> sortDescs = this.parseSorting(queryParams);
 
-      List<ClusterEntity> clusters = clusterService.getAll(limit, offset);
+      List<ClusterDTO> result = new ArrayList<>();
+      List<ClusterEntity> clusters =
+        clusterService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (ClusterEntity cluster : clusters) {
         result.add(cluster.toDTO());

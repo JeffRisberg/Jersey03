@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.json.simple.JSONObject;
 
 import javax.persistence.*;
 
@@ -18,7 +17,7 @@ public class DonationEntity extends AbstractDatedEntity {
   @Column(name = "amount", nullable = false)
   private Double amount;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "donor_id", insertable = false, updatable = false)
   @JsonIgnore
   private DonorEntity donor;
@@ -26,7 +25,7 @@ public class DonationEntity extends AbstractDatedEntity {
   @Column(name = "donor_id")
   private Long donorId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "charity_id", insertable = false, updatable = false)
   @JsonIgnore
   private CharityEntity charity;
@@ -34,34 +33,10 @@ public class DonationEntity extends AbstractDatedEntity {
   @Column(name = "charity_id")
   private Long charityId;
 
-  public DonationEntity(Double amount) {
-    this.setId(null);
-    this.amount = amount;
-  }
-
-  public DonationEntity(Double amount, DonorEntity donor, long donorId, CharityEntity charity, long charityId) {
-    this.setId(null);
-    this.amount = amount;
-    this.donor = donor;
-    this.donorId = donorId;
-    this.charity = charity;
-    this.charityId = charityId;
-  }
-
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append("DonationEntity[date=" + getDateCreated());
-    sb.append(", amount=" + amount);
-    sb.append("]");
-
-    return sb.toString();
-  }
-
   public DonationDTO toDTO() {
     DonationDTO result = new DonationDTO();
+    update(result);
 
-    result.setId(getId());
     result.setAmount(amount);
     result.setCharityId(getCharityId());
     result.setCharityName(charity.getName());
@@ -72,16 +47,24 @@ public class DonationEntity extends AbstractDatedEntity {
     return result;
   }
 
-  public JSONObject toJSON() {
-    JSONObject result = new JSONObject();
+  public DonationEntity applyDTO(DonationDTO dto) {
+    if (dto != null) {
+      super.applyDTO(dto);
 
-    result.put("id", getId());
-    result.put("dateCreated", getDateCreated());
-    result.put("lastUpdated", getLastUpdated());
+      if (dto.getAmount() != null) this.setAmount(dto.getAmount());
+      if (dto.getCharityId() != null) this.setCharityId(dto.getCharityId());
+      if (dto.getDonorId() != null) this.setDonorId(dto.getDonorId());
+    }
+    return this;
+  }
 
-    //for (CustomFieldEntity cfe : getCustomFields()) {
-    //  result.put(cfe.getKey(), cfe.getValue());
-    //}
-    return result;
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+
+    sb.append("DonationEntity[date=" + getDateCreated());
+    sb.append(", amount=" + amount);
+    sb.append("]");
+
+    return sb.toString();
   }
 }

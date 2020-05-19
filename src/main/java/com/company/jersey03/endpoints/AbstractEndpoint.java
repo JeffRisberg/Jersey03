@@ -4,7 +4,12 @@ import com.company.common.FilterDescription;
 import com.company.common.FilterOperator;
 import com.company.common.SortDescription;
 import com.company.common.SortDirection;
+import com.company.common.services.util.ObjectUtils;
+import com.company.jersey03.services.CustomFieldValueService;
+import com.company.jersey03.services.FieldService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -18,28 +23,46 @@ import java.util.Map;
  */
 public class AbstractEndpoint {
 
+  protected FieldService fieldService;
+  protected CustomFieldValueService customFieldValueService;
+
+  protected static final ObjectMapper objectMapper = ObjectUtils.getDefaultObjectMapper();
+
+  @Inject
+  public AbstractEndpoint(FieldService fieldService,
+                          CustomFieldValueService customFieldValueService) {
+    this.fieldService = fieldService;
+    this.customFieldValueService = customFieldValueService;
+  }
+
   /**
-   * Generate a sorting specification from the given sort string, such as "-field1,field2".
+   * Generate a sorting specification from the query params of the request, of the
+   * form "sort=field1,-field2".
    *
-   * @param sortStr
+   * @param queryParams
    * @return list of Sort Descriptors
    */
-  protected List<SortDescription> parseSortStr(String sortStr) {
+  protected List<SortDescription> parseSorting(MultivaluedMap<String, String> queryParams) {
     List<SortDescription> sortDescs = new ArrayList<SortDescription>();
 
-    String[] fragments = sortStr.split(",");
+    for (Map.Entry<String, List<String>> entrySet : queryParams.entrySet()) {
+      String fieldName = entrySet.getKey();
+      if ("sort".equals(fieldName)) {
+        List<String> fieldValues = entrySet.getValue();
 
-    for (int i = 0; i < fragments.length; i++) {
-      String fieldName = fragments[i];
-      SortDirection sortDir = SortDirection.asc;
+        for (String fieldValue : fieldValues) {
+          SortDirection sortDir = SortDirection.asc;
 
-      if (fieldName.startsWith("-")) {
-        fieldName = fieldName.substring(1);
-        sortDir = SortDirection.desc;
+          if (fieldValue.startsWith("-")) {
+            fieldValue = fieldValue.substring(1);
+            sortDir = SortDirection.desc;
+          }
+
+          sortDescs.add(new SortDescription(fieldValue, sortDir));
+        }
       }
-
-      //sortDescs.add(new SortDescription(new FieldDesc(fieldName), sortDir));
     }
+
     return sortDescs;
   }
 
@@ -55,6 +78,9 @@ public class AbstractEndpoint {
 
     for (Map.Entry<String, List<String>> entrySet : queryParams.entrySet()) {
       String fieldName = entrySet.getKey();
+      if ("limit".equals(fieldName) || "offset".equals(fieldName) || "sort".equals(fieldName))
+        continue;
+
       List<String> fieldValues = entrySet.getValue();
 
       if (fieldValues.size() > 0) {

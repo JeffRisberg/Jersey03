@@ -85,12 +85,11 @@ public class ClusterEntity extends AbstractEntity {
 
   public ClusterDTO toDTO() {
     ClusterDTO result = new ClusterDTO();
+    update(result);
 
-    result.setId(getId());
     result.setClusterName(getClusterName());
     result.setClusterDescription(getClusterDescription());
     result.setAttributes(getAttributes());
-    result.setCreatedDate(getCreatedDate());
     result.setType(getType());
     result.setUsageType(getUsageType());
     result.setVersion(getVersion());

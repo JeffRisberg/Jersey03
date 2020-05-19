@@ -1,15 +1,29 @@
 package com.company.jersey03.endpoints;
 
+import com.company.jersey03.models.AbstractEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
+import javax.ws.rs.core.Response;
+import java.util.*;
 
 public class RestTools {
   static final ObjectMapper objectMapper = new ObjectMapper();
+
+  public static <E extends AbstractEntity, D extends Object> Response createResponse(Collection<E> entities) {
+    List<D> dtoList = new ArrayList();
+
+    for (AbstractEntity entity : entities) {
+      dtoList.add((D) entity.toDTO());
+    }
+    if (dtoList == null) {
+      Response.ok(Collections.emptyList()).build();
+    }
+    return Response.ok(dtoList).build();
+  }
 
   public static String getErrorJson(String message, Boolean userError, Optional<Throwable> e) {
     try {
