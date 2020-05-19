@@ -1,13 +1,13 @@
 package com.company.common.base.config;
 
-import org.apache.commons.configuration.Configuration;
-
 import java.util.Iterator;
+import org.apache.commons.configuration.Configuration;
 
 /**
  * Application Config.
  */
 public interface AppConfig {
+
   String getString(String key, String defaultValue);
 
   String getString(String key);
@@ -33,10 +33,10 @@ public interface AppConfig {
   Configuration getUnderlyingConfig();
 
   /**
-   * Sets an instance-level override. This will trump everything including
-   * dynamic properties and system properties. Useful for tests.
+   * Sets an instance-level override. This will trump everything including dynamic properties and
+   * system properties. Useful for tests.
    *
-   * @param key   the specified key.
+   * @param key the specified key.
    * @param value the specified value.
    */
   void setOverrideProperty(String key, Object value);

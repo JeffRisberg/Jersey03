@@ -6,10 +6,7 @@ import com.company.common.base.config.DatabaseConfig;
 import com.company.common.base.services.config.ArchaiusAppConfig;
 import com.company.common.base.services.config.MySQLDatabaseConfig;
 import com.company.jersey03.services.*;
-import com.company.jersey03.services.DAO.CharityDAO;
-import com.company.jersey03.services.DAO.ClusterDAO;
-import com.company.jersey03.services.DAO.DonationDAO;
-import com.company.jersey03.services.DAO.DonorDAO;
+import com.company.jersey03.services.DAO.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
@@ -22,7 +19,8 @@ public class MainModule extends AbstractModule {
     bind(AppConfig.class).to(ArchaiusAppConfig.class).in(Scopes.SINGLETON);
 
     // database configs
-    bind(DatabaseConfig.class).annotatedWith(MySQL.class).to(MySQLDatabaseConfig.class).in(Scopes.SINGLETON);
+    bind(DatabaseConfig.class).annotatedWith(MySQL.class).to(MySQLDatabaseConfig.class)
+        .in(Scopes.SINGLETON);
 
     // entityManagerFactory
     bind(MyEntityManagerFactory.class).in(Scopes.SINGLETON);

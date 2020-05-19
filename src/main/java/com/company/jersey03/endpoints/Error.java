@@ -10,35 +10,36 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Error {
-    protected Integer id;
-    protected String title;
-    protected String detail;
-    protected int status;
 
-    public Error(Integer id, String title, String detail, int status) {
-        this.id = id;
-        this.title = title;
-        this.detail = detail;
-        this.status = status;
-    }
+  protected Integer id;
+  protected String title;
+  protected String detail;
+  protected int status;
 
-    public Error(String title) {
-        this.title = title;
-    }
+  public Error(Integer id, String title, String detail, int status) {
+    this.id = id;
+    this.title = title;
+    this.detail = detail;
+    this.status = status;
+  }
 
-    public Integer getId() {
-        return id;
-    }
+  public Error(String title) {
+    this.title = title;
+  }
 
-    public String getTitle() {
-        return title;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public String getDetail() {
-        return detail;
-    }
+  public String getTitle() {
+    return title;
+  }
 
-    public int getStatus() {
-        return status;
-    }
+  public String getDetail() {
+    return detail;
+  }
+
+  public int getStatus() {
+    return status;
+  }
 }

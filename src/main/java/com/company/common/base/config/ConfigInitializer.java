@@ -2,20 +2,17 @@ package com.company.common.base.config;
 
 import com.netflix.config.*;
 import com.netflix.config.sources.URLConfigurationSource;
-import org.apache.commons.configuration.AbstractConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.SystemConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
+import org.apache.commons.configuration.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Config initializer that needs to be called at the beginning of your application.
- * Usage: ConfigInitializer.init();
+ * Config initializer that needs to be called at the beginning of your application. Usage:
+ * ConfigInitializer.init();
  * <p>
  * <p>
  * JVM parameters:
@@ -23,8 +20,7 @@ import java.util.Optional;
  * <li>-Dqm.config.external.path=/etc/quanticmind/config (optional)</li>
  * <p>
  * <p>
- * You can also specify any other system property like this:
- * -D${key}=${value}
+ * You can also specify any other system property like this: -D${key}=${value}
  * <p>
  * <p>
  * Files that will be loaded:
@@ -36,11 +32,11 @@ import java.util.Optional;
  * <li>commons-${environment}.properties</li>
  * <li>commons.properties</li>
  * <p>
- * override.properties, server-${environment}.properties & server.properties by default
- * should be placed in /etc/company/config.
- * other properties should be available in the classpath.
+ * override.properties, server-${environment}.properties & server.properties by default should be
+ * placed in /etc/company/config. other properties should be available in the classpath.
  */
 public class ConfigInitializer {
+
   private static final Logger log = LoggerFactory.getLogger(ConfigInitializer.class);
   private static final int OVERRIDE_CONFIG_INITIAL_DELAY_MS = 10000;
   private static final int OVERRIDE_CONFIG_DELAY_MS = 10000;
@@ -65,7 +61,8 @@ public class ConfigInitializer {
   }
 
   /**
-   * This method must be called at the beginning of the application before pulling any Config property value.
+   * This method must be called at the beginning of the application before pulling any Config
+   * property value.
    */
   public void init() {
     if (ConfigurationManager.isConfigurationInstalled()) {
@@ -109,8 +106,8 @@ public class ConfigInitializer {
 
   /**
    * Cascade load config files with the specified file name from the classpath, i.e.: if name = "x",
-   * this will load "x-${environment}.properties" and "x.properties".
-   * These files can't be dynamically updated.
+   * this will load "x-${environment}.properties" and "x.properties". These files can't be
+   * dynamically updated.
    *
    * @param baseFileName the specified config file name.
    */
@@ -123,8 +120,8 @@ public class ConfigInitializer {
   }
 
   /**
-   * Load a config file with the specified name from the specified path.
-   * The external config file can be dynamically updated.
+   * Load a config file with the specified name from the specified path. The external config file
+   * can be dynamically updated.
    *
    * @param externalPath the specified path.
    * @param baseFileName the specified config file name.
@@ -145,17 +142,18 @@ public class ConfigInitializer {
   }
 
   /**
-   * Load a config file with the specified name from the specified path.
-   * The external config file can be dynamically updated.
+   * Load a config file with the specified name from the specified path. The external config file
+   * can be dynamically updated.
    *
-   * @param configUrl  the specified path.
+   * @param configUrl the specified path.
    * @param configName the specified config file name.
    */
   public static void loadExternalConfigAtFront(URL configUrl, String configName) {
     try {
       final DynamicConfiguration configOverride = new DynamicConfiguration(
-        new URLConfigurationSource(configUrl),
-        new FixedDelayPollingScheduler(OVERRIDE_CONFIG_INITIAL_DELAY_MS, OVERRIDE_CONFIG_DELAY_MS, true));
+          new URLConfigurationSource(configUrl),
+          new FixedDelayPollingScheduler(OVERRIDE_CONFIG_INITIAL_DELAY_MS, OVERRIDE_CONFIG_DELAY_MS,
+              true));
       configOverride.addConfigurationListener(LoggingConfig.CONFIG_CHANGE_LISTENER);
 
       getBackingConfigurationSource().addConfigurationAtFront(configOverride, configName);
@@ -168,7 +166,8 @@ public class ConfigInitializer {
   /**
    * Get the config external path.
    *
-   * @return the config external path (where we can find override.properties and credential.properties).
+   * @return the config external path (where we can find override.properties and
+   * credential.properties).
    */
   public static String getConfigExternalPath(Configuration config) {
     String configOverridePath = config.getString(CONFIG_EXTERNAL_PATH_KEY, "/etc/company/config");
@@ -179,12 +178,14 @@ public class ConfigInitializer {
   }
 
   public static ConcurrentCompositeConfiguration getBackingConfigurationSource() {
-    return (ConcurrentCompositeConfiguration) DynamicPropertyFactory.getBackingConfigurationSource();
+    return (ConcurrentCompositeConfiguration) DynamicPropertyFactory
+        .getBackingConfigurationSource();
   }
 
   /**
-   * Remove all property values from the current Configuration. This does not 'uninstall' Archaius Context
-   * (calling ConfigInitializer.init() after clear() will still give you an IllegalStateException).
+   * Remove all property values from the current Configuration. This does not 'uninstall' Archaius
+   * Context (calling ConfigInitializer.init() after clear() will still give you an
+   * IllegalStateException).
    * <p>
    * NOTE: This should only be used in test environment.
    */
@@ -194,9 +195,9 @@ public class ConfigInitializer {
     }
 
     Optional.ofNullable(((Configuration) DynamicPropertyFactory.getBackingConfigurationSource()))
-      .ifPresent(c -> {
-        c.clear();
-        log.info("Cleared config");
-      });
+        .ifPresent(c -> {
+          c.clear();
+          log.info("Cleared config");
+        });
   }
 }

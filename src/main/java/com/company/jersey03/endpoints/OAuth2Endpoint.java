@@ -2,14 +2,13 @@ package com.company.jersey03.endpoints;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
-import lombok.Data;
-import lombok.extern.java.Log;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lombok.Data;
+import lombok.extern.java.Log;
 
 /**
  * @author Jeff Risberg
@@ -33,8 +32,8 @@ public class OAuth2Endpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Test1", response = OAuth2Request.class)
   public Response test1(@PathParam("tenantId") String tenantId,
-                        @FormParam("alpha") String alpha,
-                        @FormParam("beta") String beta) {
+      @FormParam("alpha") String alpha,
+      @FormParam("beta") String beta) {
     OAuth2Request result = new OAuth2Request();
     result.tenantId = tenantId;
     result.alpha = alpha;
@@ -49,10 +48,10 @@ public class OAuth2Endpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Test2", response = OAuth2Request.class)
   @ApiImplicitParams({
-    @ApiImplicitParam(name = "request", value = "", required = true, dataType = "com.company.jersey03.endpoints.OAuth2Endpoint.OAuth2Request", paramType = "body"),
+      @ApiImplicitParam(name = "request", value = "", required = true, dataType = "com.company.jersey03.endpoints.OAuth2Endpoint.OAuth2Request", paramType = "body"),
   })
   public Response test2(@PathParam("tenantId") String tenantId,
-                        @ApiParam(hidden = true) String requestBody) {
+      @ApiParam(hidden = true) String requestBody) {
     try {
       OAuth2Request result = objectMapper.readValue(requestBody, OAuth2Request.class);
 
@@ -65,6 +64,7 @@ public class OAuth2Endpoint {
 
   @Data
   public class OAuth2Request {
+
     protected String tenantId;
     protected String alpha;
     protected String beta;

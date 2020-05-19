@@ -2,15 +2,11 @@ package com.company.common.base.services.config;
 
 import com.company.common.base.config.AppConfig;
 import com.google.common.base.Optional;
-import com.netflix.config.ConcurrentCompositeConfiguration;
-import com.netflix.config.ConfigurationManager;
-import com.netflix.config.DynamicPropertyFactory;
-import com.netflix.config.PropertyWrapper;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration.Configuration;
-
+import com.netflix.config.*;
 import java.util.Iterator;
 import java.util.function.BiFunction;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration.Configuration;
 
 /**
  * App config backed by Archaius.
@@ -24,7 +20,8 @@ public class ArchaiusAppConfig implements AppConfig {
   @Deprecated
   @Override
   public String getString(final String key, final String defaultValue) {
-    return getAndWarn(key, defaultValue, (x, y) -> DynamicPropertyFactory.getInstance().getStringProperty(x, y));
+    return getAndWarn(key, defaultValue,
+        (x, y) -> DynamicPropertyFactory.getInstance().getStringProperty(x, y));
   }
 
   public String getString(final String key) {
@@ -33,7 +30,8 @@ public class ArchaiusAppConfig implements AppConfig {
 
   @Override
   public int getInt(final String key, final int defaultValue) {
-    return getAndWarn(key, defaultValue, (x, y) -> DynamicPropertyFactory.getInstance().getIntProperty(x, y));
+    return getAndWarn(key, defaultValue,
+        (x, y) -> DynamicPropertyFactory.getInstance().getIntProperty(x, y));
   }
 
   @Override
@@ -43,7 +41,8 @@ public class ArchaiusAppConfig implements AppConfig {
 
   @Override
   public long getLong(final String key, final long defaultValue) {
-    return getAndWarn(key, defaultValue, (x, y) -> DynamicPropertyFactory.getInstance().getLongProperty(x, y));
+    return getAndWarn(key, defaultValue,
+        (x, y) -> DynamicPropertyFactory.getInstance().getLongProperty(x, y));
   }
 
   @Override
@@ -53,7 +52,8 @@ public class ArchaiusAppConfig implements AppConfig {
 
   @Override
   public double getDouble(final String key, final double defaultValue) {
-    return getAndWarn(key, defaultValue, (x, y) -> DynamicPropertyFactory.getInstance().getDoubleProperty(x, y));
+    return getAndWarn(key, defaultValue,
+        (x, y) -> DynamicPropertyFactory.getInstance().getDoubleProperty(x, y));
   }
 
   @Override
@@ -63,7 +63,8 @@ public class ArchaiusAppConfig implements AppConfig {
 
   @Override
   public boolean getBoolean(final String key, final boolean defaultValue) {
-    return getAndWarn(key, defaultValue, (x, y) -> DynamicPropertyFactory.getInstance().getBooleanProperty(x, y));
+    return getAndWarn(key, defaultValue,
+        (x, y) -> DynamicPropertyFactory.getInstance().getBooleanProperty(x, y));
   }
 
   @Override
@@ -82,18 +83,20 @@ public class ArchaiusAppConfig implements AppConfig {
   }
 
   /**
-   * Sets an instance-level override. This will trump everything including
-   * dynamic properties and system properties. Useful for tests.
+   * Sets an instance-level override. This will trump everything including dynamic properties and
+   * system properties. Useful for tests.
    *
-   * @param key   the specified key.
+   * @param key the specified key.
    * @param value the specified value.
    */
   @Override
   public void setOverrideProperty(final String key, final Object value) {
-    ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance()).setOverrideProperty(key, value);
+    ((ConcurrentCompositeConfiguration) ConfigurationManager.getConfigInstance())
+        .setOverrideProperty(key, value);
   }
 
-  private <T> T get(final String key, final T defaultValue, BiFunction<String, T, PropertyWrapper<T>> function) {
+  private <T> T get(final String key, final T defaultValue,
+      BiFunction<String, T, PropertyWrapper<T>> function) {
     PropertyWrapper<T> property = function.apply(key, defaultValue);
 
     Optional<?> cachedValue = property.getDynamicProperty().getCachedValue(getType(defaultValue));
@@ -106,7 +109,8 @@ public class ArchaiusAppConfig implements AppConfig {
     return property.getValue();
   }
 
-  private <T> T getAndWarn(final String key, final T defaultValue, BiFunction<String, T, PropertyWrapper<T>> function) {
+  private <T> T getAndWarn(final String key, final T defaultValue,
+      BiFunction<String, T, PropertyWrapper<T>> function) {
     PropertyWrapper<T> property = function.apply(key, defaultValue);
 
     Optional<?> cachedValue = property.getDynamicProperty().getCachedValue(getType(defaultValue));

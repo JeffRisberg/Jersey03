@@ -2,18 +2,11 @@ package com.company.jersey03.models;
 
 import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Jeff Risberg
@@ -59,9 +52,15 @@ public class DonorEntity extends AbstractDatedCFVEntity {
     if (dto != null) {
       super.applyDTO(dto, "Donor", fieldService);
 
-      if (dto.getFirstName() != null) this.setFirstName(dto.getFirstName());
-      if (dto.getLastName() != null) this.setLastName(dto.getLastName());
-      if (dto.getAge() != null) this.setAge(dto.getAge());
+      if (dto.getFirstName() != null) {
+        this.setFirstName(dto.getFirstName());
+      }
+      if (dto.getLastName() != null) {
+        this.setLastName(dto.getLastName());
+      }
+      if (dto.getAge() != null) {
+        this.setAge(dto.getAge());
+      }
     }
     return this;
   }

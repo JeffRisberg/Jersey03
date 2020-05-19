@@ -2,14 +2,14 @@ package com.company.jersey03.services.DAO;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
-import lombok.NonNull;
-
-import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import lombok.NonNull;
 
 public interface BaseTemplateDAO<T> {
+
   T create(T obj, @NonNull EntityManager em);
 
   T getById(Serializable id, @NonNull EntityManager em);
@@ -20,14 +20,17 @@ public interface BaseTemplateDAO<T> {
 
   List<T> listAll(Class<T> type, int limit, int offset, @NonNull EntityManager em);
 
-  List<T> getBySQL(@NonNull String sql, @NonNull Map<String, Object> params, @NonNull EntityManager em);
+  List<T> getBySQL(@NonNull String sql, @NonNull Map<String, Object> params,
+      @NonNull EntityManager em);
 
   List<T> getByCriteria
-    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset, @NonNull EntityManager em);
+      (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset,
+          @NonNull EntityManager em);
 
   List<T> getByCriteria(@NonNull Map<String, Object> params, EntityManager em);
 
-  int updateBySQL(@NonNull String sql, @NonNull Map<String, Object> params, @NonNull EntityManager em);
+  int updateBySQL(@NonNull String sql, @NonNull Map<String, Object> params,
+      @NonNull EntityManager em);
 
   Boolean update(T obj, @NonNull EntityManager em);
 

@@ -1,8 +1,8 @@
 package com.company.common.base.services.config;
 
-import com.company.common.base.config.DatabaseConfig;
-
 import static com.company.common.base.services.constants.EnvironmentKeys.*;
+
+import com.company.common.base.config.DatabaseConfig;
 
 public class EnvironmentBasedMySQLConfig implements DatabaseConfig {
 

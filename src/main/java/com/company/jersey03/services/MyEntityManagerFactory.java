@@ -5,13 +5,10 @@ import com.company.common.base.config.DatabaseConfig;
 import com.company.common.base.db.ConnectionFactory;
 import com.company.common.base.db.MySQLConnectionFactory;
 import com.google.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.sql.DataSource;
 import java.util.Properties;
+import javax.persistence.*;
+import javax.sql.DataSource;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This object is created through Guice, and is a wrapper for the EntityManagerFactory.

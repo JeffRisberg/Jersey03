@@ -4,20 +4,14 @@ import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.DonationDTO;
 import com.company.jersey03.models.DonationEntity;
-import com.company.jersey03.services.ClusterService;
-import com.company.jersey03.services.CustomFieldValueService;
-import com.company.jersey03.services.DonationService;
-import com.company.jersey03.services.FieldService;
+import com.company.jersey03.services.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-
+import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Api(value = "Donations", description = "Donation Management")
 @Path("donations")
@@ -28,7 +22,7 @@ public class Donations extends AbstractEndpoint {
 
   @Inject
   public Donations(FieldService fieldService, CustomFieldValueService customFieldValueService,
-                  DonationService donationService) {
+      DonationService donationService) {
     super(fieldService, customFieldValueService);
     this.donationService = donationService;
   }
@@ -54,7 +48,9 @@ public class Donations extends AbstractEndpoint {
       return Response.ok(donations).build();
     } catch (Throwable e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -62,9 +58,9 @@ public class Donations extends AbstractEndpoint {
   @ApiOperation(value = "Gets all Donations", response = DonationDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
-    @DefaultValue("50") @QueryParam("limit") int limit,
-    @DefaultValue("0") @QueryParam("offset") int offset,
-    @Context UriInfo uriInfo) {
+      @DefaultValue("50") @QueryParam("limit") int limit,
+      @DefaultValue("0") @QueryParam("offset") int offset,
+      @Context UriInfo uriInfo) {
 
     try {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
@@ -73,7 +69,7 @@ public class Donations extends AbstractEndpoint {
 
       List<DonationDTO> result = new ArrayList<>();
       List<DonationEntity> donations =
-        donationService.getByCriteria(filterDescs, sortDescs, limit, offset);
+          donationService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (DonationEntity donation : donations) {
         result.add(donation.toDTO());

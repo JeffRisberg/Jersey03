@@ -6,7 +6,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=true)
+@EqualsAndHashCode(callSuper = true)
 public class CustomFieldValueDTO extends AbstractDTO {
 
   private Field field;

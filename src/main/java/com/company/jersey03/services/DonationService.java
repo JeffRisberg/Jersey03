@@ -5,16 +5,16 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.DonationEntity;
 import com.company.jersey03.services.DAO.DonationDAO;
 import com.google.inject.Inject;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DonationService extends AbstractService<DonationEntity> {
+
   private final DonationDAO dao;
 
   @Inject
   public DonationService(final MyEntityManagerFactory myEntityManagerFactory,
-                         final DonationDAO donationDAO) {
+      final DonationDAO donationDAO) {
     this.myEntityManagerFactory = myEntityManagerFactory;
     this.dao = donationDAO;
   }
@@ -38,7 +38,8 @@ public class DonationService extends AbstractService<DonationEntity> {
   }
 
   public List<DonationEntity> getByCriteria
-    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
+      (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit,
+          int offset) {
     final AtomicReference<List<DonationEntity>> td = new AtomicReference<>();
     doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
     return td.get();

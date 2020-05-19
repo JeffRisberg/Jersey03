@@ -7,14 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The main class for implementing a microservice.  You must separately extend
- * MicroserviceModule and return the implementing class in MicroserviceModule().
+ * The main class for implementing a microservice.  You must separately extend MicroserviceModule
+ * and return the implementing class in MicroserviceModule().
  */
 public abstract class MicroserviceApplication {
+
   private static final Logger logger = LoggerFactory.getLogger(MicroserviceApplication.class);
 
   /**
-   * @return The {@link MicroserviceModule} Guice module (extending MicroserviceModule) for your application
+   * @return The {@link MicroserviceModule} Guice module (extending MicroserviceModule) for your
+   * application
    */
   protected abstract MicroserviceModule qmMicroserviceModule();
 
@@ -40,9 +42,11 @@ public abstract class MicroserviceApplication {
   }
 
   /**
-   * Load the global, shared modules and the app-specific module from {@link #qmMicroserviceModule()}.
+   * Load the global, shared modules and the app-specific module from {@link
+   * #qmMicroserviceModule()}.
    */
   private final class ApplicationModule extends AbstractModule {
+
     @Override
     protected void configure() {
       //install(new HttpServerWrapperModule());
@@ -70,7 +74,9 @@ public abstract class MicroserviceApplication {
         throw new NumberFormatException();
       }
     } catch (NumberFormatException e) {
-      throw new NumberFormatException(String.format("PORT environment variable must be a positive integer. \"%s\" was passed in.", portString));
+      throw new NumberFormatException(String
+          .format("PORT environment variable must be a positive integer. \"%s\" was passed in.",
+              portString));
     }
 
     return port;

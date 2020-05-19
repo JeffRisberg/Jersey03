@@ -1,26 +1,23 @@
 package com.company.common.base.config;
 
+import java.util.Optional;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.event.ConfigurationListener;
-
-import java.util.Optional;
 
 /**
  * Logback Logging Settings.
  * <p>
- * We want to be able to make dynamic config changes and will have to add the actual SLF4J logging implementation
- * (Logback) in our compile scope. If we want to open source some of our codes, we will need to break
- * this logging dependency (and possibly config as well) into a separate module and add that module in
- * the runtime scope.
+ * We want to be able to make dynamic config changes and will have to add the actual SLF4J logging
+ * implementation (Logback) in our compile scope. If we want to open source some of our codes, we
+ * will need to break this logging dependency (and possibly config as well) into a separate module
+ * and add that module in the runtime scope.
  */
 public class LoggingConfig {
 
   /**
    * The prefix of log level property keys.
    * <p>
-   * i.e.:
-   * log.level = DEBUG
-   * log.level.com.iv = DEBUG
+   * i.e.: log.level = DEBUG log.level.com.iv = DEBUG
    */
   private static final String LOG_LEVEL_PREFIX = "log.level";
 
@@ -49,7 +46,7 @@ public class LoggingConfig {
    */
 
   private static final String LOG_PATH = Optional.ofNullable(System.getProperty("log.path"))
-    .orElse(Optional.ofNullable(System.getenv("MESOS_SANDBOX")).orElse("/var/log"));
+      .orElse(Optional.ofNullable(System.getenv("MESOS_SANDBOX")).orElse("/var/log"));
 
   /**
    * Listens to config change events and make necessary changes to the logging configuration.
@@ -78,7 +75,8 @@ public class LoggingConfig {
   }
 
   /**
-   * Called at the end of the ConfigInitializers to make sure we pick up new log config values that just got loaded.
+   * Called at the end of the ConfigInitializers to make sure we pick up new log config values that
+   * just got loaded.
    *
    * @param configuration where the new log config values are passed in.
    */
@@ -90,7 +88,8 @@ public class LoggingConfig {
     }
 
     if (configuration.containsKey(DISABLE_CONSOLE_LOGGING_KEY)) {
-      boolean isConsoleLoggingDisabled = configuration.getBoolean(DISABLE_CONSOLE_LOGGING_KEY, false);
+      boolean isConsoleLoggingDisabled = configuration
+          .getBoolean(DISABLE_CONSOLE_LOGGING_KEY, false);
 
       if (isConsoleLoggingDisabled) {
         //ROOT_LOGGER.detachAppender(CONSOLE_APPENDER_NAME);
@@ -116,11 +115,12 @@ public class LoggingConfig {
    * Set the log level of the target (extracted from the property key) to the specified level.
    *
    * @param propertyKey the specified property key.
-   * @param logLevel    the specified log level.
+   * @param logLevel the specified log level.
    */
   static void setLogLevel(String propertyKey, String logLevel) {
     if (!propertyKey.startsWith(LOG_LEVEL_PREFIX)) {
-      throw new IllegalArgumentException("the property key must start with " + LOG_LEVEL_PREFIX + " prefix");
+      throw new IllegalArgumentException(
+          "the property key must start with " + LOG_LEVEL_PREFIX + " prefix");
     }
 
         /*

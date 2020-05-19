@@ -1,16 +1,9 @@
 package com.company.jersey03.models;
 
 import com.company.jersey03.services.FieldService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "charities")
@@ -49,10 +42,18 @@ public class CharityEntity extends AbstractDatedCFVEntity {
     if (dto != null) {
       super.applyDTO(dto, "Charity", fieldService);
 
-      if (dto.getName() != null) this.setName(dto.getName());
-      if (dto.getEin() != null) this.setEin(dto.getEin());
-      if (dto.getDescription() != null) this.setDescription(dto.getDescription());
-      if (dto.getWebsite() != null) this.setWebsite(dto.getWebsite());
+      if (dto.getName() != null) {
+        this.setName(dto.getName());
+      }
+      if (dto.getEin() != null) {
+        this.setEin(dto.getEin());
+      }
+      if (dto.getDescription() != null) {
+        this.setDescription(dto.getDescription());
+      }
+      if (dto.getWebsite() != null) {
+        this.setWebsite(dto.getWebsite());
+      }
     }
     return this;
   }

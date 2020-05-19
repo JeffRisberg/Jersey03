@@ -1,11 +1,8 @@
 package com.company.jersey03.models;
 
-import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import lombok.*;
 
 @Entity
 @Table(name = "fields")
@@ -71,16 +68,36 @@ public class Field extends AbstractDatedEntity {
     if (dto != null) {
       super.applyDTO(dto);
 
-      if (dto.getFieldName() != null) this.setFieldName(dto.getFieldName());
-      if (dto.getDescription() != null) this.setDescription(dto.getDescription());
-      if (dto.getContentTypeName() != null) this.setContentTypeName(dto.getContentTypeName());
-      if (dto.getFieldPath() != null) this.setFieldPath(dto.getFieldPath());
-      if (dto.getFieldType() != null) this.setFieldType(dto.getFieldType());
-      if (dto.getFieldValues() != null) this.setFieldValues(dto.getFieldValues());
-      if (dto.getIsCustom() != null) this.setIsCustom(dto.getIsCustom());
-      if (dto.getDbColumnName() != null) this.setDbColumnName(dto.getDbColumnName());
-      if (dto.getIsRequired() != null) this.setIsRequired(dto.getIsRequired());
-      if (dto.getSeqNum() != null) this.setSeqNum(dto.getSeqNum());
+      if (dto.getFieldName() != null) {
+        this.setFieldName(dto.getFieldName());
+      }
+      if (dto.getDescription() != null) {
+        this.setDescription(dto.getDescription());
+      }
+      if (dto.getContentTypeName() != null) {
+        this.setContentTypeName(dto.getContentTypeName());
+      }
+      if (dto.getFieldPath() != null) {
+        this.setFieldPath(dto.getFieldPath());
+      }
+      if (dto.getFieldType() != null) {
+        this.setFieldType(dto.getFieldType());
+      }
+      if (dto.getFieldValues() != null) {
+        this.setFieldValues(dto.getFieldValues());
+      }
+      if (dto.getIsCustom() != null) {
+        this.setIsCustom(dto.getIsCustom());
+      }
+      if (dto.getDbColumnName() != null) {
+        this.setDbColumnName(dto.getDbColumnName());
+      }
+      if (dto.getIsRequired() != null) {
+        this.setIsRequired(dto.getIsRequired());
+      }
+      if (dto.getSeqNum() != null) {
+        this.setSeqNum(dto.getSeqNum());
+      }
     }
     return this;
   }

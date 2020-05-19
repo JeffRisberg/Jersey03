@@ -7,6 +7,7 @@ import com.company.common.base.config.DatabaseConfig;
  * Database configuration.  This fetches fields from the AppConfig which is injected.
  */
 abstract class AbstractDatabaseConfig implements DatabaseConfig {
+
   private final AppConfig appConfig;
   private final String prefix;
 

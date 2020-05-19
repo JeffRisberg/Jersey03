@@ -1,17 +1,15 @@
 package com.company.jersey03.models;
 
 import com.company.jersey03.services.FieldService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.*;
 import org.json.simple.JSONObject;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Jeff Risberg
@@ -22,15 +20,15 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 @FilterDef(name = "entityTypeFilter",
-  parameters = @ParamDef(name = "entityType", type = "string")
+    parameters = @ParamDef(name = "entityType", type = "string")
 )
 public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
   @JoinColumn(name = "entity_id")
   @Filter(
-    name = "entityTypeFilter",
-    condition = "entity_type = :entityType"
+      name = "entityTypeFilter",
+      condition = "entity_type = :entityType"
   )
   List<CustomFieldValue> customFieldValues = new ArrayList();
 
@@ -73,7 +71,8 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
     return delList;
   }
 
-  public AbstractDatedCFVEntity applyDTO(AbstractDatedDTO dto, String entityType, FieldService fieldService) {
+  public AbstractDatedCFVEntity applyDTO(AbstractDatedDTO dto, String entityType,
+      FieldService fieldService) {
     if (dto != null) {
       super.applyDTO(dto);
 
@@ -96,8 +95,9 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
 
         // Now find the new fieldValues
         for (Object fieldName : dto.getCustomFieldValues().keySet()) {
-          if (((String) fieldName).startsWith("-"))
+          if (((String) fieldName).startsWith("-")) {
             continue;
+          }
 
           Field field = fieldService.getByContentTypeFieldName(entityType, (String) fieldName);
 
@@ -106,7 +106,7 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
             String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
 
             CustomFieldValue newCfv =
-              new CustomFieldValue(field, field.getId(), entityType, this.getId(), fieldValue);
+                new CustomFieldValue(field, field.getId(), entityType, this.getId(), fieldValue);
             addList.add(newCfv);
           } else {
             log.error("tried to add unknown field " + fieldName);

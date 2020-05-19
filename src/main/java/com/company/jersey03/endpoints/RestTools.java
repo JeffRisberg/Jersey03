@@ -2,18 +2,16 @@ package com.company.jersey03.endpoints;
 
 import com.company.jersey03.models.AbstractEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.ws.rs.core.Response;
 import java.util.*;
+import javax.ws.rs.core.Response;
+import lombok.*;
 
 public class RestTools {
+
   static final ObjectMapper objectMapper = new ObjectMapper();
 
-  public static <E extends AbstractEntity, D extends Object> Response createResponse(Collection<E> entities) {
+  public static <E extends AbstractEntity, D extends Object> Response createResponse(
+      Collection<E> entities) {
     List<D> dtoList = new ArrayList();
 
     for (AbstractEntity entity : entities) {
@@ -59,6 +57,7 @@ public class RestTools {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class RequestError {
+
     private int errorCode;
     private String errorMessage;
     private String message; // Show to the User if userError=true

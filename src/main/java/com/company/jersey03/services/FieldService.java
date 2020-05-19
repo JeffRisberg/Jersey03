@@ -1,22 +1,20 @@
 package com.company.jersey03.services;
 
-import com.company.common.FilterDescription;
-import com.company.common.FilterOperator;
-import com.company.common.SortDescription;
+import com.company.common.*;
 import com.company.jersey03.models.Field;
 import com.company.jersey03.services.DAO.FieldDAO;
 import com.google.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class FieldService extends AbstractService<Field> {
+
   private final FieldDAO dao;
 
   @Inject
   public FieldService(final MyEntityManagerFactory myEntityManagerFactory,
-                      final FieldDAO fieldDAO) {
+      final FieldDAO fieldDAO) {
     this.myEntityManagerFactory = myEntityManagerFactory;
     this.dao = fieldDAO;
   }
@@ -40,7 +38,8 @@ public class FieldService extends AbstractService<Field> {
   }
 
   public List<Field> getByCriteria
-    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
+      (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit,
+          int offset) {
     final AtomicReference<List<Field>> td = new AtomicReference<>();
     doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
     return td.get();
@@ -53,9 +52,11 @@ public class FieldService extends AbstractService<Field> {
 
     final AtomicReference<List<Field>> td = new AtomicReference<>();
     doWork(em -> td.set(dao.getByCriteria(filterDescs, null, 50, 0, em)));
-    if (td.get().size() > 0)
+    if (td.get().size() > 0) {
       return td.get().get(0);
-    else return null;
+    } else {
+      return null;
+    }
   }
 
   public boolean update(Field updatedEntity) {

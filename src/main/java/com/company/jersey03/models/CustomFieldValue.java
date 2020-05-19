@@ -1,13 +1,9 @@
 package com.company.jersey03.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "custom_field_values")

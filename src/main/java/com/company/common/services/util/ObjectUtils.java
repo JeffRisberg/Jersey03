@@ -3,18 +3,18 @@ package com.company.common.services.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 import java.util.Iterator;
+import javax.imageio.ImageIO;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class ObjectUtils {
+
   private static final ObjectMapper DEFAULT_OBJECT_MAPPER = new ObjectMapper();
   private static final ThreadLocal<JSONParser> DEFAULT_PARSER = ThreadLocal.withInitial(() -> {
     return new JSONParser();
@@ -36,7 +36,8 @@ public class ObjectUtils {
   }
 
   public static String toJSONString(JSONObject json, boolean prettyPrint) throws Exception {
-    return prettyPrint ? getDefaultObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json) : json.toJSONString();
+    return prettyPrint ? getDefaultObjectMapper().writerWithDefaultPrettyPrinter()
+        .writeValueAsString(json) : json.toJSONString();
   }
 
   public static JsonNode merge(JsonNode main, JsonNode update) {

@@ -1,10 +1,7 @@
 package com.company.jersey03.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "cluster_entity_mappings")

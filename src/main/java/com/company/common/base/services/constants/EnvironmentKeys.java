@@ -4,6 +4,7 @@ package com.company.common.base.services.constants;
  *
  */
 public class EnvironmentKeys {
+
   public EnvironmentKeys() {
     // Suppress default constructor for noninstantiability
     throw new UnsupportedOperationException();

@@ -1,14 +1,9 @@
 package com.company.jersey03;
 
 import com.company.common.services.MicroserviceModule;
-import com.company.jersey03.endpoints.Charities;
-import com.company.jersey03.endpoints.Donations;
-import com.company.jersey03.endpoints.Donors;
+import com.company.jersey03.endpoints.*;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class Jersey03Module extends MicroserviceModule {
@@ -34,10 +29,10 @@ public class Jersey03Module extends MicroserviceModule {
   @Override
   public List<Class<?>> resources() {
     return Arrays.asList(
-      // SystemEndpoint.class  -- this should exist
-      Charities.class,
-      Donors.class,
-      Donations.class
+        // SystemEndpoint.class  -- this should exist
+        Charities.class,
+        Donors.class,
+        Donations.class
     );
   }
 
@@ -49,6 +44,6 @@ public class Jersey03Module extends MicroserviceModule {
 
   private String getEnvironmentValue(String key) {
     return Optional.ofNullable(System.getenv(key)).orElseThrow(() ->
-      new RuntimeException(String.format("Environment variable: '%s' does not exist", key)));
+        new RuntimeException(String.format("Environment variable: '%s' does not exist", key)));
   }
 }
