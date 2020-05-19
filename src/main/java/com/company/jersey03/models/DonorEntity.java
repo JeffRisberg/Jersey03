@@ -1,15 +1,12 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Where;
-import org.json.simple.JSONObject;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.Where;
+import org.json.simple.JSONObject;
 
 /**
  * @author Jeff Risberg
