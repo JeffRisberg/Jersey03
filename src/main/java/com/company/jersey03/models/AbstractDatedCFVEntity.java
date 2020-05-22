@@ -32,6 +32,9 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
   )
   List<CustomFieldValue> customFieldValues = new ArrayList();
 
+  @Transient
+  List<CustomFieldValue> newCustomFieldValues = new ArrayList();
+
   protected boolean update(AbstractDatedDTO dto) {
     if (dto != null) {
       super.update(dto);
@@ -77,7 +80,8 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
       super.applyDTO(dto);
 
       if (dto.getCustomFieldValues() != null) {
-        List<CustomFieldValue> addList = new ArrayList<>();
+        List<CustomFieldValue> addList1 = new ArrayList<>();
+        List<CustomFieldValue> addList2 = new ArrayList<>();
 
         if (this.customFieldValues.size() > 0) {
           for (CustomFieldValue cfv : this.customFieldValues) {
@@ -107,13 +111,22 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
 
             CustomFieldValue newCfv =
                 new CustomFieldValue(field, field.getId(), entityType, this.getId(), fieldValue);
-            addList.add(newCfv);
+            if (this.getId() != null) {
+              addList1.add(newCfv); // entityId is known
+            }
+             else {
+               addList2.add(newCfv); // entityId is not known
+            }
           } else {
             log.error("tried to add unknown field " + fieldName);
           }
         }
 
-        this.customFieldValues.addAll(addList);
+        // These are cfv objects when updating, hence entityId is known.
+        this.customFieldValues.addAll(addList1);
+        // These are cfv objects when creating, hence entityId is unknown and
+        // they must be added after the create of the main object.
+        this.newCustomFieldValues.addAll(addList2);
       }
     }
     return this;

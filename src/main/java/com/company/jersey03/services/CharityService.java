@@ -3,6 +3,7 @@ package com.company.jersey03.services;
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.CharityEntity;
+import com.company.jersey03.models.CustomFieldValue;
 import com.company.jersey03.services.DAO.CharityDAO;
 import com.google.inject.Inject;
 import java.util.List;
@@ -24,7 +25,14 @@ public class CharityService extends AbstractService<CharityEntity> {
 
   public CharityEntity create(CharityEntity charity) {
     final AtomicReference<CharityEntity> created = new AtomicReference<>();
-    doWork(em -> created.set(dao.create(charity, em)));
+    doWork(em -> {
+      created.set(dao.create(charity, em));
+
+      for (CustomFieldValue cfv : charity.getNewCustomFieldValues()) {
+        cfv.setEntityId(created.get().getId());
+        em.persist(cfv);
+      }
+    });
     return created.get();
   }
 

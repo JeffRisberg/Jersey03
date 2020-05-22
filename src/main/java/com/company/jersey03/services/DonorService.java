@@ -2,6 +2,7 @@ package com.company.jersey03.services;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
+import com.company.jersey03.models.CustomFieldValue;
 import com.company.jersey03.models.DonorEntity;
 import com.company.jersey03.services.DAO.DonorDAO;
 import com.google.inject.Inject;
@@ -59,7 +60,14 @@ public class DonorService extends AbstractService<DonorEntity> {
 
   public DonorEntity create(DonorEntity donor) {
     final AtomicReference<DonorEntity> created = new AtomicReference<>();
-    doWork(em -> created.set(dao.create(donor, em)));
+    doWork(em -> {
+      created.set(dao.create(donor, em));
+
+      for (CustomFieldValue cfv : donor.getNewCustomFieldValues()) {
+        cfv.setEntityId(created.get().getId());
+        em.persist(cfv);
+      }
+    });
     return created.get();
   }
 
