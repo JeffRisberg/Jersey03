@@ -25,10 +25,10 @@ ext {
   archaiusVersion = '0.7.7'
   jodaTimeVersion = '2.10'
   guiceVersion = '4.2.3'
-  jettyVersion = '9.4.25.v20191220'
+  jettyVersion = '9.4.26.v20200117'
   jerseyVersion = '2.27'
   hk2Version = '2.5.0-b44'
-  jacksonVersion = '2.10.3'
+  jacksonVersion = '2.11.2'
   hibernateVersion = '5.4.14.Final'
   junitVersion = '4.13'
 }

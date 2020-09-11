@@ -4,9 +4,7 @@
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Jersey03.main" target="1.8" />
-      <module name="Jersey03.test" target="1.8" />
+    <bytecodeTargetLevel target="1.8">
       <module name="Jersey03_main" target="1.8" />
       <module name="Jersey03_test" target="1.8" />
     </bytecodeTargetLevel>
