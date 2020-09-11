@@ -1,13 +1,11 @@
 package com.company.common.services.jersey;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Scopes;
+import com.google.inject.*;
 import com.google.inject.servlet.ServletModule;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Jersey2Module extends AbstractModule {
+
   private static final String PATH_GLOB = "/*";
 
   @Override
@@ -26,6 +24,7 @@ public class Jersey2Module extends AbstractModule {
   }
 
   static final class ServletContainerProvider implements Provider<ServletContainer> {
+
     private final Jersey2App app;
 
     @Inject

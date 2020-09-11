@@ -4,6 +4,7 @@ package com.company.common.base.config;
  *
  */
 public interface DatabaseConfig {
+
   /**
    * Hibernate dialect.
    *

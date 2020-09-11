@@ -4,20 +4,17 @@ import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.CharityDTO;
 import com.company.jersey03.models.CharityEntity;
-import com.company.jersey03.services.CharityService;
-import com.company.jersey03.services.CustomFieldValueService;
-import com.company.jersey03.services.FieldService;
+import com.company.jersey03.services.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 
 @Api(value = "Charities", description = "Charity Management")
 @Path("charities")
@@ -28,7 +25,7 @@ public class Charities extends AbstractEndpoint {
 
   @Inject
   public Charities(FieldService fieldService, CustomFieldValueService customFieldValueService,
-                   CharityService charityService) {
+      CharityService charityService) {
     super(fieldService, customFieldValueService);
     this.charityService = charityService;
   }
@@ -42,7 +39,7 @@ public class Charities extends AbstractEndpoint {
       charity.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       CharityEntity createdCharity =
-        charityService.create(new CharityEntity().applyDTO(charity, fieldService));
+          charityService.create(new CharityEntity().applyDTO(charity, fieldService));
 
       if (createdCharity == null) {
         log.error("Cannot create charity from {}", charity);
@@ -52,7 +49,9 @@ public class Charities extends AbstractEndpoint {
       return Response.ok(createdCharity.toDTO()).build();
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -70,7 +69,9 @@ public class Charities extends AbstractEndpoint {
       return Response.ok(result).build();
     } catch (Throwable e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -78,9 +79,9 @@ public class Charities extends AbstractEndpoint {
   @ApiOperation(value = "Gets all Charities", response = CharityDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
-    @DefaultValue("50") @QueryParam("limit") int limit,
-    @DefaultValue("0") @QueryParam("offset") int offset,
-    @Context UriInfo uriInfo) {
+      @DefaultValue("50") @QueryParam("limit") int limit,
+      @DefaultValue("0") @QueryParam("offset") int offset,
+      @Context UriInfo uriInfo) {
 
     try {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
@@ -89,7 +90,7 @@ public class Charities extends AbstractEndpoint {
 
       JSONArray result = new JSONArray();
       List<CharityEntity> charities =
-        charityService.getByCriteria(filterDescs, sortDescs, limit, offset);
+          charityService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (CharityEntity charity : charities) {
         result.add(charity.toDTO());
@@ -107,16 +108,19 @@ public class Charities extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Updates a Charity identified by id")
   @ApiImplicitParams({
-    @ApiImplicitParam(name = "charity", value = "Charity to update", required = true, dataType = "com.company.jersey03.models.CharityDTO", paramType = "body"),
+      @ApiImplicitParam(name = "charity", value = "Charity to update", required = true, dataType = "com.company.jersey03.models.CharityDTO", paramType = "body"),
   })
-  public Response update(@PathParam("id") Long charityId, @ApiParam(hidden = true) String requestBody) {
+  public Response update(@PathParam("id") Long charityId,
+      @ApiParam(hidden = true) String requestBody) {
     log.info("updating charity with id {}", charityId);
 
     try {
       CharityEntity charityEntity = charityService.getById(charityId);
 
       if (charityEntity == null) {
-        return Response.serverError().entity(RestTools.getErrorJson("charityId does not exist in DB", false, Optional.empty())).build();
+        return Response.serverError().entity(
+            RestTools.getErrorJson("charityId does not exist in DB", false, Optional.empty()))
+            .build();
       }
 
       CharityDTO charityDTO;
@@ -142,7 +146,9 @@ public class Charities extends AbstractEndpoint {
       }
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 

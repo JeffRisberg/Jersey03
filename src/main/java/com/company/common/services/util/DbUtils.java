@@ -6,15 +6,16 @@ import com.zaxxer.hikari.HikariConfig;
  *
  */
 public class DbUtils {
+
   public static HikariConfig getHikariConfig(String jdbcUrl,
-                                             String driverClassName,
-                                             String userName,
-                                             String password,
-                                             int minIdleConnections,
-                                             int maxPoolSize,
-                                             long connectionTimeoutMs,
-                                             long idleTimeout,
-                                             String connectionTestQuery) {
+      String driverClassName,
+      String userName,
+      String password,
+      int minIdleConnections,
+      int maxPoolSize,
+      long connectionTimeoutMs,
+      long idleTimeout,
+      String connectionTestQuery) {
     HikariConfig config = new HikariConfig();
     config.setDriverClassName(driverClassName);
     config.setJdbcUrl(jdbcUrl);
@@ -31,10 +32,10 @@ public class DbUtils {
   }
 
   public static HikariConfig getHikariConfig(String jdbcUrl,
-                                             String driverClassName,
-                                             String userName,
-                                             String password,
-                                             String connectionTestQuery) {
+      String driverClassName,
+      String userName,
+      String password,
+      String connectionTestQuery) {
     HikariConfig config = new HikariConfig();
     config.setDriverClassName(driverClassName);
     config.setJdbcUrl(jdbcUrl);

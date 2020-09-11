@@ -1,14 +1,8 @@
 package com.company.jersey03.models;
 
-import lombok.Data;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import lombok.Data;
 
 /**
  * @author Jeff Risberg

@@ -11,6 +11,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
 
 public class Main {
+
   public static void main(String[] args) throws Exception {
 
     ServletContextHandler sch = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -21,7 +22,8 @@ public class Main {
 
     // This makes a servletHolder, configures it, and then adds it to the contextHandler
     ServletHolder jerseyServletHolder = new ServletHolder(new ServletContainer());
-    jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, MainApplication.class.getCanonicalName());
+    jerseyServletHolder.setInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS,
+        MainApplication.class.getCanonicalName());
     jerseyServletHolder.setInitOrder(1);
     sch.addServlet(jerseyServletHolder, "/*");
 

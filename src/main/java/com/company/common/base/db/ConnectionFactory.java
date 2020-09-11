@@ -1,14 +1,15 @@
 package com.company.common.base.db;
 
-import javax.sql.DataSource;
 import java.io.Closeable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import javax.sql.DataSource;
 
 /**
  * Create AdHoc DB Connection. You are responsible for managing the connection lifecycle.
  */
 public interface ConnectionFactory extends Closeable {
+
   /**
    * Get the DBType.
    *
@@ -24,7 +25,8 @@ public interface ConnectionFactory extends Closeable {
   DataSource getOrCreateDataSource();
 
   /**
-   * Get a Connection from the connection pool. The client is responsible for closing the Connection.
+   * Get a Connection from the connection pool. The client is responsible for closing the
+   * Connection.
    *
    * @return DataSource.
    */
@@ -34,7 +36,6 @@ public interface ConnectionFactory extends Closeable {
    * Get an un-pooled Connection. The client is responsible for closing the Connection.
    *
    * @return Connection.
-   * @throws SQLException
    */
   Connection getUnPooledConnection() throws SQLException;
 
@@ -47,7 +48,6 @@ public interface ConnectionFactory extends Closeable {
    *
    * @param useConnectionPool if true, the Connection is returned from the connection pool.
    * @return Connection.
-   * @throws SQLException
    */
   Connection getConnection(boolean useConnectionPool) throws SQLException;
 

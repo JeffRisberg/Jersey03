@@ -5,22 +5,17 @@ import com.company.common.SortDescription;
 import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.models.DonorDTO;
 import com.company.jersey03.models.DonorEntity;
-import com.company.jersey03.services.CustomFieldValueService;
-import com.company.jersey03.services.DonorService;
-import com.company.jersey03.services.FieldService;
+import com.company.jersey03.services.*;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-
+import java.sql.Timestamp;
+import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONArray;
 
 @Api(value = "Donors", description = "Donor Management")
 @Path("donors")
@@ -33,7 +28,7 @@ public class Donors extends AbstractEndpoint {
 
   @Inject
   public Donors(FieldService fieldService, CustomFieldValueService customFieldValueService,
-                DonorService donorService) {
+      DonorService donorService) {
     super(fieldService, customFieldValueService);
     this.donorService = donorService;
   }
@@ -47,7 +42,7 @@ public class Donors extends AbstractEndpoint {
       donor.setLastUpdated(new Timestamp(System.currentTimeMillis()));
 
       DonorEntity createdDonor =
-        donorService.create(new DonorEntity().applyDTO(donor, fieldService));
+          donorService.create(new DonorEntity().applyDTO(donor, fieldService));
 
       if (createdDonor == null) {
         log.error("Cannot create donor from {}", donor);
@@ -57,7 +52,9 @@ public class Donors extends AbstractEndpoint {
       return Response.ok(createdDonor.toDTO()).build();
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -75,7 +72,9 @@ public class Donors extends AbstractEndpoint {
       return Response.ok(donors).build();
     } catch (Throwable e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -83,9 +82,9 @@ public class Donors extends AbstractEndpoint {
   @ApiOperation(value = "Gets all Donors", response = DonorDTO.class, responseContainer = "List")
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
-    @DefaultValue("50") @QueryParam("limit") int limit,
-    @DefaultValue("0") @QueryParam("offset") int offset,
-    @Context UriInfo uriInfo) {
+      @DefaultValue("50") @QueryParam("limit") int limit,
+      @DefaultValue("0") @QueryParam("offset") int offset,
+      @Context UriInfo uriInfo) {
 
     try {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
@@ -94,7 +93,7 @@ public class Donors extends AbstractEndpoint {
 
       JSONArray result = new JSONArray();
       List<DonorEntity> donors =
-        donorService.getByCriteria(filterDescs, sortDescs, limit, offset);
+          donorService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (DonorEntity donor : donors) {
         result.add(donor.toDTO());
@@ -112,16 +111,19 @@ public class Donors extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Updates a Donor identified by id")
   @ApiImplicitParams({
-    @ApiImplicitParam(name = "donor", value = "Donor to update", required = true, dataType = "com.company.jersey03.models.DonorDTO", paramType = "body"),
+      @ApiImplicitParam(name = "donor", value = "Donor to update", required = true, dataType = "com.company.jersey03.models.DonorDTO", paramType = "body"),
   })
-  public Response update(@PathParam("id") Long donorId, @ApiParam(hidden = true) String requestBody) {
+  public Response update(@PathParam("id") Long donorId,
+      @ApiParam(hidden = true) String requestBody) {
     log.info("updating donor with id {}", donorId);
 
     try {
       DonorEntity donorEntity = donorService.getById(donorId);
 
       if (donorEntity == null) {
-        return Response.serverError().entity(RestTools.getErrorJson("donorId does not exist in DB", false, Optional.empty())).build();
+        return Response.serverError()
+            .entity(RestTools.getErrorJson("donorId does not exist in DB", false, Optional.empty()))
+            .build();
       }
 
       DonorDTO donorDTO;
@@ -147,7 +149,9 @@ public class Donors extends AbstractEndpoint {
       }
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 

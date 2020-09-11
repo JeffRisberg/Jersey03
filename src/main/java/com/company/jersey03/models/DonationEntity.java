@@ -1,11 +1,8 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "donations")
@@ -51,9 +48,15 @@ public class DonationEntity extends AbstractDatedEntity {
     if (dto != null) {
       super.applyDTO(dto);
 
-      if (dto.getAmount() != null) this.setAmount(dto.getAmount());
-      if (dto.getCharityId() != null) this.setCharityId(dto.getCharityId());
-      if (dto.getDonorId() != null) this.setDonorId(dto.getDonorId());
+      if (dto.getAmount() != null) {
+        this.setAmount(dto.getAmount());
+      }
+      if (dto.getCharityId() != null) {
+        this.setCharityId(dto.getCharityId());
+      }
+      if (dto.getDonorId() != null) {
+        this.setDonorId(dto.getDonorId());
+      }
     }
     return this;
   }

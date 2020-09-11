@@ -1,5 +1,8 @@
 package com.company.jersey03.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.company.common.base.config.AppConfig;
 import com.company.common.base.config.DatabaseConfig;
 import com.company.common.base.services.config.ArchaiusAppConfig;
@@ -8,15 +11,10 @@ import com.company.jersey03.MainModule;
 import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.services.DAO.CharityDAO;
 import com.google.inject.AbstractModule;
-import org.junit.Before;
+import java.util.List;
+import javax.persistence.Query;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import javax.persistence.Query;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Jeff Risberg

@@ -5,18 +5,18 @@ import com.google.inject.Inject;
 
 public class HelloService {
 
-    protected AppConfig appConfig;
+  protected AppConfig appConfig;
 
-    @Inject
-    public HelloService(AppConfig appConfig) {
-        this.appConfig = appConfig;
-    }
+  @Inject
+  public HelloService(AppConfig appConfig) {
+    this.appConfig = appConfig;
+  }
 
-    public void handle() {
-        Object alpha = appConfig.getString("alpha", "hello");
+  public void handle() {
+    Object alpha = appConfig.getString("alpha", "hello");
 
-        Object results = "Hello There " + alpha;
-        System.out.println(results);
-    }
+    Object results = "Hello There " + alpha;
+    System.out.println(results);
+  }
 }
 

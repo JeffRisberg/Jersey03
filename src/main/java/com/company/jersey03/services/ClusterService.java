@@ -5,16 +5,16 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.ClusterEntity;
 import com.company.jersey03.services.DAO.ClusterDAO;
 import com.google.inject.Inject;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ClusterService extends AbstractService<ClusterEntity> {
+
   private final ClusterDAO dao;
 
   @Inject
   public ClusterService(final MyEntityManagerFactory myEntityManagerFactory,
-                        final ClusterDAO clusterDAO) {
+      final ClusterDAO clusterDAO) {
     this.myEntityManagerFactory = myEntityManagerFactory;
     this.dao = clusterDAO;
   }
@@ -38,7 +38,8 @@ public class ClusterService extends AbstractService<ClusterEntity> {
   }
 
   public List<ClusterEntity> getByCriteria
-    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
+      (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit,
+          int offset) {
     final AtomicReference<List<ClusterEntity>> td = new AtomicReference<>();
     doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
     return td.get();

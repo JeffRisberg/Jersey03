@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SortDescription {
+
   protected String field;
   protected SortDirection direction;
 }

@@ -1,9 +1,8 @@
 package com.company.jersey03.services.DAO;
 
 import com.company.jersey03.models.CharityEntity;
-import lombok.NonNull;
-
 import javax.persistence.EntityManager;
+import lombok.NonNull;
 
 public class CharityDAO extends BaseTemplateDAOImpl<CharityEntity> {
 

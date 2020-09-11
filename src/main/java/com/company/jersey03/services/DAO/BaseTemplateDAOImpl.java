@@ -1,23 +1,16 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.common.FilterDescription;
-import com.company.common.FilterOperator;
-import com.company.common.SortDescription;
-import com.company.common.SortDirection;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-
+import com.company.common.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 @Slf4j
 public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
@@ -69,8 +62,12 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
       criteria.select(criteria.from(type));
       Query query = em.createQuery(criteria);
 
-      if (limit > 0) query.setMaxResults(limit);
-      if (offset > 0) query.setFirstResult(offset);
+      if (limit > 0) {
+        query.setMaxResults(limit);
+      }
+      if (offset > 0) {
+        query.setFirstResult(offset);
+      }
 
       return query.getResultList();
     } catch (Exception e) {
@@ -83,14 +80,17 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
    * Execute Custom SQL with Map of parameters
    */
   @Override
-  public List<T> getBySQL(@NonNull String sql, @NonNull Map<String, Object> params, @NonNull EntityManager em) {
+  public List<T> getBySQL(@NonNull String sql, @NonNull Map<String, Object> params,
+      @NonNull EntityManager em) {
     try {
       Query query = em.createNativeQuery(sql);
-      params.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+      params.entrySet().stream()
+          .forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
       List<T> result = query.getResultList();
 
-      if (CollectionUtils.isEmpty(result))
+      if (CollectionUtils.isEmpty(result)) {
         return Collections.emptyList();
+      }
 
       return result;
     } catch (Exception e) {
@@ -103,10 +103,12 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
    * Execute Custom SQL with Map of parameters
    */
   @Override
-  public int updateBySQL(@NonNull String sql, @NonNull Map<String, Object> params, @NonNull EntityManager em) {
+  public int updateBySQL(@NonNull String sql, @NonNull Map<String, Object> params,
+      @NonNull EntityManager em) {
     try {
       Query query = em.createNativeQuery(sql);
-      params.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+      params.entrySet().stream()
+          .forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
       int updated = query.executeUpdate();
       log.info("Updated/Deleted by SQL: {}", updated);
       return updated;
@@ -123,7 +125,8 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
    */
   @Override
   public List<T> getByCriteria
-  (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset, @NonNull EntityManager em) {
+  (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset,
+      @NonNull EntityManager em) {
     CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
     CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(type);
     Root<T> root = criteriaQuery.from(type);
@@ -135,32 +138,39 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
         String key = fd.getField();
         Object value = fd.getValue();
 
-        if (value == null)
+        if (value == null) {
           continue;
+        }
         switch (fd.getOperator()) {
           case eq:
             p = criteriaBuilder.and(p, criteriaBuilder.equal(root.get(key), value));
             break;
           case like:
-            p = criteriaBuilder.and(p, criteriaBuilder.like(root.get(key), "%" + (String) value + "%"));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.like(root.get(key), "%" + (String) value + "%"));
             break;
           case gt:
-            p = criteriaBuilder.and(p, criteriaBuilder.greaterThan(root.get(key), (Comparable) value));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.greaterThan(root.get(key), (Comparable) value));
             break;
           case lt:
             p = criteriaBuilder.and(p, criteriaBuilder.lessThan(root.get(key), (Comparable) value));
             break;
           case gte:
-            p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Comparable) value));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Comparable) value));
             break;
           case lte:
-            p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Comparable) value));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Comparable) value));
             break;
           case timestamp_gte:
-            p = criteriaBuilder.and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Timestamp) value));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.greaterThanOrEqualTo(root.get(key), (Timestamp) value));
             break;
           case timestamp_lte:
-            p = criteriaBuilder.and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Timestamp) value));
+            p = criteriaBuilder
+                .and(p, criteriaBuilder.lessThanOrEqualTo(root.get(key), (Timestamp) value));
             break;
         }
       }
@@ -187,8 +197,12 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
     }
 
     Query query = em.createQuery(criteriaQuery);
-    if (offset > 0) query.setFirstResult(offset);
-    if (limit > 0) query.setMaxResults(limit);
+    if (offset > 0) {
+      query.setFirstResult(offset);
+    }
+    if (limit > 0) {
+      query.setMaxResults(limit);
+    }
 
     return query.getResultList();
   }
@@ -196,8 +210,6 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
   /**
    * Use Criteria Builder to execute a SQL By Parameters.
    *
-   * @param params
-   * @param em
    * @return List of results
    */
   @Override
@@ -209,7 +221,8 @@ public class BaseTemplateDAOImpl<T> implements BaseTemplateDAO<T> {
       criteriaQuery.select(root);
       AtomicReference<Predicate> p = new AtomicReference<>(criteriaBuilder.conjunction());
       params.entrySet().stream().forEach(entry -> {
-        p.set(criteriaBuilder.and(p.get(), criteriaBuilder.equal(root.get(entry.getKey()), entry.getValue())));
+        p.set(criteriaBuilder
+            .and(p.get(), criteriaBuilder.equal(root.get(entry.getKey()), entry.getValue())));
       });
       criteriaQuery.where(p.get());
       return em.createQuery(criteriaQuery).getResultList();

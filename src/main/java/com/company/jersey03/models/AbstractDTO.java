@@ -1,10 +1,9 @@
 package com.company.jersey03.models;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.io.Serializable;
 import lombok.Data;
 import org.json.simple.JSONObject;
-
-import java.io.Serializable;
 
 /**
  * @author Jeff Risberg

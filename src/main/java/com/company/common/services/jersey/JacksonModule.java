@@ -1,13 +1,12 @@
 package com.company.common.services.jersey;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.inject.AbstractModule;
 
 /**
- * This wires up Jackson for Jersey to use for de/serialization of objects to/from Resources (Controllers).
+ * This wires up Jackson for Jersey to use for de/serialization of objects to/from Resources
+ * (Controllers).
  */
 public final class JacksonModule extends AbstractModule {
 
@@ -17,7 +16,7 @@ public final class JacksonModule extends AbstractModule {
 
     objectMapper.registerModule(new JodaModule());
     SerializationConfig config = objectMapper.getSerializationConfig()
-      .withoutFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        .withoutFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     objectMapper.setConfig(config);
 

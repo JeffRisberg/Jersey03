@@ -8,15 +8,12 @@ import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.swagger.annotations.*;
-import lombok.extern.slf4j.Slf4j;
-
+import java.sql.Timestamp;
+import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Path("fields")
 @Api(value = "Fields", description = "Endpoint for managing Fields")
@@ -37,7 +34,7 @@ public class Fields extends AbstractEndpoint {
       field.setDateCreated(new Timestamp(System.currentTimeMillis()));
 
       Field createdField = fieldService.create(
-        new Field().applyDTO(field));
+          new Field().applyDTO(field));
 
       if (createdField == null) {
         log.error("Cannot create field from {}", createdField);
@@ -47,7 +44,9 @@ public class Fields extends AbstractEndpoint {
       return Response.ok(createdField.toDTO()).build();
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -55,8 +54,8 @@ public class Fields extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Get all Fields", response = FieldDTO.class, responseContainer = "List")
   public Response getFields(@DefaultValue("50") @QueryParam("limit") int limit,
-                            @DefaultValue("0") @QueryParam("offset") int offset,
-                            @Context UriInfo uriInfo) {
+      @DefaultValue("0") @QueryParam("offset") int offset,
+      @Context UriInfo uriInfo) {
     try {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
       List<FilterDescription> filterDescs = this.parseFiltering(queryParams);
@@ -66,7 +65,9 @@ public class Fields extends AbstractEndpoint {
       return RestTools.createResponse(fields);
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -84,7 +85,9 @@ public class Fields extends AbstractEndpoint {
       return RestTools.createResponse(fields);
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -142,14 +145,17 @@ public class Fields extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   @ApiOperation(value = "Updates a Field identified by id")
   @ApiImplicitParams({
-    @ApiImplicitParam(name = "field", value = "Field to update", required = true, dataType = "com.company.dataServer.models.FieldDTO", paramType = "body"),
+      @ApiImplicitParam(name = "field", value = "Field to update", required = true, dataType = "com.company.dataServer.models.FieldDTO", paramType = "body"),
   })
-  public Response updateField(@PathParam("fieldId") long fieldId, @ApiParam(hidden = true) String requestBody) {
+  public Response updateField(@PathParam("fieldId") long fieldId,
+      @ApiParam(hidden = true) String requestBody) {
     try {
       Field field = fieldService.getById(fieldId);
 
       if (field == null) {
-        return Response.serverError().entity(RestTools.getErrorJson("fieldId does not exist in DB", false, Optional.empty())).build();
+        return Response.serverError()
+            .entity(RestTools.getErrorJson("fieldId does not exist in DB", false, Optional.empty()))
+            .build();
       }
 
       FieldDTO fieldDTO;
@@ -171,7 +177,9 @@ public class Fields extends AbstractEndpoint {
       }
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
@@ -186,16 +194,22 @@ public class Fields extends AbstractEndpoint {
     try {
       Field data = fieldService.getById(fieldId);
       if (data == null) {
-        return Response.serverError().entity(RestTools.getErrorJson("Field does not exist in DB", false, Optional.empty())).build();
+        return Response.serverError()
+            .entity(RestTools.getErrorJson("Field does not exist in DB", false, Optional.empty()))
+            .build();
       }
       if (fieldService.delete(fieldId)) {
         return Response.ok().build();
       } else {
-        return Response.serverError().entity(RestTools.getErrorJson("Unable to unregister Field", false, Optional.empty())).build();
+        return Response.serverError()
+            .entity(RestTools.getErrorJson("Unable to unregister Field", false, Optional.empty()))
+            .build();
       }
     } catch (Exception e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 }

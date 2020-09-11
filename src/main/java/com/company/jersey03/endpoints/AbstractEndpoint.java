@@ -1,21 +1,15 @@
 package com.company.jersey03.endpoints;
 
-import com.company.common.FilterDescription;
-import com.company.common.FilterOperator;
-import com.company.common.SortDescription;
-import com.company.common.SortDirection;
+import com.company.common.*;
 import com.company.common.services.util.ObjectUtils;
 import com.company.jersey03.services.CustomFieldValueService;
 import com.company.jersey03.services.FieldService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Jeff Risberg
@@ -30,16 +24,15 @@ public class AbstractEndpoint {
 
   @Inject
   public AbstractEndpoint(FieldService fieldService,
-                          CustomFieldValueService customFieldValueService) {
+      CustomFieldValueService customFieldValueService) {
     this.fieldService = fieldService;
     this.customFieldValueService = customFieldValueService;
   }
 
   /**
-   * Generate a sorting specification from the query params of the request, of the
-   * form "sort=field1,-field2".
+   * Generate a sorting specification from the query params of the request, of the form
+   * "sort=field1,-field2".
    *
-   * @param queryParams
    * @return list of Sort Descriptors
    */
   protected List<SortDescription> parseSorting(MultivaluedMap<String, String> queryParams) {
@@ -67,10 +60,9 @@ public class AbstractEndpoint {
   }
 
   /**
-   * Generate a filtering specification from the query params of the request, of the
-   * form "fieldname=fieldValue".
+   * Generate a filtering specification from the query params of the request, of the form
+   * "fieldname=fieldValue".
    *
-   * @param queryParams
    * @return list of Filter Descriptors
    */
   protected List<FilterDescription> parseFiltering(MultivaluedMap<String, String> queryParams) {
@@ -78,8 +70,9 @@ public class AbstractEndpoint {
 
     for (Map.Entry<String, List<String>> entrySet : queryParams.entrySet()) {
       String fieldName = entrySet.getKey();
-      if ("limit".equals(fieldName) || "offset".equals(fieldName) || "sort".equals(fieldName))
+      if ("limit".equals(fieldName) || "offset".equals(fieldName) || "sort".equals(fieldName)) {
         continue;
+      }
 
       List<String> fieldValues = entrySet.getValue();
 
@@ -120,18 +113,14 @@ public class AbstractEndpoint {
   /**
    * Generate the response for a fetch of a collection of entities.
    *
-   * @param data
-   * @param totalCount
-   * @param limit
-   * @param offset
    * @return Response
    */
   protected Response createEntityListResponse(
-    List data,
-    long totalCount,
-    int limit,
-    int offset,
-    List<Error> errors) {
+      List data,
+      long totalCount,
+      int limit,
+      int offset,
+      List<Error> errors) {
     if (data == null) {
       throw new IllegalArgumentException("missing data");
     }
@@ -150,12 +139,9 @@ public class AbstractEndpoint {
 
   /**
    * Generate the response for a delete.
-   *
-   * @param errors
-   * @return
    */
   protected Response createDeleteResponse(Object data, List<Error> errors)
-    throws WebApplicationException {
+      throws WebApplicationException {
     List<Error> resultErrors = new ArrayList<Error>();
     Envelope envelope = new Envelope(null, errors);
 
@@ -169,7 +155,7 @@ public class AbstractEndpoint {
       resultErrors.add(new Error("Not found"));
 
       throw new WebApplicationException(
-        Response.status(Response.Status.NOT_FOUND).entity(envelope).build());
+          Response.status(Response.Status.NOT_FOUND).entity(envelope).build());
     } else {
       return Response.status(Response.Status.OK).entity(envelope).build();
     }

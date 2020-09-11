@@ -1,17 +1,15 @@
 package com.company.jersey03.models;
 
 import com.company.jersey03.services.FieldService;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.*;
 import org.json.simple.JSONObject;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Jeff Risberg
@@ -22,17 +20,20 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Slf4j
 @FilterDef(name = "entityTypeFilter",
-  parameters = @ParamDef(name = "entityType", type = "string")
+    parameters = @ParamDef(name = "entityType", type = "string")
 )
 public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
   @JoinColumn(name = "entity_id")
   @Filter(
-    name = "entityTypeFilter",
-    condition = "entity_type = :entityType"
+      name = "entityTypeFilter",
+      condition = "entity_type = :entityType"
   )
   List<CustomFieldValue> customFieldValues = new ArrayList();
+
+  @Transient
+  List<CustomFieldValue> newCustomFieldValues = new ArrayList();
 
   protected boolean update(AbstractDatedDTO dto) {
     if (dto != null) {
@@ -73,12 +74,14 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
     return delList;
   }
 
-  public AbstractDatedCFVEntity applyDTO(AbstractDatedDTO dto, String entityType, FieldService fieldService) {
+  public AbstractDatedCFVEntity applyDTO(AbstractDatedDTO dto, String entityType,
+      FieldService fieldService) {
     if (dto != null) {
       super.applyDTO(dto);
 
       if (dto.getCustomFieldValues() != null) {
-        List<CustomFieldValue> addList = new ArrayList<>();
+        List<CustomFieldValue> addList1 = new ArrayList<>();
+        List<CustomFieldValue> addList2 = new ArrayList<>();
 
         if (this.customFieldValues.size() > 0) {
           for (CustomFieldValue cfv : this.customFieldValues) {
@@ -96,8 +99,9 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
 
         // Now find the new fieldValues
         for (Object fieldName : dto.getCustomFieldValues().keySet()) {
-          if (((String) fieldName).startsWith("-"))
+          if (((String) fieldName).startsWith("-")) {
             continue;
+          }
 
           Field field = fieldService.getByContentTypeFieldName(entityType, (String) fieldName);
 
@@ -106,14 +110,23 @@ public abstract class AbstractDatedCFVEntity extends AbstractDatedEntity {
             String fieldValue = (String) dto.getCustomFieldValues().get(fieldName);
 
             CustomFieldValue newCfv =
-              new CustomFieldValue(field, field.getId(), entityType, this.getId(), fieldValue);
-            addList.add(newCfv);
+                new CustomFieldValue(field, field.getId(), entityType, this.getId(), fieldValue);
+            if (this.getId() != null) {
+              addList1.add(newCfv); // entityId is known
+            }
+             else {
+               addList2.add(newCfv); // entityId is not known
+            }
           } else {
             log.error("tried to add unknown field " + fieldName);
           }
         }
 
-        this.customFieldValues.addAll(addList);
+        // These are cfv objects when updating, hence entityId is known.
+        this.customFieldValues.addAll(addList1);
+        // These are cfv objects when creating, hence entityId is unknown and
+        // they must be added after the create of the main object.
+        this.newCustomFieldValues.addAll(addList2);
       }
     }
     return this;

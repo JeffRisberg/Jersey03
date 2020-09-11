@@ -2,13 +2,12 @@ package com.company.common.base.services.config;
 
 import com.company.common.base.config.AppConfig;
 import com.google.common.annotations.VisibleForTesting;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 @Slf4j
 public class EnvironmentBasedAppConfig implements AppConfig {
@@ -81,13 +80,15 @@ public class EnvironmentBasedAppConfig implements AppConfig {
 
   @Override
   public void setOverrideProperty(String key, Object value) {
-    throw new UnsupportedOperationException("setOverrideProperty method is not supported for environment configuration");
+    throw new UnsupportedOperationException(
+        "setOverrideProperty method is not supported for environment configuration");
   }
 
   /**
-   * As environment variables should be a word consisting only of alphanumeric characters and underscores,
-   * and beginning with an alphabetic character or an underscore. This utility is translating our archaius
-   * config keys, replacing dots by underscores and putting all the key in uppercase.
+   * As environment variables should be a word consisting only of alphanumeric characters and
+   * underscores, and beginning with an alphabetic character or an underscore. This utility is
+   * translating our archaius config keys, replacing dots by underscores and putting all the key in
+   * uppercase.
    *
    * @param key configuration key
    * @return config key with dots replaced by underscores and in uppercase
@@ -104,15 +105,17 @@ public class EnvironmentBasedAppConfig implements AppConfig {
   }
 
   /**
-   * Utility to get a value from a specific type for a given key, warning if the default value is used.
+   * Utility to get a value from a specific type for a given key, warning if the default value is
+   * used.
    *
-   * @param key          Key to retrieve
+   * @param key Key to retrieve
    * @param defaultValue default value to use when key not defined or conversion error
-   * @param converter    function that converts from the string to type T
-   * @param <T>          type of the expected value
+   * @param converter function that converts from the string to type T
+   * @param <T> type of the expected value
    * @return a value of type T for the given key
    */
-  private <T extends Object> T getAndWarn(String key, T defaultValue, Function<String, T> converter) {
+  private <T extends Object> T getAndWarn(String key, T defaultValue,
+      Function<String, T> converter) {
     String value = System.getenv(translateKey(key));
     if (value == null) {
       log.warn("A default config value, <" + defaultValue + "> was provided for <" + key + ">");
@@ -123,11 +126,12 @@ public class EnvironmentBasedAppConfig implements AppConfig {
 
 
   /**
-   * Utility to get a value from a specific type for a given key, warning if the default value is used.
+   * Utility to get a value from a specific type for a given key, warning if the default value is
+   * used.
    *
-   * @param key       Key to retrieve
+   * @param key Key to retrieve
    * @param converter function that converts from the string to type T
-   * @param <T>       type of the expected value
+   * @param <T> type of the expected value
    * @return a value of type T for the given key
    */
   private <T extends Object> T get(String key, Function<String, T> converter) {

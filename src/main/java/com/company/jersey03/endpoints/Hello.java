@@ -1,16 +1,12 @@
 package com.company.jersey03.endpoints;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
-
+import io.swagger.annotations.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lombok.extern.slf4j.Slf4j;
 
 @Api(value = "Hello", description = "Simple example endpoint")
 @Singleton
@@ -39,9 +35,9 @@ public class Hello {
   @Path("/incidents")
   @ApiOperation(value = "Creates Incidents")
   public Response createIncidents(
-    @HeaderParam(AUTHZ_HEADER) String authHeader,
-    @HeaderParam(APP_TOKEN_HEADER) String appTokenHeader,
-    @ApiParam() String body) {
+      @HeaderParam(AUTHZ_HEADER) String authHeader,
+      @HeaderParam(APP_TOKEN_HEADER) String appTokenHeader,
+      @ApiParam() String body) {
     log.info("Received Incident");
 
     String results = "Hello There";

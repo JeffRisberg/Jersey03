@@ -1,7 +1,6 @@
 package com.company.jersey03.endpoints;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.List;
 
 /**
@@ -12,49 +11,50 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Envelope {
-    protected Object data;
-    protected Long totalCount;
-    protected Integer limit;
-    protected Integer offset;
-    protected List<Error> errors;
 
-    public Envelope(Object data, Long totalCount, Integer limit, Integer offset, List<Error> errors) {
-        this.data = data;
-        this.totalCount = totalCount;
-        this.limit = limit;
-        this.offset = offset;
-        this.errors = errors;
-    }
+  protected Object data;
+  protected Long totalCount;
+  protected Integer limit;
+  protected Integer offset;
+  protected List<Error> errors;
 
-    public Envelope(Object data, List<Error> errors) {
-        this.data = data;
-        this.errors = errors;
-    }
+  public Envelope(Object data, Long totalCount, Integer limit, Integer offset, List<Error> errors) {
+    this.data = data;
+    this.totalCount = totalCount;
+    this.limit = limit;
+    this.offset = offset;
+    this.errors = errors;
+  }
 
-    public Envelope(List<Error> errors) {
-        this.errors = errors;
-    }
+  public Envelope(Object data, List<Error> errors) {
+    this.data = data;
+    this.errors = errors;
+  }
 
-    public Envelope() {
-    }
+  public Envelope(List<Error> errors) {
+    this.errors = errors;
+  }
 
-    public Object getData() {
-        return data;
-    }
+  public Envelope() {
+  }
 
-    public List<Error> getErrors() {
-        return errors;
-    }
+  public Object getData() {
+    return data;
+  }
 
-    public Long getTotalCount() {
-        return totalCount;
-    }
+  public List<Error> getErrors() {
+    return errors;
+  }
 
-    public Integer getLimit() {
-        return limit;
-    }
+  public Long getTotalCount() {
+    return totalCount;
+  }
 
-    public Integer getOffset() {
-        return offset;
-    }
+  public Integer getLimit() {
+    return limit;
+  }
+
+  public Integer getOffset() {
+    return offset;
+  }
 }

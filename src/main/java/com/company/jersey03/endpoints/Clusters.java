@@ -4,18 +4,12 @@ import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
 import com.company.jersey03.models.ClusterDTO;
 import com.company.jersey03.models.ClusterEntity;
-import com.company.jersey03.services.ClusterService;
-import com.company.jersey03.services.CustomFieldValueService;
-import com.company.jersey03.services.DonorService;
-import com.company.jersey03.services.FieldService;
-import lombok.extern.slf4j.Slf4j;
-
+import com.company.jersey03.services.*;
+import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 
 @Path("clusters")
 @Slf4j
@@ -25,7 +19,7 @@ public class Clusters extends AbstractEndpoint {
 
   @Inject
   public Clusters(FieldService fieldService, CustomFieldValueService customFieldValueService,
-                ClusterService clusterService) {
+      ClusterService clusterService) {
     super(fieldService, customFieldValueService);
     this.clusterService = clusterService;
   }
@@ -43,16 +37,18 @@ public class Clusters extends AbstractEndpoint {
       return Response.ok(clusters).build();
     } catch (Throwable e) {
       log.error("Exception during request", e);
-      return Response.serverError().entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e))).build();
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
     }
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response fetchList(
-    @DefaultValue("50") @QueryParam("limit") int limit,
-    @DefaultValue("0") @QueryParam("offset") int offset,
-    @Context UriInfo uriInfo) {
+      @DefaultValue("50") @QueryParam("limit") int limit,
+      @DefaultValue("0") @QueryParam("offset") int offset,
+      @Context UriInfo uriInfo) {
 
     try {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
@@ -61,7 +57,7 @@ public class Clusters extends AbstractEndpoint {
 
       List<ClusterDTO> result = new ArrayList<>();
       List<ClusterEntity> clusters =
-        clusterService.getByCriteria(filterDescs, sortDescs, limit, offset);
+          clusterService.getByCriteria(filterDescs, sortDescs, limit, offset);
 
       for (ClusterEntity cluster : clusters) {
         result.add(cluster.toDTO());

@@ -1,11 +1,10 @@
 package com.company.jersey03.services;
 
-import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author Jeff Risberg

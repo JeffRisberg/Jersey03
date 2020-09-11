@@ -5,16 +5,16 @@ import com.company.common.SortDescription;
 import com.company.jersey03.models.CustomFieldValue;
 import com.company.jersey03.services.DAO.CustomFieldValueDAO;
 import com.google.inject.Inject;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CustomFieldValueService extends AbstractService<CustomFieldValue> {
+
   private final CustomFieldValueDAO dao;
 
   @Inject
   public CustomFieldValueService(final MyEntityManagerFactory myEntityManagerFactory,
-                                 final CustomFieldValueDAO customFieldValueDAO) {
+      final CustomFieldValueDAO customFieldValueDAO) {
     this.myEntityManagerFactory = myEntityManagerFactory;
     this.dao = new CustomFieldValueDAO();
   }
@@ -38,7 +38,8 @@ public class CustomFieldValueService extends AbstractService<CustomFieldValue> {
   }
 
   public List<CustomFieldValue> getByCriteria
-    (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit, int offset) {
+      (List<FilterDescription> filterDescs, List<SortDescription> sortDescs, int limit,
+          int offset) {
     final AtomicReference<List<CustomFieldValue>> td = new AtomicReference<>();
     doWork(em -> td.set(dao.getByCriteria(filterDescs, sortDescs, limit, offset, em)));
     return td.get();

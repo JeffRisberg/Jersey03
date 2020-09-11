@@ -1,10 +1,8 @@
 package com.company.jersey03.services.DAO;
 
-import com.company.jersey03.models.CharityEntity;
 import com.company.jersey03.models.Field;
-import lombok.NonNull;
-
 import javax.persistence.EntityManager;
+import lombok.NonNull;
 
 public class FieldDAO extends BaseTemplateDAOImpl<Field> {
 

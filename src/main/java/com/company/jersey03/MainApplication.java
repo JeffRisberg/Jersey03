@@ -2,6 +2,7 @@ package com.company.jersey03;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import javax.inject.Inject;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.message.GZipEncoder;
@@ -9,8 +10,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.EncodingFilter;
 import org.jvnet.hk2.guice.bridge.api.GuiceBridge;
 import org.jvnet.hk2.guice.bridge.api.GuiceIntoHK2Bridge;
-
-import javax.inject.Inject;
 
 public class MainApplication extends ResourceConfig {
 

@@ -1,15 +1,11 @@
 package com.company.jersey03.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.*;
+import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @Table(name = "clusters")
@@ -61,20 +57,25 @@ public class ClusterEntity extends AbstractEntity {
   private Boolean cloned;
 
   public ClusterEntity merge(ClusterEntity entity) {
-    if (!entity.usageType.equalsIgnoreCase("undefined"))
+    if (!entity.usageType.equalsIgnoreCase("undefined")) {
       this.usageType = entity.usageType;
+    }
 
-    if (StringUtils.isNotEmpty(entity.getAttributes()))
+    if (StringUtils.isNotEmpty(entity.getAttributes())) {
       this.setAttributes(entity.getAttributes());
+    }
 
-    if (StringUtils.isNotEmpty(entity.getClusterDescription()))
+    if (StringUtils.isNotEmpty(entity.getClusterDescription())) {
       this.setClusterDescription(entity.getClusterDescription());
+    }
 
-    if (StringUtils.isNotEmpty(entity.getCriteria()))
+    if (StringUtils.isNotEmpty(entity.getCriteria())) {
       this.setCriteria(entity.getCriteria());
+    }
 
-    if (!entity.type.equalsIgnoreCase("undefined"))
+    if (!entity.type.equalsIgnoreCase("undefined")) {
       this.type = entity.type;
+    }
 
     // merge the mappings
     if (CollectionUtils.isNotEmpty(entity.getClusterEntityMappings())) {
