@@ -165,7 +165,7 @@ public class Donors extends AbstractEndpoint {
 
       if (donorEntity == null) {
         return Response.serverError().entity(
-            RestTools.getErrorJson("donationId does not exist in DB", false, Optional.empty()))
+            RestTools.getErrorJson("donorId does not exist in DB", false, Optional.empty()))
             .build();
       }
 

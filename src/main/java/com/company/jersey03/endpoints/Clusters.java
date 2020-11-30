@@ -81,9 +81,17 @@ public class Clusters extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   public Response delete(@PathParam("id") Long id) {
     try {
-      ClusterEntity data = clusterService.getById(id);
+      ClusterEntity clusterEntity = clusterService.getById(id);
 
-      return createDeleteResponse(data, null);
+      if (clusterEntity == null) {
+        return Response.serverError().entity(
+            RestTools.getErrorJson("clusterId does not exist in DB", false, Optional.empty()))
+            .build();
+      }
+
+      clusterService.delete(id);
+
+      return createDeleteResponse(clusterEntity, null);
     } catch (Exception e) {
       return null;
     }
