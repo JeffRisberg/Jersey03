@@ -157,9 +157,17 @@ public class Charities extends AbstractEndpoint {
   @Produces(MediaType.APPLICATION_JSON)
   public Response delete(@PathParam("id") Long id) {
     try {
-      CharityEntity data = charityService.getById(id);
+      CharityEntity  charityEntity = charityService.getById(id);
 
-      return createDeleteResponse(data, null);
+      if (charityEntity == null) {
+        return Response.serverError().entity(
+            RestTools.getErrorJson("charityId does not exist in DB", false, Optional.empty()))
+            .build();
+      }
+
+      charityService.delete(id);
+
+      return createDeleteResponse(charityEntity, null);
     } catch (Exception e) {
       return null;
     }

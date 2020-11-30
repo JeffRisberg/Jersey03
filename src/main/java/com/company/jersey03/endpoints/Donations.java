@@ -94,9 +94,17 @@ public class Donations extends AbstractEndpoint {
   public Response delete(@PathParam("id") Long id) {
 
     try {
-      DonationEntity data = donationService.getById(id);
+      DonationEntity donationData = donationService.getById(id);
 
-      return createDeleteResponse(data, null);
+      if (donationData == null) {
+        return Response.serverError().entity(
+            RestTools.getErrorJson("donationId does not exist in DB", false, Optional.empty()))
+            .build();
+      }
+
+      donationService.delete(id);
+
+      return createDeleteResponse(donationData, null);
     } catch (Exception e) {
       return null;
     }

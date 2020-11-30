@@ -26,9 +26,9 @@ ext {
     jodaTimeVersion = '2.10.6'
     guiceVersion = '4.2.3'
     jettyVersion = '9.4.35.v20201120'
-    jerseyVersion = '2.28'
+    jerseyVersion = '2.32'
     hk2Version = '2.5.0-b44'
-    jacksonVersion = '2.11.3'
+    jacksonVersion = '2.10.5' /* don't use version 2.11 here */
     hibernateVersion = '5.4.24.Final'
     junitVersion = '4.13'
 }
