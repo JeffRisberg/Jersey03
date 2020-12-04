@@ -23,7 +23,7 @@ ext {
     slf4jVersion = '1.7.30'
     projectLombokVersion = '1.16.20'
     archaiusVersion = '0.7.7'
-    jodaTimeVersion = '2.10.6'
+    jodaTimeVersion = '2.10.8'
     guiceVersion = '4.2.3'
     jettyVersion = '9.4.35.v20201120'
     jerseyVersion = '2.32'
