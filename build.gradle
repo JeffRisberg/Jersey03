@@ -28,6 +28,7 @@ ext {
     jettyVersion = '9.4.35.v20201120'
     jerseyVersion = '2.32'
     hk2Version = '2.5.0-b44'
+    swaggerVersion = '1.6.2'
     jacksonVersion = '2.10.5' /* don't use version 2.11 here */
     hibernateVersion = '5.4.26.Final'
     junitVersion = '4.13'
@@ -84,8 +85,8 @@ dependencies {
     compile "com.zaxxer:HikariCP:2.7.9"
     compile "mysql:mysql-connector-java:5.1.48"
 
-    compile "io.swagger:swagger-annotations:1.5.21"
-    compile "io.swagger:swagger-jersey2-jaxrs:1.5.21"
+    compile "io.swagger:swagger-annotations:$swaggerVersion"
+    compile "io.swagger:swagger-jersey2-jaxrs:$swaggerVersion"
 
     testCompile "junit:junit:$junitVersion"
 }
