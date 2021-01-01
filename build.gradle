@@ -26,7 +26,7 @@ ext {
     jodaTimeVersion = '2.10.8'
     guiceVersion = '4.2.3'
     jettyVersion = '9.4.35.v20201120'
-    jerseyVersion = '2.32'
+    jerseyVersion = '2.33'
     hk2Version = '2.5.0-b44'
     swaggerVersion = '1.6.2'
     jacksonVersion = '2.10.5' /* don't use version 2.11 here */
