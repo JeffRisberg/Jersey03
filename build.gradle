@@ -29,8 +29,8 @@ ext {
     jerseyVersion = '2.33'
     hk2Version = '2.5.0-b44'
     swaggerVersion = '1.6.2'
-    jacksonVersion = '2.10.5' /* don't use version 2.11 here */
-    hibernateVersion = '5.4.26.Final'
+    jacksonVersion = '2.12.1'
+    hibernateVersion = '5.4.27.Final'
     junitVersion = '4.13'
 }
 
