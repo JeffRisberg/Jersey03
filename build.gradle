@@ -30,7 +30,7 @@ ext {
     hk2Version = '2.5.0-b44'
     swaggerVersion = '1.6.2'
     jacksonVersion = '2.12.1'
-    hibernateVersion = '5.4.27.Final'
+    hibernateVersion = '5.4.28.Final'
     junitVersion = '4.13'
 }
 
