@@ -31,7 +31,7 @@ ext {
     swaggerVersion = '1.6.2'
     jacksonVersion = '2.12.4'
     hibernateVersion = '5.4.32.Final'
-    junitVersion = '4.13'
+    junitVersion = '4.13.2'
 }
 
 test {
