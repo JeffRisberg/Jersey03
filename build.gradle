@@ -20,7 +20,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 version = '0.1.0'
 
 ext {
-    slf4jVersion = '1.7.31'
+    slf4jVersion = '1.7.35'
     projectLombokVersion = '1.16.20'
     archaiusVersion = '0.7.7'
     jodaTimeVersion = '2.10.8'
