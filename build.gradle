@@ -80,7 +80,6 @@ dependencies {
 
     compile "org.hibernate:hibernate-core:$hibernateVersion"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
-    compile 'org.glassfish:javax.el:3.0.1-b09'
 
     compile "com.zaxxer:HikariCP:2.7.9"
     compile "mysql:mysql-connector-java:5.1.48"
