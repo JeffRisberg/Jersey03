@@ -5,10 +5,14 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.grade.org/m2/"
+        }
     }
-    /*dependencies {
+    dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
-    }*/
+    }
 }
 
 repositories {
@@ -16,7 +20,7 @@ repositories {
 }
 
 apply plugin: 'java'
-/* apply plugin: 'com.github.johnrengelman.shadow' */
+apply plugin: 'com.github.johnrengelman.shadow'
 
 version = '0.1.0'
 
@@ -42,51 +46,53 @@ test {
 }
 
 dependencies {
-    compile "org.slf4j:slf4j-api:$slf4jVersion"
-    runtime "org.slf4j:slf4j-simple:$slf4jVersion"
-    compile "org.projectlombok:lombok:$projectLombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$projectLombokVersion"
+    implementation "org.projectlombok:lombok:$projectLombokVersion"
 
-    compile 'org.apache.commons:commons-lang3:3.10'
-    compile 'org.apache.commons:commons-collections4:4.4'
-    compile 'commons-configuration:commons-configuration:1.8'
-    compile "com.netflix.archaius:archaius-core:$archaiusVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
+    runtimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
 
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'commons-configuration:commons-configuration:1.8'
+    implementation "com.netflix.archaius:archaius-core:$archaiusVersion"
 
-    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
-    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
 
-    compile "joda-time:joda-time:$jodaTimeVersion"
+    implementation group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    implementation group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 
-    compile "com.google.inject:guice:$guiceVersion"
-    compile "com.google.inject.extensions:guice-servlet:$guiceVersion"
+    implementation "joda-time:joda-time:$jodaTimeVersion"
 
-    compile "org.eclipse.jetty:jetty-server:$jettyVersion"
-    compile "org.eclipse.jetty:jetty-servlet:$jettyVersion"
+    implementation "com.google.inject:guice:$guiceVersion"
+    implementation "com.google.inject.extensions:guice-servlet:$guiceVersion"
 
-    compile "org.glassfish.jersey.core:jersey-common:$jerseyVersion"
-    compile "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
+    implementation "org.eclipse.jetty:jetty-server:$jettyVersion"
+    implementation "org.eclipse.jetty:jetty-servlet:$jettyVersion"
 
-    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
-    compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
-    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+    implementation "org.glassfish.jersey.core:jersey-common:$jerseyVersion"
+    implementation "org.glassfish.jersey.core:jersey-server:$jerseyVersion"
 
-    compile "com.squarespace.jersey2-guice:jersey2-guice-impl:1.0.6"
-    compile "org.glassfish.hk2:hk2:$hk2Version"
-    compile "org.glassfish.hk2:guice-bridge:$hk2Version"
+    implementation "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
+    implementation "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
+    implementation "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
 
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion"
+    implementation "com.squarespace.jersey2-guice:jersey2-guice-impl:1.0.6"
+    implementation "org.glassfish.hk2:hk2:$hk2Version"
+    implementation "org.glassfish.hk2:guice-bridge:$hk2Version"
 
-    compile "org.hibernate:hibernate-core:$hibernateVersion"
-    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
+    implementation "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$jacksonVersion"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:$jacksonVersion"
 
-    compile "com.zaxxer:HikariCP:2.7.9"
-    compile "mysql:mysql-connector-java:5.1.48"
+    implementation "org.hibernate:hibernate-core:$hibernateVersion"
+    implementation "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final"
 
-    compile "io.swagger:swagger-annotations:$swaggerVersion"
-    compile "io.swagger:swagger-jersey2-jaxrs:$swaggerVersion"
+    implementation "com.zaxxer:HikariCP:2.7.9"
+    implementation "mysql:mysql-connector-java:5.1.48"
 
-    testCompile "junit:junit:$junitVersion"
+    implementation "io.swagger:swagger-annotations:$swaggerVersion"
+    implementation "io.swagger:swagger-jersey2-jaxrs:$swaggerVersion"
+
+    testImplementation "junit:junit:$junitVersion"
 }
