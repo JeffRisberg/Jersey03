@@ -34,7 +34,7 @@ ext {
     jerseyVersion = '2.39'
     hk2Version = '2.6.1'
     swaggerVersion = '1.6.2'
-    jacksonVersion = '2.12.4'
+    jacksonVersion = '2.13.5'
     hibernateVersion = '5.6.15.Final'
     junitVersion = '4.13.2'
 }
