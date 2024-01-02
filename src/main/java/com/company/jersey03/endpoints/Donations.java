@@ -2,11 +2,11 @@ package com.company.jersey03.endpoints;
 
 import com.company.common.FilterDescription;
 import com.company.common.SortDescription;
-import com.company.jersey03.models.DonationDTO;
-import com.company.jersey03.models.DonationEntity;
+import com.company.jersey03.models.*;
 import com.company.jersey03.services.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.sql.Timestamp;
 import java.util.*;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -30,8 +30,26 @@ public class Donations extends AbstractEndpoint {
   @POST
   @ApiOperation(value = "Register a new Donation. Set id=0", response = DonationDTO.class)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response create() {
-    return null;
+  public Response create(DonationDTO donation) {
+    try {
+      donation.setDateCreated(new Timestamp(System.currentTimeMillis()));
+      donation.setLastUpdated(new Timestamp(System.currentTimeMillis()));
+
+      DonationEntity createdDonation =
+          donationService.create(new DonationEntity().applyDTO(donation));
+
+      if (createdDonation == null) {
+        log.error("Cannot create donation from {}", donation);
+        return Response.serverError().build();
+      }
+
+      return Response.ok(createdDonation.toDTO()).build();
+    } catch (Exception e) {
+      log.error("Exception during request", e);
+      return Response.serverError()
+          .entity(RestTools.getErrorJson("Exception during request", false, Optional.of(e)))
+          .build();
+    }
   }
 
   @GET
